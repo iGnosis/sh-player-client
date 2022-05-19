@@ -1,0 +1,154 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$patient-provider-primary: mat.define-palette(mat.$indigo-palette);
+$patient-provider-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$patient-provider-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$patient-provider-theme: mat.define-light-theme((
+  color: (
+    primary: $patient-provider-primary,
+    accent: $patient-provider-accent,
+    warn: $patient-provider-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($patient-provider-theme);
+@import '/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+
+/* You can add global styles to this file, and also import other style files */
+@import "@webpixels/css";
+$color_1: #000000;
+$primary_color: #000066;
+.home-page-header {
+	height: 90vh;
+	display: flex;
+  background-repeat: no-repeat;
+  background-position: left 30% center;
+    background-size: cover;
+}
+.session-text {
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+	text-transform: uppercase;
+	color: $color_1;
+}
+.session-heading {
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 32px;
+  line-height: 39px;
+  color: $primary_color;
+  text-align: center;
+}
+.gradient-container {
+  width: 100%;
+  background: linear-gradient(
+180deg, rgba(255, 255, 255, 0) 0.37%, rgba(255, 255, 255, 0.52) 20.24%, #FFFFFF 51.46%);
+}
+.start-session-btn{
+  padding: 8px 12px;
+    background: #000066;
+    border-radius: 4px;
+    color: #FFFFFF;
+    width: 10em;
+    align-items: center !important;
+    justify-content: center;
+    display: flex;
+    margin: auto;
+}
+.align-header-buttons {
+  display: flex;
+}
+.footer-nav-items {
+  display: flex;
+  flex-direction: column;
+}
+.fixed-container {
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 2;
+}
+.new-uploads-title {
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 27px;
+  color: #000000;
+}
+.new-uploads-alignment .card {
+  background-color: transparent;
+  justify-content: flex-start;
+  background: linear-gradient(
+180deg, rgba(0, 0, 0, 0) 1.79%, rgba(0, 0, 0, 0.45) 18.82%, #000000 100%);
+    width: 100%;
+}
+.new-uploads-alignment {
+  border-radius: 1em;
+  min-height: 22em;
+  display: flex;
+  align-items: end;
+  justify-content: flex-start;
+  width: 75%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.new-uploads-alignment h3.h4 {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+.new-uploads-alignment p {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 25px;
+  color: #FFFFFF;
+}
+.footer-nav-items p {
+  font-size: 9px;
+}
+.owl-stage {padding-bottom: 1em;}
+.owl-carousel.owl-theme.owl-loaded.owl-responsive {display: flex;flex-direction: column;}
+.owl-stage-outer {order: 2;margin-top: 1em;}
+.owl-theme .owl-nav {order: 1;text-align: right;margin-top: -2em;margin-bottom: 1.6em;}
+@media screen and (max-width: 630px){
+  .new-uploads-alignment {
+    min-height: 14em !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+}
+.new-uploads-alignment .card-body {
+  padding: 0.2em;
+}
+}
+@media screen and (min-width: 1200px){
+  .fixed-container {
+    display: none;
+}
+}
