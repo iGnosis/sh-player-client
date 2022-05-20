@@ -31,7 +31,8 @@ export class HomePageComponent implements OnInit {
         items: 3
       },
       940: {
-        items: 4
+        items: 5,
+        margin:10
       }
     },
     nav: true
