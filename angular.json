@@ -111,13 +111,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sh-provider-client:build:production"
+              "browserTarget": "sh_patient_client:build:production"
             },
             "staging": {
-              "browserTarget": "sh-provider-client:build:staging"
+              "browserTarget": "sh_patient_client:build:staging"
             },
             "development": {
-              "browserTarget": "sh-provider-client:build:development"
+              "browserTarget": "sh_patient_client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -125,7 +125,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sh-provider-client:build"
+            "browserTarget": "sh_patient_client:build"
           }
         },
         "test": {
