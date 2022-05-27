@@ -9,11 +9,15 @@ import {MatIconModule} from '@angular/material/icon';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
 import { RouterModule } from '@angular/router';
+import { HomeComponent } from './pages/private/home/home.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    HomeComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
@@ -21,9 +25,6 @@ import { RouterModule } from '@angular/router';
     BrowserAnimationsModule,
     MatIconModule,
     CarouselModule,
-    RouterModule.forRoot([
-      { path: 'auth/login', component: LoginPageComponent }
-    ])
   ],
   providers: [],
   bootstrap: [AppComponent]

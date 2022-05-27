@@ -1,0 +1,32 @@
+.home-container {
+    background-image: url(/assets/images/start-session-bg.jpg);
+    background-size: cover;
+    .btn {
+        background-color: #000066;
+        font-size: 1.6rem;
+        border: none;
+    }
+    .lead {
+        font-size:2rem;
+        font-weight: 600;
+        .fa {
+            font-size: 1.8rem;
+        }
+    }
+    @media screen and (max-width: 1400px) {
+        .display-3 {
+            font-size: 3rem;
+        }
+        .lead {
+            font-size: 1.3rem;
+        }
+    }
+    @media screen and (max-width: 900px) {
+        .display-3 {
+            font-size: 2.5rem;
+        }
+        .lead {
+            font-size: 1.3rem;
+        }
+    }
+}

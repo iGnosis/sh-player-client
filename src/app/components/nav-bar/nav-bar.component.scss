@@ -1,0 +1,10 @@
+
+.nav-left {
+    a, a.active {
+        color: #000066;
+        font-weight: 600;
+    }
+    & > div {
+        border-bottom: 3px solid #000066;
+    }
+}

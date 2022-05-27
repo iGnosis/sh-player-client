@@ -43,6 +43,10 @@ $primary_color: #000066;
 $white: #FFFFFF;
 $background-color_2: transparent;
 
+body {
+    font-family: Inter, 'Times New Roman', Times, serif;
+}
+
 .home-page-header {
 	height: 90vh;
 	display: flex;
