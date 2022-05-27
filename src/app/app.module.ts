@@ -7,17 +7,23 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
-    HomePageComponent
+    HomePageComponent,
+    LoginPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatIconModule,
-    CarouselModule
+    CarouselModule,
+    RouterModule.forRoot([
+      { path: 'auth/login', component: LoginPageComponent }
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]
