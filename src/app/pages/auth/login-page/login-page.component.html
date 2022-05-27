@@ -17,11 +17,11 @@
                     <form>
                         <div class="mb-5">
                             <label class="form-label" for="email">Email address</label>
-                            <input type="email" class="form-control form-control-muted" id="email">
+                            <input name="email" [(ngModel)]="email" type="email" class="form-control form-control-muted" id="email">
                         </div>
                         <div class="mb-5">
                             <label class="form-label" for="password">Password</label>
-                            <input type="password" class="form-control form-control-muted" id="password" autocomplete="current-password">
+                            <input name="password" [(ngModel)]="password" type="password" class="form-control form-control-muted" id="password" autocomplete="current-password">
                         </div>
                         <div class="mb-5">
                             <div class="form-check">
@@ -32,9 +32,9 @@
                             </div>
                         </div>
                         <div>
-                            <a href="/home" class="btn btn-primary w-full">
+                            <p (click)="onSignIn()" class="btn btn-primary w-full">
                                 Sign in
-                            </a>
+                            </p>
                         </div>
                     </form>
                     <div class="py-5 text-center">
