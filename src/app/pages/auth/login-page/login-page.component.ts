@@ -14,6 +14,8 @@ export class LoginPageComponent implements OnInit {
   errors=[];
   email="";
   password="";
+  showPassword = false;
+  carouselSlide = 1;
 
   constructor(
       private router: Router, 
@@ -23,6 +25,18 @@ export class LoginPageComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    setInterval(() => {
+      if(this.carouselSlide === 3) this.carouselSlide = 1;
+      else this.carouselSlide++;
+    }, 4000);
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  updateCarouselSlide(slide: number)  {
+    this.carouselSlide = slide;
   }
 
   async onSignIn() {
@@ -32,10 +46,10 @@ export class LoginPageComponent implements OnInit {
         this.jwtService.setToken(data.token)
         this.userService.set(data.patient)
         this.router.navigate(['/app/home'])
-    }, error: (err) => {
-      this.errors = err.error.message
-    }
-  })
+      }, error: (err) => {
+        this.errors = err.error.message
+      }
+    })
   }
 
 }

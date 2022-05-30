@@ -1,12 +1,86 @@
-.bg-image {
-    background-image: url(/assets/images/login-bg-image.jpg);
-    background-size: cover;
-}
-.sound-health {
-    color: #000066;
-}
-@media screen and (min-width: 1900px) {
+// new
+.login-container {
+    font-size: 10px;
+    font-family: Inter;
+    .chat-bubble {
+        z-index: 1;
+    }
+    .carousel-container {
+        background-color: #F7FAFC;
+        .circle-bg-1, .circle-bg-2 {
+            opacity: 0.2;
+            width: 75em;
+            height: 75em;
+            background-color: #E4ECF7;
+            border-radius: 100%;
+        }
+        .circle-bg-2 {
+            width: 62em;
+            height: 62em;
+        }
+        .circle-bg-3 {
+            width: 42em;
+            height: 42em;
+            background-color: #A3B7F0;
+            border-radius: 100%;
+        }
+        .img-bg-overlay {
+            width: 50em;
+            height: 35em;
+            > img {
+                opacity: 1;
+                animation: fade 0.3s ease-in;
+            }
+            @keyframes fade {
+              0% { opacity: 0 }
+            }
+            
+        }
+        .indicators {
+            > div {
+                cursor: pointer;
+                background-color: #CBD5E0;
+                &.active {
+                    background-color: #2F51AE;
+                }
+            }
+        }
+    }
     .login-card-container {
-        font-size: 1.2rem;
+        label {
+            color: #425466;
+        }
+        .card-bg {
+            background-color: #F7FAFC;
+        }
+        .form-check-input {
+            font-size: 1.6em;
+        }
+        .password-container {
+            > p {
+                color: #718096;
+            }
+        }
+        .eye-icon {
+            font-size: 1.6em;
+            color: #494949;
+        }
+        .remember-container {
+            > a {
+                color: #425466;
+                font-size: 1.2em;
+            }
+        }
+        .login-btn {
+            > a {
+                background-color: #000066;
+            }
+        }
+        .signup-container {
+            font-size: 1.6em;
+            a {
+                color: #2f51ae;
+            }
+        }
     }
 }

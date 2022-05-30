@@ -1,66 +1,74 @@
-<div class="login-container px-md-5 py-md-5 p-lg-0 bg-surface-secondary overflow-x-hidden">
+<div class="login-container">
+    <img src="/assets/icons/chat-bubble.svg" alt="chat bubble" class="chat-bubble position-fixed cursor-pointer end-4 bottom-4">
     <div class="d-flex justify-content-center">
-        <div class="bg-image col-12 position-fixed start-0 top-0 h-screen overflow-y-hidden bg-primary d-none d-lg-flex flex-column">
-            <!-- <img src="/assets/images/login-bg-image.jpg" class="h-full w-full" alt="senior citizens"> -->
+        <div class="carousel-container overflow-x-hidden col-lg-6 position-relative">
+            <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
+            <!-- Carousel -->
+            <div class="carousel-images">
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-2 mx-auto"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-3 mx-auto"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle img-bg-overlay rounded-4">
+                    <img class="w-full h-full" *ngIf="carouselSlide===1" src="/assets/images/carousel-img-1.png" alt="carousel thumbnail">
+                    <img class="w-full h-full" *ngIf="carouselSlide===2" src="/assets/images/carousel-img-2.png" alt="carousel thumbnail">
+                    <img class="w-full h-full" *ngIf="carouselSlide===3" src="/assets/images/carousel-img-3.png" alt="carousel thumbnail">
+                </div>
+                <p class="caption position-absolute bottom-2 bottom-xxl-20 start-1/2 text-lg font-bold text-center translate-middle">
+                    {{carouselSlide === 1 ? 
+                        'Take control of your life through the power of music and movement.' : 
+                    carouselSlide === 2 ? 
+                        'Track relevant statistics and share your progress with your friends and family.' 
+                    :   'Stay physically and mentally sharp with our curated list of activities everyday.'}}
+                </p>
+                <div class="indicators position-absolute bottom-4 bottom-xxl-16 start-1/2 translate-middle row w-3/5 gap-5">
+                    <div (click)="updateCarouselSlide(1)" [class.active]="carouselSlide === 1" class="rounded col h-2"></div>
+                    <div (click)="updateCarouselSlide(2)" [class.active]="carouselSlide === 2" class="rounded col h-2"></div>
+                    <div (click)="updateCarouselSlide(3)" [class.active]="carouselSlide === 3" class="rounded col h-2"></div>
+                </div>
+            </div>
         </div>
-        <div class="login-card-container col-md-8 col-xl-12 col-xxl-9 offset-xl-10 offset-lg-6 border-left-lg min-h-screen d-flex flex-column justify-content-center py-lg-16 px-lg-20 position-relative">
+        <div class="login-card-container col-10 col-md-9 col-lg-6 min-h-screen d-flex flex-column justify-content-center py-lg-16 px-lg-10 position-relative">
             <div class="row">
-                <div class="col-lg-10 col-md-9 col-xl-6 mx-auto ms-xl-0 bg-white px-7 py-4 rounded-3">
-                    <div class="mt-10 mt-lg-5 mb-6 d-flex align-items-center d-lg-block text-nowrap">
-                        <h1 class="ls-tight font-bolder h2 me-1">
-                            Welcome to
-                        </h1>
-                        <h1 class="sound-health ls-tight font-bolder h1">
-                            Sound Health
-                        </h1>
-                    </div>
-                    <form>
-                        <div class="mb-5">
-                            <label class="form-label" for="email">Email address</label>
-                            <input name="email" [(ngModel)]="email" type="email" class="form-control form-control-muted" id="email">
+                <div class="col-lg-12 col-md-9 col-xl-10 col-xxl-8 mx-auto">
+                    <div class="card-bg rounded-md-4 p-5 p-md-10 p-xl-10">
+                        <div class="text-center mb-5 mb-md-10">
+                            <span class="d-inline-block d-lg-block h1 my-lg-8 me-3">👋</span>
+                            <h1 class="ls-tight font-bold h1">
+                                Welcome back!
+                            </h1>
                         </div>
-                        <div class="mb-5">
-                            <label class="form-label" for="password">Password</label>
-                            <input name="password" [(ngModel)]="password" type="password" class="form-control form-control-muted" id="password" autocomplete="current-password">
-                        </div>
-                        <div class="mb-5">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="check_example" id="check_example">
-                                <label class="form-check-label" for="check_example">
-                                    Keep me logged in
-                                </label>
+                        <form>
+                            <div class="mb-8">
+                                <label class="form-label" for="email">E-mail or phone number</label>
+                                <input type="email" name="email" [(ngModel)]="email" class="form-control" id="email">
                             </div>
-                        </div>
-                        <div>
-                            <p (click)="onSignIn()" class="btn btn-primary w-full">
-                                Sign in
-                            </p>
-                        </div>
-                    </form>
-                    <div class="py-5 text-center">
-                        <span class="text-xs text-uppercase font-semibold">or</span>
+                            <div class="mb-8 password-container position-relative">
+                                <label class="form-label" for="password">Password</label>
+                                <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" minlength="8" class="form-control" id="password" autocomplete="current-password">
+                                <div (click)="toggleShowPassword()" class="eye-icon position-absolute end-4 top-10 cursor-pointer">
+                                    <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                                </div>
+                                <p class="mt-1 text-xs">Must be 8 characters at least</p>
+                            </div>
+                            <div class="remember-container mb-8 d-flex w-full justify-content-between align-items-center">
+                                <div class="form-check ps-0">
+                                    <input class="form-check-input mt-1 ms-0 me-1" type="checkbox" name="check_example" id="check_example">
+                                    <label class="form-check-label" for="check_example">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <a href="#">Forgot Password?</a>
+                            </div>
+                            <div class="login-btn">
+                                <p (click)="onSignIn()" class="btn btn-primary w-full rounded-2 font-bold py-4">
+                                    Sign in
+                                </p>
+                            </div>
+                        </form>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6 mb-md-0 mb-3">
-                            <a href="#" class="btn btn-neutral w-full">
-                                <span class="icon icon-sm pe-2">
-                                    <img src="/assets/icons/facebook-logo.svg" alt="Facebook logo">
-                                </span>
-                                Facebook
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="#" class="btn btn-neutral w-full">
-                                <span class="icon icon-sm pe-2">
-                                    <img src="/assets/icons/google-logo.svg" alt="google logo">
-                                </span>
-                                Google
-                            </a>
-                        </div>
-                    </div>
-                    <div class="my-6">
-                        <small>Don't have an account?</small>
-                        <a href="#" class="text-primary ps-1 font-semibold">Sign up</a>
+                    <div class="signup-container mt-12 text-center">
+                        <span class="text-black">Don't have an account?&nbsp;</span>
+                        <a href="#" class="font-semibold">Register</a>
                     </div>
                 </div>
             </div>
