@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',
 };
