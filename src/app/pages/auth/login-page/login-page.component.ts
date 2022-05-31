@@ -18,7 +18,7 @@ export class LoginPageComponent implements OnInit {
   carouselSlide = 1;
 
   constructor(
-      private router: Router, 
+    private router: Router,
       private authService: AuthService,
       private jwtService: JwtService,
       private userService: UserService,

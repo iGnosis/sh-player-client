@@ -1,4 +1,7 @@
 export const environment = {
   production: true,
-  servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',
+  name: 'prod',
+  gqlEndpoint: 'https://api.main.pointmotioncontrol.com/v1/graphql',
+  servicesEndpoint: 'https://services.main.pointmotioncontrol.com',
+  activityEndpoint: 'https://session.main.pointmotioncontrol.com'
 };
