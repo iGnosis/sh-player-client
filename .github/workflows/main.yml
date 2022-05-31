@@ -58,7 +58,7 @@ jobs:
           # Listing files
           ls -la
 
-          npm install -g @angular/cli
+          npm install
           npm run build -- -c "$ENVIRONMENT"
 
       - uses: jakejarvis/s3-sync-action@v0.5.1
