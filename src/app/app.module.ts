@@ -12,13 +12,17 @@ import { HomeComponent } from './pages/app/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { SessionComponent } from './pages/app/session/session.component';
+import { SafePipe } from './pipes/safe/safe.pipe';
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     LoginPageComponent,
     HomeComponent,
-    NavBarComponent
+    NavBarComponent,
+    SessionComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
