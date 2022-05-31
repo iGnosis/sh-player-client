@@ -14,6 +14,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SessionComponent } from './pages/app/session/session.component';
 import { SafePipe } from './pipes/safe/safe.pipe';
+import { StoreModule } from '@ngrx/store';
+import { homeReducer } from './store/reducers/home.reducer';
+import { PrivateGuard } from './guards/private-guard';
+import { PublicGuard } from './guards/public-guard';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,9 +35,15 @@ import { SafePipe } from './pipes/safe/safe.pipe';
     MatIconModule,
     CarouselModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot({
+      home: homeReducer
+    })
   ],
-  providers: [],
+  providers: [
+    PrivateGuard,
+    PublicGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

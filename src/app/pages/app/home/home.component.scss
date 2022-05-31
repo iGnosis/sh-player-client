@@ -1,10 +1,22 @@
 .home-container {
-    background-image: url(/assets/images/start-session-bg.jpg);
     background-size: cover;
-    .btn {
-        color: #000066;
-        font-size: 1.6rem;
-        border: none;
+    .session-btn {
+        &.start {
+            color: #000066;
+            font-size: 1.6rem;
+            border: none;
+        }
+        &.completed {
+            background-color: #00BD3E;
+            color: #FFFFFF;
+            font-size: 1.6rem;
+            border: none;
+        }
+        &.locked {
+            color: #4A5568;
+            font-size: 1.6rem;
+            border: none;
+        }
     }
     .lead {
         font-size:2rem;

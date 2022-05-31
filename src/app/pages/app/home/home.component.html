@@ -1,31 +1,52 @@
-<div class="d-flex flex-column h-screen w-screen overflow-x-hidden">
+<div class="d-flex flex-column h-screen w-screen overflow-x-hidden position-relative">
     <nav-bar></nav-bar>
-    <div class="home-container d-flex align-items-center flex-fill">
-        <div class="container-fluid px-xl-10">
-            <div class="row row-grid align-items-center text-white">
-                <div class="col-lg-6">
-                    <!-- Title -->
-                    <h1 class="ls-tight font-bolder display-3 mb-5 text-white">
-                        Sit,Stand,Achieve
-                    </h1>
-                    <!-- Text -->
-                    <p class="lead mb-3">
-                        <img src="/assets/icons/joystick.svg" alt="joystick" class="me-8 text-center">Sound Health Exclusive
-                    </p>
-                    <p class="lead mb-3">
-                        <i class="fa fa-clock-o me-8 text-center"></i>30 Total Active Minutes
-                    </p>
-                    <p class="lead mb-3">
-                        <i class="fa fa-calendar-o me-8 text-center"></i>14th February, 2022
-                    </p>
-                    <!-- Buttons -->
-                    <div class="mt-12 mx-n2">
-                        <button (click)="startNewSession()" class="btn btn-lg btn-white font-bolder mx-2 px-lg-32 px-xl-56 text-nowrap rounded-2">
-                            <i class="fa fa-play me-5 text-center"></i>Start Session
-                        </button>
+    <div *ngFor="let item of dummySessions; let i = index" >
+            <div 
+                class="home-container d-flex align-items-center flex-fill position-absolute w-full h-full" 
+                [style]="'background-image: url(' + item.bg + ')'"
+                [@slideOut]="i === 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
+                [@slideInOut]="i > 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
+                *ngIf="currentSession === i"
+            >
+                <div class="container-fluid px-xl-10">
+                    <div class="row row-grid align-items-center text-white">
+                        <div class="col-lg-6">
+                            <!-- Title -->
+                            <h1 class="ls-tight font-bolder display-3 mb-5 text-white">
+                                {{item.title}}
+                            </h1>
+                            <!-- Text -->
+                            <p class="lead mb-3">
+                                <img src="/assets/icons/joystick.svg" alt="joystick" class="me-8 text-center">Sound Health Exclusive
+                            </p>
+                            <p class="lead mb-3">
+                                <i class="fa fa-clock-o me-8 text-center"></i>30 Total Active Minutes
+                            </p>
+                            <p class="lead mb-3">
+                                <i class="fa fa-calendar-o me-8 text-center"></i>14th February, 2022
+                            </p>
+                            <p *ngIf="item.status === 1" class="lead mb-3">
+                                <img src="/assets/icons/clock.svg" alt="clock" class="me-8 text-center">{{9}} Minutes Remaining
+                            </p>
+                            <!-- Buttons -->
+                            <div class="mt-12 mx-n2">
+                                <!-- (click)="nextSessionState()" -->
+                                <button 
+                                    [disabled]="item.status === 3" 
+                                    (click)="startNewSession()"
+                                    class="session-btn btn btn-lg btn-white font-bolder mx-2 px-lg-32 px-xl-56 text-nowrap rounded-2"
+                                    [ngClass]="{'start': item.status === 0 || item.status === 1, 'completed': item.status === 2, 'locked': item.status === 3}"
+                                >
+                                    <i class="fa me-5 text-center" [ngClass]="{'fa-play': item.status === 0 || item.status === 1, 'fa-check': item.status === 2, 'fa-lock': item.status === 3}"></i>{{
+                                        item.status === 1 ? 'Continue Session' :
+                                        item.status === 2 ? 'Completed' :
+                                        'Start Session'
+                                    }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>

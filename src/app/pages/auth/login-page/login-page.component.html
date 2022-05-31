@@ -5,9 +5,9 @@
             <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
             <!-- Carousel -->
             <div class="carousel-images">
-                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto"></div>
-                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-2 mx-auto"></div>
-                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-3 mx-auto"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto" [ngClass]="'slide'+carouselSlide"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-2 mx-auto" [ngClass]="'slide'+carouselSlide"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-3 mx-auto" [ngClass]="'slide'+carouselSlide"></div>
                 <div class="position-absolute top-1/2 start-1/2 translate-middle img-bg-overlay rounded-4">
                     <img class="w-full h-full" *ngIf="carouselSlide===1" src="/assets/images/carousel-img-1.png" alt="carousel thumbnail">
                     <img class="w-full h-full" *ngIf="carouselSlide===2" src="/assets/images/carousel-img-2.png" alt="carousel thumbnail">
@@ -17,8 +17,8 @@
                     {{carouselSlide === 1 ? 
                         'Take control of your life through the power of music and movement.' : 
                     carouselSlide === 2 ? 
-                        'Track relevant statistics and share your progress with your friends and family.' 
-                    :   'Stay physically and mentally sharp with our curated list of activities everyday.'}}
+                        'Stay physically and mentally sharp with our curated list of activities everyday.' 
+                    :   'Track relevant statistics and share your progress with your friends and family.'}}
                 </p>
                 <div class="indicators position-absolute bottom-4 bottom-xxl-16 start-1/2 translate-middle row w-3/5 gap-5">
                     <div (click)="updateCarouselSlide(1)" [class.active]="carouselSlide === 1" class="rounded col h-2"></div>
