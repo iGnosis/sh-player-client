@@ -8,11 +8,11 @@ import { GraphqlService } from "src/app/services/graphql/graphql.service";
 export class CareplanService {
   constructor(private graphqlService: GraphqlService) {}
 
-  async getActiveCareplans(patientId: string) {
+  async getActiveCareplans(patientId?: string) {
     const activeCareplans = await this.graphqlService.client.request(
-      GqlConstants.GET_ACTIVE_PLANS,
-      { patient: patientId }
+      GqlConstants.GET_ACTIVE_PLANS
     );
+    console.log("active careplans", activeCareplans);
     return activeCareplans;
   }
 }

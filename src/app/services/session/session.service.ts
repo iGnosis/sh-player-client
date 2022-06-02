@@ -8,11 +8,8 @@ import { GraphqlService } from "../graphql/graphql.service";
 export class SessionService {
   constructor(private graphqlService: GraphqlService) {}
 
-  async createNewSession(
-    userId: string,
-    careplanId: string
-  ): Promise<string | undefined> {
-    const session = await this.new(userId, careplanId);
+  async createNewSession(careplanId: string): Promise<string | undefined> {
+    const session = await this.new(careplanId);
     if (session && session.insert_session_one) {
       const sessionId = session.insert_session_one.id;
       return sessionId;
@@ -20,9 +17,8 @@ export class SessionService {
     return;
   }
 
-  new(patient: string, careplan: string) {
+  new(careplan: string) {
     return this.graphqlService.client.request(GqlConstants.CREATE_SESSION, {
-      patient,
       careplan,
     });
   }
