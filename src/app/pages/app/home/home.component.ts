@@ -85,4 +85,9 @@ export class HomeComponent implements OnInit {
       this.router.navigate(["/app/session/", this.sessionId]);
     }
   }
+
+  async loginMusic() {
+    const sound = new Audio("assets/sounds/Sound Health Soundscape_LogIn.mp3");
+    sound.play();
+  }
 }
