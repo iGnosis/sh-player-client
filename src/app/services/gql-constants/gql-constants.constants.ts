@@ -49,4 +49,28 @@ export const GqlConstants = {
       }
     }
   `,
+  GET_MONTHLY_GOALS: `
+  query MonthlyGoals($month: Int = 0, $year: Int = 0) {
+    patientMonthlyGoals(month: $month, year: $year) {
+      data {
+        date
+        totalSessionDurationInMin
+      }
+    }
+  }
+  `,
+  GET_DAILY_GOALS: `
+  query DailyGoals($date: String = "") {
+    patientDailyGoals(date: $date) {
+      dailyMinutesCompleted
+    }
+  }
+  `,
+  GET_STREAK: `
+  query GetStreak {
+    patientSessionStreak {
+      streak
+    }
+  }
+  `,
 };

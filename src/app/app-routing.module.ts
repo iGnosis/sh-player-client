@@ -5,6 +5,7 @@ import { HomeComponent } from './pages/app/home/home.component';
 import { PublicGuard } from './guards/public-guard';
 import { PrivateGuard } from './guards/private-guard';
 import { SessionComponent } from "./pages/app/session/session.component";
+import { GoalsComponent } from './pages/app/goals/goals.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'public/login', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   {
     path: 'app', canActivateChild: [PrivateGuard], children: [
       { path: 'home', component: HomeComponent, },
+      { path: 'goals', component: GoalsComponent, },
       { path: "session/:id", component: SessionComponent },
     ]
   },

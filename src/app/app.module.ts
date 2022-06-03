@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
 import { HomeComponent } from './pages/app/home/home.component';
@@ -18,6 +20,7 @@ import { StoreModule } from '@ngrx/store';
 import { homeReducer } from './store/reducers/home.reducer';
 import { PrivateGuard } from './guards/private-guard';
 import { PublicGuard } from './guards/public-guard';
+import { GoalsComponent } from './pages/app/goals/goals.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +29,8 @@ import { PublicGuard } from './guards/public-guard';
     HomeComponent,
     NavBarComponent,
     SessionComponent,
-    SafePipe
+    SafePipe,
+    GoalsComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +40,8 @@ import { PublicGuard } from './guards/public-guard';
     CarouselModule,
     HttpClientModule,
     FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     StoreModule.forRoot({
       home: homeReducer
     })

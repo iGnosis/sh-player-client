@@ -1,0 +1,129 @@
+<div class="d-flex flex-column h-screen w-screen overflow-x-hidden position-relative">
+    <nav-bar></nav-bar>
+    <div class="flex-fill overflow-hidden p-12">
+        <div class="row h-full">
+            <div class="col-8 h-full border-end-2">
+                <div class="row gy-14 gx-8 h-full">
+                    <div class="col-9 px-5">
+                        <div class="name-container h-full d-flex flex-column justify-content-center">
+                            <p class="h2">Hi Patrick,</p>
+                            <p class="display-4 font-bolder w-2/3">Become the best version of yourself.</p>
+                        </div>
+                    </div>
+                    <div class="col-3 ps-6 pe-14 d-flex flex-column justify-content-end">
+                        <button class="btn btn-primary font-bold rounded-2 mb-6 border-none">Share&nbsp;<img src="/assets/icons/share.svg" alt="share"></button>
+                        <button class="view-past-btn btn btn-light rounded-2 font-bold mb-4 text-nowrap">View past sessions&nbsp;<img src="/assets/icons/arrow-right.svg" alt="arrow right"></button>
+                    </div>
+                    <div class="col-9">
+                        <div class="monthly-goals-progress w-full h-full rounded-6 pe-12 ps-10 py-5">
+                            <h1 class="text-white display-6">Monthly Goals</h1>
+                            <div class="w-full position-relative mt-5">
+                                <div class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center text-white" [style.left]="monthlyCompletionPercent + '%'">
+                                    <p class="font-bold text-nowrap">You are here</p>
+                                    <i class="fa fa-caret-down text-lg"></i>
+                                </div>
+                                <div class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-white">
+                                    <p class="font-bold text-nowrap">Monthly Goal</p>
+                                    <i class="fa fa-caret-down text-lg"></i>
+                                </div>
+                                <div class="progress h-5 w-full bg-transparent top-12 position-relative"></div>
+                                <div class="position-absolute top-18 text-white d-flex justify-content-between align-items-center w-full pt-2 font-bold text-lg">
+                                    <p *ngFor="let val of monthRange" class="position-relative">{{val}}</p>
+                                    <div class="position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
+                                        <img *ngFor="let val of monthRange; let i=index" [style.display]="i===0 && 'none'" src="/assets/icons/scale-subdivision.svg" alt="scale">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center text-white font-bold mt-24 pt-3 text-lg">Day</p>
+                        </div>
+                    </div>
+                    <div class="col-3 ps-6 pe-14 d-flex justify-content-center align-items-center">
+                        <div class="w-full d-flex h-full">
+                            <div class="monthly-goals-card p-3 rounded-3 h-full w-full">
+                                <p class=" w-full rounded-3 text-white h1 ps-3 pe-5 p-2 py-4 font-bolder">Monthly Goals</p>
+                                <div class="card-info ms-2">
+                                    <p class="mt-3 text-sm">Monthly Completion</p>
+                                    <p class="mt-1 font-bold text-black">{{monthlyCompletion}} days</p>
+                                    <p class="mt-3 text-sm">Monthly Goal</p>
+                                    <p class="mt-1 font-bold text-black">{{monthlyGoal}} days</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="daily-goals-progress w-full h-full rounded-6 pe-12 ps-10 py-5">
+                            <h1 class="text-black display-6">Daily Goals</h1>
+                            <div class="w-full position-relative mt-5">
+                                <div class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center text-black" [style.left]="dailyCompletionPercent + '%'">
+                                    <p class="font-bold text-nowrap">You are here</p>
+                                    <i class="fa fa-caret-down text-lg"></i>
+                                </div>
+                                <div class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-black">
+                                    <p class="font-bold text-nowrap">Daily Goal</p>
+                                    <i class="fa fa-caret-down text-lg"></i>
+                                </div>
+                                <div class="daily-progress h-5 w-full bg-transparent top-10 position-relative"></div>
+                                <div class="position-absolute top-18 text-black d-flex justify-content-between align-items-center w-full pt-2 font-bold text-lg">
+                                    <p *ngFor="let val of monthRange">{{val}}</p>
+                                    <div class="position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
+                                        <img *ngFor="let val of monthRange; let i=index" [style.display]="i===0 && 'none'" src="/assets/icons/scale-subdivision-dark.svg" alt="scale">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center text-black font-bold mt-24 pt-3 text-lg">Minutes</p>
+                        </div>
+                    </div>
+                    <div class="col-3 ps-6 pe-14 d-flex justify-content-center align-items-center">
+                        <div class="w-full d-flex h-full">
+                            <div class="daily-goals-card p-3 rounded-3 h-full w-full">
+                                <p class=" w-full rounded-3 text-black h1 ps-3 pe-20 py-4 font-bolder">Daily Goals</p>
+                                <div class="card-info ms-2">
+                                    <p class="mt-3 text-sm">Daily Completion</p>
+                                    <p class="mt-1 font-bold text-black">{{dailyGoals}} minutes</p>
+                                    <p class="mt-3 text-sm">Daily Goal</p>
+                                    <p class="mt-1 font-bold text-black">{{dailyGoal}} minutes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 ps-8 pe-1">
+                <div class="calendar-component-container w-full h-full rounded-6 p-6">
+                    <div class="d-flex justify-content-between align-items-end border-bottom-2 pb-6">
+                        <img src="/assets/icons/streak-bars.svg" alt="bars">
+                        <div class="text-center text-white">
+                            <p class="font-bold text-xl">Streak</p>
+                            <h1 class="display-4 text-white">{{streak ? streak : 0}}</h1>
+                        </div>
+                        <div class="text-center text-white">
+                            <p class="font-bold text-xl">Level</p>
+                            <h1 class="display-4 text-white">4</h1>
+                        </div>
+                        <img src="/assets/icons/streak-bars.svg" alt="bars" style="transform: scale(-1,1)">
+                    </div>
+                    <div class="pt-6">
+                        <h1 class="text-white display-6 text-center">Monthly Calendar</h1>
+                        <div class="py-6 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="active-color h-6 w-6 rounded-6"></div>
+                                <p class="ps-2 font-bolder text-lg text-white">&nbsp;Active Day</p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="inactive-color h-6 w-6 rounded-6"></div>
+                                <p class="ps-2 font-bolder text-lg text-white">&nbsp;Inactive Day</p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="current-color h-6 w-6 rounded-6"></div>
+                                <p class="ps-2 font-bolder text-lg text-white">&nbsp;Current Day</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white w-full rounded-5">
+                        <mat-calendar class="stats-calendar px-5 py-2" [headerComponent]="exampleHeader"></mat-calendar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
