@@ -18,19 +18,19 @@
                         <div class="monthly-goals-progress position-relative w-full h-full rounded-6 px-10 py-4 pe-xxl-12 ps-xxl-10 py-xxl-5">
                             <h1 class="text-white display-6">Monthly Goals</h1>
                             <div class="w-full position-relative mt-1 mt-xxl-5">
-                                <div class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center text-white" [style.left]="monthlyCompletionPercent + '%'">
+                                <div class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center" [style.left]="monthlyCompletionPercent + '%'">
                                     <p class="font-bold text-nowrap">You are here</p>
                                     <i class="fa fa-caret-down text-lg"></i>
                                 </div>
-                                <div class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-white">
-                                    <p class="font-bold text-nowrap">Monthly Goal</p>
+                                <div class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-white" [style.left]="monthlyGoalPercent + '%'">
+                                    <p class="font-bold text-nowrap">Next Goal</p>
                                     <i class="fa fa-caret-down text-lg"></i>
                                 </div>
                                 <div class="progress h-5 w-full bg-transparent top-12 position-relative"></div>
                                 <div class="position-absolute top-16 text-white d-flex justify-content-between align-items-center w-full pt-2 font-bold text-lg">
                                     <p *ngFor="let val of monthRange" class="position-relative">{{val}}</p>
-                                    <div class="position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
-                                        <img class="d-none d-xxl-block" *ngFor="let val of monthRange; let i=index" [style.display]="i===0 && 'none'" src="/assets/icons/scale-subdivision.svg" alt="scale">
+                                    <div class="subdivisions position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
+                                        <img *ngFor="let val of monthRange; let i=index" [style.display]="i===0 && 'none'" src="/assets/icons/scale-subdivision.svg" alt="scale">
                                     </div>
                                 </div>
                             </div>
@@ -54,19 +54,19 @@
                         <div class="daily-goals-progress position-relative w-full h-full rounded-6 px-10 py-4 pe-xxl-12 ps-xxl-10 py-xxl-5">
                             <h1 class="text-black display-6">Daily Goals</h1>
                             <div class="w-full position-relative mt-1 mt-xxl-5">
-                                <div class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center text-black" [style.left]="dailyCompletionPercent + '%'">
+                                <div class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center" [style.left]="dailyCompletionPercent + '%'">
                                     <p class="font-bold text-nowrap">You are here</p>
                                     <i class="fa fa-caret-down text-lg"></i>
                                 </div>
-                                <div class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-black">
+                                <div class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-black" [style.left]="dailyGoalPercent + '%'">
                                     <p class="font-bold text-nowrap">Daily Goal</p>
                                     <i class="fa fa-caret-down text-lg"></i>
                                 </div>
                                 <div class="daily-progress h-5 w-full bg-transparent top-10 position-relative"></div>
                                 <div class="position-absolute top-16 text-black d-flex justify-content-between align-items-center w-full pt-2 font-bold text-lg">
-                                    <p *ngFor="let val of monthRange">{{val}}</p>
-                                    <div class="position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
-                                        <img class="d-none d-xxl-block" *ngFor="let val of monthRange; let i=index" [style.display]="i===0 && 'none'" src="/assets/icons/scale-subdivision-dark.svg" alt="scale">
+                                    <p *ngFor="let val of dailyRange">{{val}}</p>
+                                    <div class="subdivisions position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
+                                        <img *ngFor="let val of dailyRange; let i=index" [style.display]="i===0 && 'none'" src="/assets/icons/scale-subdivision-dark.svg" alt="scale">
                                     </div>
                                 </div>
                             </div>
