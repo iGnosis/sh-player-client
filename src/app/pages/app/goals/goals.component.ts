@@ -121,12 +121,12 @@ export class GoalsComponent implements OnInit {
   selector: 'example-header',
   template: `
     <div class="example-header w-full d-flex flex-column">
-      <div class="year-container w-full p-3 mb-2 d-flex justify-content-between align-items-center">
+      <div class="year-container w-full p-1 p-xxl-3 mb-2 d-flex justify-content-between align-items-center">
           <i class="fa fa-chevron-left month-year-btn" (click)="previousClicked('year')"></i>
-          <span class="example-header-label d-inline-block h1">{{yearLabel}}</span>
+          <span class="example-header-label d-inline-block h2">{{yearLabel}}</span>
           <i class="fa fa-chevron-right month-year-btn" (click)="nextClicked('year')"></i>
       </div>
-      <div class="month-container w-full p-3 d-flex justify-content-between align-items-center border-top-2">
+      <div class="month-container w-full p-1 p-xxl-3 d-flex justify-content-between align-items-center border-top-2">
         <span class="example-header-label d-inline-block font-bold h3 text-uppercase">{{monthLabel}}</span>
         <div>
           <i class="fa fa-chevron-left month-year-btn me-4" (click)="previousClicked('month')"></i>

@@ -4,58 +4,114 @@
 $monthly_card_bg: #007F6E;
 $daily_card_bg: #B6E5C8;
 $calender_bg: #000033;
-
-.name-container {
-    * {
-        color: $primary_color;
+.goals-container {
+    .name-container {
+        * {
+            color: $primary_color;
+        }
     }
-}
-.btn-primary {
-    background-color: $primary_color;
-}
-.view-past-btn {
-    box-shadow: 0px 2px 4px $daily_card_bg, 0px 0px 2px $daily_card_bg;
-}
-.monthly-goals-progress {
-    background-color: $monthly_card_bg;
-    .current {
-        left: 0%;
-        transform: translateX(-50%);
-        transition: left 0.5s;
+    .btn-primary {
+        background-color: $primary_color;
     }
-    .goal {
-        left: 99%;
-        transform: translateX(-50%);
+    .view-past-btn {
+        box-shadow: 0px 2px 4px $daily_card_bg, 0px 0px 2px $daily_card_bg;
     }
-}
-.daily-goals-progress {
-    @extend .monthly-goals-progress;
-    background-color: $daily_card_bg;
-}
-.monthly-goals-card {
-    box-shadow: 0px 2px 4px $daily_card_bg, 0px 0px 2px $daily_card_bg;
-    > :first-child {
+    .monthly-goals-progress {
         background-color: $monthly_card_bg;
+        .current {
+            left: 0%;
+            transform: translateX(-50%);
+            transition: left 0.5s;
+        }
+        .goal {
+            left: 99%;
+            transform: translateX(-50%);
+        }
     }
-    .card-info {
-        color: #425466;
-    }
-}
-.daily-goals-card {
-    @extend .monthly-goals-card;
-    > :first-child {
+    .daily-goals-progress {
+        @extend .monthly-goals-progress;
         background-color: $daily_card_bg;
     }
-}
-.calendar-component-container {
-    background-color: $calender_bg;
-    .active-color {
-        background-color: $active_day;
+    .monthly-goals-card {
+        box-shadow: 0px 2px 4px $daily_card_bg, 0px 0px 2px $daily_card_bg;
+        > :first-child {
+            background-color: $monthly_card_bg;
+        }
+        .card-info {
+            color: #425466;
+        }
     }
-    .inactive-color {
-        background-color: $inactive_day;
+    .daily-goals-card {
+        @extend .monthly-goals-card;
+        > :first-child {
+            background-color: $daily_card_bg;
+        }
     }
-    .current-color {
-        background-color: $current_day;
+    .calendar-component-container {
+        background-color: $calender_bg;
+        .calendar-stats {
+            p {
+                font-size: 1rem;
+            }
+        }
+        .legend-container {
+            .active-color {
+                background-color: $active_day;
+            }
+            .inactive-color {
+                background-color: $inactive_day;
+            }
+            .current-color {
+                background-color: $current_day;
+            }
+            p {
+                font-size: 1.25rem;
+            }
+        }
+    }
+    @media screen and (max-width: 1700px) {
+        .h2 {
+            font-size: 1.3rem;
+        }
+        .display-4 {
+            font-size: 3rem;
+        }
+        .display-6, .h1 {
+            font-size: 1.6rem;
+        }
+        .view-past-btn {
+            font-size: 0.8rem;
+        }
+        .monthly-goals-card {
+            .h1 {
+                font-size: 1.4rem;
+            }
+        }
+        .calendar-component-container {
+            .calendar-stats {
+                p {
+                    font-size: 1rem;
+                }
+                .display-4 {
+                    font-size: 2rem;
+                }
+            }
+            .legend-container {
+                p {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 1350px) {
+        .display-4 {
+            font-size: 2rem;
+        }
+        .display-6, .h1 {
+            font-size: 1.2rem;
+        }
+        .view-past-btn {
+            font-size: 0.7rem;
+        }
     }
 }
