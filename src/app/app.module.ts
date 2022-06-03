@@ -21,6 +21,7 @@ import { homeReducer } from './store/reducers/home.reducer';
 import { PrivateGuard } from './guards/private-guard';
 import { PublicGuard } from './guards/public-guard';
 import { GoalsComponent } from './pages/app/goals/goals.component';
+import { SignupComponent } from './pages/auth/signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { GoalsComponent } from './pages/app/goals/goals.component';
     SessionComponent,
     SafePipe,
     GoalsComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

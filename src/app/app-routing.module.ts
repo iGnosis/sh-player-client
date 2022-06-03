@@ -6,12 +6,14 @@ import { PublicGuard } from './guards/public-guard';
 import { PrivateGuard } from './guards/private-guard';
 import { SessionComponent } from "./pages/app/session/session.component";
 import { GoalsComponent } from './pages/app/goals/goals.component';
+import { SignupComponent } from './pages/auth/signup/signup.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'public/login', pathMatch: 'full' },
   {
     path: 'public', canActivateChild: [PublicGuard], children: [
       { path: 'login', component: LoginPageComponent, },
+      { path: 'signup', component: SignupComponent, },
     ]
   },
   {
