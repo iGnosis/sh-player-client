@@ -82,6 +82,13 @@ $calender_bg: #000033;
         .view-past-btn {
             font-size: 0.8rem;
         }
+        .monthly-goals-progress {
+            .current, .goal {
+                > p {
+                    font-size: 0.76rem;
+                }
+            }
+        }
         .monthly-goals-card {
             .h1 {
                 font-size: 1.4rem;
