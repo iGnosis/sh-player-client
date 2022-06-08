@@ -13,7 +13,7 @@ $upcoming_day: #E2E8F0;
         display: none;
     }
     .mat-calendar-body-cell-content {
-        border-radius: 0.8rem;
+        border-radius: 50%;
         font-weight: 600;
         font-size: 1.2rem;
         background-color: $upcoming_day;
