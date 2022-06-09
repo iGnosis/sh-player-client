@@ -1,4 +1,4 @@
-<div class="login-container">
+<div class="login-container" *ngIf="signupStep < 5">
     <img src="/assets/icons/chat-bubble.svg" alt="chat bubble" class="chat-bubble position-fixed cursor-pointer end-4 bottom-4">
     <div class="d-flex justify-content-center" *ngIf="signupStep === 0">
         <div class="carousel-container overflow-x-hidden col-lg-6 position-relative">
@@ -32,7 +32,7 @@
                 <div class="col-lg-12 col-md-9 col-xl-10 col-xxl-8 mx-auto d-flex flex-column justify-content-center align-items-center">
                     <img class="pb-16 w-48" src="/assets/icons/sound_health_logo.png" alt="sound health">
                     <h1 class="pb-12 display-6 text-nowrap">Welcome to Point Motion.</h1>
-                    <div class="login-btn w-full text-center" (click)="nextStep()">
+                    <div class="login-btn w-full text-center" (click)="nextSignupStep()">
                         <p class="btn btn-primary w-4/5 rounded-2 font-bold py-4">
                             Get Started
                         </p>
@@ -59,10 +59,34 @@
                 }}</h2>
                 <input *ngIf="signupStep === 1" placeholder="Email" type="email" name="email" [(ngModel)]="email" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
                 <div *ngIf="signupStep === 2" class="password-container position-relative w-full">
-                    <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" name="password" [(ngModel)]="password" minlength="8" class="w-full h-12 rounded mb-10 text-md px-3" id="password" autocomplete="current-password">
+                    <input 
+                        [ngClass]="{'border-danger': checkPasswordStrength(password) === 'Weak', 'border-warning': checkPasswordStrength(password) === 'Fair', 'border-success': checkPasswordStrength(password) === 'Good' || checkPasswordStrength(password) === 'Strong'}" 
+                        [type]="showPassword ? 'text' : 'password'" placeholder="Password" name="password" [(ngModel)]="password" minlength="8" class="border form-control shadow-none w-full h-12 rounded mb-10 text-md px-3" id="password" autocomplete="current-password">
                     <div (click)="toggleShowPassword()" class="eye-icon position-absolute end-4 top-2 cursor-pointer">
                         <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
                     </div>
+                </div>
+                <!-- Password Strength Progress -->
+                <div *ngIf="signupStep === 2 && password" class="d-flex w-full flex-column">
+                    <div class="d-flex align-items-center">
+                        <div class="progress w-1/2 h-3">
+                            <div 
+                                class="progress-bar rounded" 
+                                [ngClass]="{'bg-danger': checkPasswordStrength(password) === 'Weak', 'bg-warning': checkPasswordStrength(password) === 'Fair', 'bg-success': checkPasswordStrength(password) === 'Good' || checkPasswordStrength(password) === 'Strong'}" 
+                                role="progressbar" 
+                                [ngStyle]="{'width' : checkPasswordStrength(password) === 'Weak' ? '25%' : checkPasswordStrength(password) === 'Fair' ? '50%' : checkPasswordStrength(password) === 'Good' ? '75%' : '100%'}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100"
+                            ></div>
+                        </div>
+                        <p 
+                            class="password-strength text-sm ps-2"
+                            [ngClass]="{'text-danger': checkPasswordStrength(password) === 'Weak', 'text-warning': checkPasswordStrength(password) === 'Fair', 'text-success': checkPasswordStrength(password) === 'Good' || checkPasswordStrength(password) === 'Strong'}" 
+                        >{{ checkPasswordStrength(password) }}</p>
+                    </div>
+                    <p class="text-sm mb-5">
+                        Use a minimum of 6 characters (case sensitive) with atleast 1 number or special character
+                    </p>
                 </div>
                 <div *ngIf="signupStep === 4" class="all-set">
                     <h2 class="mb-12 text-center">You’re all set.</h2>
@@ -70,17 +94,71 @@
                     <h3 class="mb-10 text-center mx-10">Understanding your interests will help us create a better experience for you.</h3>
                 </div>
                 <input *ngIf="signupStep === 3" placeholder="Username" type="text" name="username" [(ngModel)]="username" id="username" class="w-full h-12 rounded mb-10 text-md px-3">
-                <div class="w-full text-center" (click)="nextStep()">
-                    <p [ngClass]="{'w-4/5': signupStep === 4, 'w-full': signupStep < 4 }" class="continue-btn btn btn-primary rounded-2 font-bold py-4">
+                <button [ngClass]="{'shadow-none': signupStep !== 2 }" class="btn w-full text-center bg-transparent p-0" (click)="nextSignupStep()" [disabled]="signupStep === 2 && checkPasswordStrength(password) === 'Weak'">
+                    <p [ngClass]="{'w-4/5': signupStep === 4, 'w-full': signupStep < 4 }" class="continue-btn rounded-2 font-bold btn btn-primary">
                         {{signupStep === 3 ? 'Complete your sign up' : 'Continue' }}
                     </p>
-                </div>
+                </button>
                 <div class="completion-confirmation pt-6" *ngIf="signupStep === 3">
                     <p class="font-bold mt-5 text-center px-2">By completing the sign up, you agree to our Sound Health’s <a href="#">Terms and Conditions of Use.</a></p>
                     <p class="font-bold mt-5 text-center px-2">To learn more about how Sound Health collects, uses, shares and protects your personal data, please read Sound Health’s <a href="#">Privacy Policy.</a></p>
                 </div>
-                <p class="step-heading text-center text-md mt-12" *ngIf="signupStep === 4" (click)="nextStep()">Skip for now</p>
+                <p class="step-heading text-center text-md mt-12 cursor-pointer" *ngIf="signupStep === 4" (click)="goToHome()">Skip for now</p>
             </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="signupStep === 5" class="interest-container">
+    <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_light.svg" alt="sound health">
+    <div class="confirm-email-container w-screen h-full min-h-screen position-relative">
+        <img class="signup-bg position-absolute w-full" src="/assets/images/interest_bg.png" alt="signup background">
+        <div
+            class="container d-flex flex-column justify-content-center align-items-center text-white text-center position-relative"
+        >
+            <h3 class="col-12 text-center text-white pt-20">Step {{interestStep}} of 3</h3>
+            <h1 class="col-12 text-center text-white pt-5 pb-4">{{
+                interestStep === 1 ? 'Select 3 or more styles of music you like.' : 
+                interestStep === 2 ? 'Select 3 or more activities you enjoy the most.' : 
+                'When would you like to be reminded?'
+            }}</h1>
+            <p *ngIf="interestStep===3">Reminders help develop a stronger routine and achieve consistency.</p>
+            <div *ngIf="interestStep === 1" class="pt-12 row col-12 col-xl-8 gx-md-12 gy-md-16">
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer" *ngFor="let interest of interests; let i=index">
+                    <div (click)="selectInterest(i)" [class.selected]="interest.selected" class="position-relative rounded-2">
+                        <img class="active position-absolute top-1/2 start-1/2 translate-middle" src="/assets/icons/active.svg" alt="active">
+                        <img class="w-full h-full rounded-3" [src]="interest.img" alt="classical music">
+                    </div>
+                    <p class="text-lg font-bold pt-2">{{interest.title}}</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer">
+                    <div class="position-relative">
+                        <img class="w-full h-full" src="/assets/images/more_for_you.png" alt="more for you">
+                    </div>
+                    <p class="text-lg font-bold pt-2">Explore All</p>
+                </div>
+            </div>
+            <div *ngIf="interestStep === 2" class="pt-12 row col-12 col-xl-8 gx-md-12 gy-md-16">
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer" *ngFor="let activity of activities; let i=index">
+                    <div (click)="selectActivity(i)" [class.selected]="activity.selected" class="position-relative rounded-2">
+                        <img class="active position-absolute top-1/2 start-1/2 translate-middle" src="/assets/icons/active.svg" alt="active">
+                        <img class="w-full h-full rounded-3" [src]="activity.img" alt="classical music">
+                    </div>
+                    <p class="text-lg font-bold pt-2">{{activity.title}}</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer">
+                    <div class="position-relative">
+                        <img class="w-full h-full" src="/assets/images/more_for_you.png" alt="more for you">
+                    </div>
+                    <p class="text-lg font-bold pt-2">Explore All</p>
+                </div>
+            </div>
+            <div *ngIf="interestStep === 3" class="w-full d-flex mt-12 align-items-center">
+                <div class="reminder-times row w-full w-lg-2/5 gy-10 mx-auto position-relative">
+                    <input *ngIf="customTime" (keyup.enter)="toggleCustomTime()" [(ngModel)]="selectedTime" type="time" class="position-absolute bottom-0 start-0 w-full h-12 cursor-pointer rounded-2">
+                    <button *ngFor="let time of reminderTimes; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none" [ngClass]="{'bg-light' : (i !== 4 && selectedTime !== time) || (i === 4 && !getCustomTime()), 'bg-success text-white' : selectedTime === time || (i === 4 && getCustomTime()) }">{{ i < 4 ? time : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
+                </div>
+            </div>
+            <button *ngIf="showNext()" (click)="nextInterestStep()" class="btn btn-light m-auto w-full w-lg-2/5 font-bold mt-10 mb-5">{{interestStep < 3 ? 'Next' : 'Finish'}}</button>
         </div>
     </div>
 </div>
