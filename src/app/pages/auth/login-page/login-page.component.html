@@ -37,6 +37,9 @@
                                 Welcome back!
                             </h1>
                         </div>
+                        <div class="errors" *ngIf="errors.length > 0">
+                            <div *ngFor="let err of errors" role="alert" class="alert bg-danger text-white m-5 text-sm">{{err}}</div>
+                        </div>
                         <form>
                             <div class="mb-8">
                                 <label class="form-label" for="email">E-mail or phone number</label>

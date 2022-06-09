@@ -10,7 +10,7 @@ import { UserService } from "src/app/services/user.service";
   styleUrls: ["./login-page.component.scss"],
 })
 export class LoginPageComponent implements OnInit {
-  errors = [];
+  errors: string[] = [];
   email = "";
   password = "";
   showPassword = false;

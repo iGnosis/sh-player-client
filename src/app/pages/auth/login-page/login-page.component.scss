@@ -87,6 +87,9 @@
         }
     }
     .login-card-container {
+        .bg-danger {
+            background-color: rgb(235, 0, 0) !important;
+        }
         label {
             color: #425466;
         }
