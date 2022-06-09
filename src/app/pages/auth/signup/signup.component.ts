@@ -19,7 +19,7 @@ export class SignupComponent implements OnInit {
   username: string = "";
   showPassword: boolean = false;
   carouselSlide: number = 1;
-  signupStep: number = 1;
+  signupStep: number = 0;
   interestStep: number = 1;
   interests: InterestsDTO[] = [
     { title: 'Classical', img: '/assets/images/interests/interest-0.png', selected: false },
