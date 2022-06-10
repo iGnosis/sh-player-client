@@ -3,6 +3,9 @@
 .login-container {
     font-size: 10px;
     font-family: Inter;
+    .bg-danger {
+        background-color: rgb(235, 0, 0) !important;
+    }
     .chat-bubble {
         z-index: 2;
     }

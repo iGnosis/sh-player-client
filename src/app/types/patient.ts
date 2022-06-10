@@ -6,3 +6,9 @@ export interface Patient {
     phoneCountryCode?: string;
     phoneNumber?: string;
 }
+export interface PatientSignup {
+    id: string;
+    nickname: string;
+    provider: string;
+    activeCareplan: string;
+}

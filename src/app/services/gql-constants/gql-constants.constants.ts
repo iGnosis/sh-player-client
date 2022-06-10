@@ -73,4 +73,31 @@ export const GqlConstants = {
     }
   }
   `,
+  SIGN_UP_PATIENT: `
+  mutation SignUpPatient($code: String = "", $email: String = "", $nickname: String = "", $password: String = "") {
+    signUpPatient(code: $code, email: $email, nickname: $nickname, password: $password) {
+      token
+      patient {
+        id
+        nickname
+        provider
+        activeCareplan
+      }
+    }
+  }
+  `,
+  SET_FAV_GENRE: `
+  mutation SetFavGenre($id: uuid!, $genres: jsonb) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {preferredGenres: $genres}) {
+      id
+    }
+  }
+  `,
+  SET_FAV_ACTIVITIES: `
+  mutation SetFavActivities($id: uuid!, $activities: jsonb) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {preferredActivities: $activities}) {
+      id
+    }
+  }
+  `,
 };
