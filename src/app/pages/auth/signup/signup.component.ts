@@ -1,5 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { JwtService } from 'src/app/services/jwt.service';
+import { UserService } from 'src/app/services/user.service';
 
 interface InterestsDTO {
   title: string;
@@ -14,9 +17,10 @@ interface InterestsDTO {
 })
 export class SignupComponent implements OnInit {
   errors = [];
+  code: string = "";
   email: string = "";
   password: string = "";
-  username: string = "";
+  nickname: string = "";
   showPassword: boolean = false;
   carouselSlide: number = 1;
   signupStep: number = 0;
@@ -57,9 +61,17 @@ export class SignupComponent implements OnInit {
   customTime: boolean = false;
   selectedTime!: string;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute,
+    private jwtService: JwtService,
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    this.code = this.route.snapshot.queryParamMap.get('code') || "";
+    this.email = this.route.snapshot.queryParamMap.get('email') || "";
     setInterval(() => {
       if (this.carouselSlide === 3) this.carouselSlide = 1;
       else this.carouselSlide++;
@@ -69,14 +81,14 @@ export class SignupComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
   checkPasswordStrength(password: string) {
-    if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{16,}$/g.test(password)) {
-      return "Strong"; // atleast 16 characters with atleast 1 number, character & special character
+    if(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*_0-9])[A-Za-z\d@$!%*#?&]{16,}$/g.test(password)) {
+      return "Strong"; // atleast 16 characters
     }
-    else if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,}$/g.test(password)) {
+    else if(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*_0-9])[A-Za-z\d@$!%*#?&]{10,}$/g.test(password)) {
       return "Good"; // atleast 10 characters
     }
-    else if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/g.test(password)) {
-      return "Fair"; // atleast 6 characters
+    else if(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*_0-9])[A-Za-z\d@$!%*#?&]{6,}$/g.test(password)) {
+      return "Fair"; // atleast 6 characters with atleast 1 number or special character
     } 
     else {
       return "Weak";
@@ -87,15 +99,65 @@ export class SignupComponent implements OnInit {
     this.carouselSlide = slide;
   }
 
-  nextSignupStep() {
-    this.signupStep++;
+  async nextSignupStep() {
+    this.errors = [];
+    if(this.signupStep === 3) {
+        const res = await this.authService.signup({ 
+            email: this.email, 
+            password: this.password, 
+            nickname: this.nickname, 
+            code: this.code! 
+          });
+        if(res.response && res.response.errors) {
+          this.errors = res.response.errors.map((err: any) => err.message)
+        }else {
+          this.userService.setPatient(res.signUpPatient.patient);
+          this.jwtService.setToken(res.signUpPatient.token);
+          this.signupStep++;
+        }
+
+    }
+    else {
+      this.signupStep++;
+    }
   }
   goToHome() {
     this.router.navigate(['/app/home']);
   }
 
-  nextInterestStep() {
+  async nextInterestStep() {
+    this.errors = [];
     if(this.interestStep === 3) this.goToHome();
+    else if(this.interestStep === 1) {
+      let genres: any = {};
+      this.interests.forEach(item => {
+        if(item.selected) {
+          genres[item.title] = true;
+        }
+      })
+      const res = await this.authService.setPreferredGenres({ genres, id: this.userService.getPatient().id})
+      if(res.response && res.response.errors) {
+        this.errors = res.response.errors.map((err: any) => err.message)
+      }else {
+        this.interestStep++;
+      }
+      return;
+    }
+    else if(this.interestStep === 2) {
+      let activities: any = {};
+      this.activities.forEach(item => {
+        if(item.selected) {
+          activities[item.title] = true;
+        }
+      })
+      const res = await this.authService.setPreferredActivities({ activities, id: this.userService.getPatient().id})
+      if(res.response && res.response.errors) {
+        this.errors = res.response.errors.map((err: any) => err.message)
+      }else {
+        this.interestStep++;
+      }
+      return;
+    }
     this.interestStep++;
   }
   selectInterest(i: number) {

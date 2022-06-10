@@ -1,5 +1,5 @@
 
-  
+
 import { createReducer, on } from "@ngrx/store";
 import { home } from "../actions/home.actions";
 
@@ -10,7 +10,7 @@ const initialState = {
 }
 
 
-const _homeReducer = createReducer(initialState, 
+const _homeReducer = createReducer(initialState,
     on(home.updateSessionState, (state, data: { session: session } ): any => {
         return {
             sessionState: data.session,

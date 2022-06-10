@@ -57,6 +57,9 @@
                     signupStep === 3 ? 'What should we call you?' :
                     ''
                 }}</h2>
+                <div class="errors w-full align-self-start" *ngIf="errors.length > 0">
+                    <div *ngFor="let err of errors" role="alert" class="alert bg-danger text-white my-2 text-sm">{{err}}</div>
+                </div>
                 <input *ngIf="signupStep === 1" placeholder="Email" type="email" name="email" [(ngModel)]="email" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
                 <div *ngIf="signupStep === 2" class="password-container position-relative w-full">
                     <input 
@@ -93,7 +96,7 @@
                     <h2 class="mb-5 text-center">We would like to get to know you more.</h2>
                     <h3 class="mb-10 text-center mx-10">Understanding your interests will help us create a better experience for you.</h3>
                 </div>
-                <input *ngIf="signupStep === 3" placeholder="Username" type="text" name="username" [(ngModel)]="username" id="username" class="w-full h-12 rounded mb-10 text-md px-3">
+                <input *ngIf="signupStep === 3" placeholder="Nick Name" type="text" name="nickname" [(ngModel)]="nickname" id="nickname" class="w-full h-12 rounded mb-10 text-md px-3">
                 <button [ngClass]="{'shadow-none': signupStep !== 2 }" class="btn w-full text-center bg-transparent p-0" (click)="nextSignupStep()" [disabled]="signupStep === 2 && checkPasswordStrength(password) === 'Weak'">
                     <p [ngClass]="{'w-4/5': signupStep === 4, 'w-full': signupStep < 4 }" class="continue-btn rounded-2 font-bold btn btn-primary">
                         {{signupStep === 3 ? 'Complete your sign up' : 'Continue' }}
