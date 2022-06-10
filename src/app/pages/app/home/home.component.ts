@@ -5,6 +5,7 @@ import { SessionService } from "src/app/services/session/session.service";
 import { Patient } from "src/app/types/patient";
 import { session } from "src/app/store/reducers/home.reducer";
 import { trigger, transition, animate, style } from "@angular/animations";
+import { GoalsService } from "src/app/services/goals/goals.service";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -39,6 +40,7 @@ export class HomeComponent implements OnInit {
   user!: Patient;
   careplanId!: string;
   sessionId!: string;
+  dailyGoals!: any;
   session = session.Start;
   currentSession = 0;
   dummySessions = [
@@ -56,12 +58,15 @@ export class HomeComponent implements OnInit {
   constructor(
     private careplanService: CareplanService,
     private sessionService: SessionService,
+    private goalsService: GoalsService,
     private router: Router
   ) {
     this.user = JSON.parse(localStorage.getItem("user") || "{}");
   }
 
-  ngOnInit(): void {}
+  async ngOnInit(): Promise<void> {
+    this.dailyGoals = await this.goalsService.getDailyGoals(new Date().toISOString().split('T')[0]);
+  }
 
   nextSessionState() {
     if (this.dummySessions[this.currentSession].status === session.Completed) {
