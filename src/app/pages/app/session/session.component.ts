@@ -33,7 +33,7 @@ export class SessionComponent implements OnInit {
       console.log(event);
       
       if(event && event.data && event.data.session && event.data.session.id) {
-        this.router.navigate(['/app/home', event.data.session.id])
+        this.router.navigate(['/app/home'])
       }
     }, false);
   }
