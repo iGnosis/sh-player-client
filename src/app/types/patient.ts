@@ -5,4 +5,5 @@ export interface Patient {
     identifier?: string;
     phoneCountryCode?: string;
     phoneNumber?: string;
+    provider: string;
 }

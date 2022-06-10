@@ -18,19 +18,32 @@ export class SessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      // TODO: Bad security practice, need a better way to do it...
-      this.session.nativeElement.contentWindow?.postMessage(
-        {
-          token: window.localStorage.getItem("token"),
-          session: this.sessionId,
-        },
-        "*"
-      );
-    }, 1000);
+    // setTimeout(() => {
+    //   // TODO: Bad security practice, need a better way to do it...
+    //   this.session.nativeElement.contentWindow?.postMessage(
+    //     {
+    //       token: window.localStorage.getItem("token"),
+    //       session: this.sessionId,
+    //     },
+    //     "*"
+    //   );
+    // }, 1000);
 
     window.addEventListener("message", (event) => {
-      console.log(event);
+      
+      if(event && event.data && event.data.type ) {
+        console.log(event);
+        if (event.data.type === 'activity-experience-ready') {
+          this.session.nativeElement.contentWindow?.postMessage(
+            {
+              type: 'token',
+              token: window.localStorage.getItem("token"),
+              session: this.sessionId,
+            },
+            "*"
+          );
+        }
+      }
       
       if(event && event.data && event.data.session && event.data.session.id) {
         this.router.navigate(['/app/home'])
