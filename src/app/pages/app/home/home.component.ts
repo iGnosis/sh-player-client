@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
   currentSession = 0;
   dummySessions = [
     {
-      title: "Sit,Stand,Achieve",
+      title: "Sit. Stand. Achieve",
       bg: "/assets/images/start-session-bg.jpg",
       status: session.Start,
     },
