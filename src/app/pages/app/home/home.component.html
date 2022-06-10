@@ -1,8 +1,8 @@
 <div class="d-flex flex-column h-screen w-screen overflow-x-hidden position-relative">
     <nav-bar></nav-bar>
     <div *ngFor="let item of dummySessions; let i = index" >
-            <div 
-                class="home-container d-flex align-items-center flex-fill position-absolute w-full h-full" 
+            <div
+                class="home-container d-flex align-items-center flex-fill position-absolute w-full h-full"
                 [style]="'background-image: url(' + item.bg + ')'"
                 [@slideOut]="i === 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
                 [@slideInOut]="i > 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
@@ -25,22 +25,23 @@
                             <p class="lead mb-3">
                                 <i class="fa fa-calendar-o me-8 text-center"></i>14th February, 2022
                             </p>
-                            <p *ngIf="item.status === 1" class="lead mb-3">
-                                <img src="/assets/icons/clock.svg" alt="clock" class="me-8 text-center">{{9}} Minutes Remaining
+                            <p *ngIf="dailyGoals<30" class="lead mb-3">
+                                <img src="/assets/icons/clock.svg" alt="clock" class="me-8 text-center">{{30 - dailyGoals | number: '1.0-0'}} Minutes Remaining
                             </p>
                             <!-- Buttons -->
                             <div class="mt-12 mx-n2">
                                 <!-- (click)="nextSessionState()" -->
-                                <button 
-                                    [disabled]="item.status === 3" 
+                                <button
+                                    [disabled]="dailyGoals>30 || dailyGoals === 30"
                                     (click)="startNewSession()"
                                     class="session-btn btn btn-lg btn-white font-bolder mx-2 px-lg-32 px-xl-56 text-nowrap rounded-2"
-                                    [ngClass]="{'start': item.status === 0 || item.status === 1, 'completed': item.status === 2, 'locked': item.status === 3}"
+                                    [ngClass]="{'start': dailyGoals < 30, 'completed' : dailyGoals > 30 || dailyGoals === 30, 'locked' : item.status===3}"
                                 >
-                                    <i class="fa me-5 text-center" [ngClass]="{'fa-play': item.status === 0 || item.status === 1, 'fa-check': item.status === 2, 'fa-lock': item.status === 3}"></i>{{
-                                        item.status === 1 ? 'Continue Session' :
-                                        item.status === 2 ? 'Completed' :
-                                        'Start Session'
+                                    <i class="fa me-5 text-center"
+                                        [ngClass]="{'fa-play': dailyGoals < 30, 'fa-check': dailyGoals > 30 || dailyGoals === 30, 'fa-lock': item.status === 3}"></i>{{
+                                        dailyGoals === 0 ? 'Start Session':
+                                        dailyGoals < 30 ? 'Continue Session':
+                                        'Completed Session'
                                     }}
                                 </button>
                             </div>
