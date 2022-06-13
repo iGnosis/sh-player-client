@@ -57,10 +57,11 @@
                     signupStep === 3 ? 'What should we call you?' :
                     ''
                 }}</h2>
-                <div class="errors w-full align-self-start" *ngIf="errors.length > 0">
+                <div class="errors w-full align-self-start" *ngIf="errors.length > 0 || signupStep === 1">
                     <div *ngFor="let err of errors" role="alert" class="alert bg-danger text-white my-2 text-sm">{{err}}</div>
+                    <div *ngIf="!validateEmail()" role="alert" class="alert bg-danger text-white my-2 text-sm">Invalid Email Address</div>
                 </div>
-                <input *ngIf="signupStep === 1" placeholder="Email" type="email" name="email" [(ngModel)]="email" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
+                <input *ngIf="signupStep === 1" placeholder="Email" type="email" name="email" [(ngModel)]="email" email="true" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
                 <div *ngIf="signupStep === 2" class="password-container position-relative w-full">
                     <input 
                         [ngClass]="{'border-danger': checkPasswordStrength(password) === 'Weak', 'border-warning': checkPasswordStrength(password) === 'Fair', 'border-success': checkPasswordStrength(password) === 'Good' || checkPasswordStrength(password) === 'Strong'}" 

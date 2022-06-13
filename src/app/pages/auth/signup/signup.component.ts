@@ -78,6 +78,11 @@ export class SignupComponent implements OnInit {
       else this.carouselSlide++;
     }, 4000);
   }
+  validateEmail() {
+    return this.email
+    .toLowerCase()
+    .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+  }
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
