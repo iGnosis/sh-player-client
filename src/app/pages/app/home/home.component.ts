@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { SessionService } from "src/app/services/session/session.service";
@@ -34,9 +34,18 @@ import { GoalsService } from "src/app/services/goals/goals.service";
         ),
       ]),
     ]),
+    trigger("fadeOut", [
+      transition(":leave", [
+        animate(
+          "200ms ease-in",
+          style({ opacity: "0" })
+        ),
+      ]),
+    ]),
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+  shScreen: boolean = true;
   user!: Patient;
   careplanId!: string;
   sessionId!: string;
@@ -66,6 +75,12 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.dailyGoals = await this.goalsService.getDailyGoals(new Date().toISOString().split('T')[0]);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.shScreen = false;
+    }, 4000);
   }
 
   nextSessionState() {
