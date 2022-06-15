@@ -1,7 +1,7 @@
 <div class="login-container" *ngIf="signupStep < 5">
     <img src="/assets/icons/chat-bubble.svg" alt="chat bubble" class="chat-bubble position-fixed cursor-pointer end-4 bottom-4">
     <div class="d-flex justify-content-center" *ngIf="signupStep === 0">
-        <div class="carousel-container overflow-x-hidden col-lg-6 position-relative">
+        <div class="carousel-container overflow-hidden col-lg-6 position-relative">
             <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
             
             <div class="carousel-images">
@@ -159,7 +159,7 @@
             <div *ngIf="interestStep === 3" class="w-full d-flex mt-12 align-items-center">
                 <div class="reminder-times row w-full w-lg-2/5 gy-10 mx-auto position-relative">
                     <input *ngIf="customTime" (keyup.enter)="addCustomTime()" [(ngModel)]="selectedTime" type="time" class="position-absolute bottom-0 start-0 w-full h-12 cursor-pointer rounded-2">
-                    <button *ngFor="let time of reminderTimes | keyvalue: originalOrder; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none" [ngClass]="{'bg-light' : (i !== 4 && !time.value) || (i === 4 && !getCustomTime()), 'bg-success text-white' : (i!== 4 && time.value) || (i === 4 && getCustomTime()) }">{{ i < 4 ? time.key : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
+                    <button *ngFor="let time of reminderTimes | keyvalue: originalOrder; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none" [ngClass]="{'bg-light' : (i !== 4 && !time.value) || (i === 4 && !getCustomTime()), 'bg-green text-white' : (i!== 4 && time.value) || (i === 4 && getCustomTime()) }">{{ i < 4 ? time.key : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
                 </div>
             </div>
             <button *ngIf="showNext()" (click)="nextInterestStep()" class="btn btn-light m-auto w-full w-lg-2/5 font-bold mt-10 mb-5">{{interestStep < 3 ? 'Next' : 'Finish'}}</button>

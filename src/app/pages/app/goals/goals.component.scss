@@ -91,12 +91,13 @@ $calender_bg: #000033;
             font-size: 1.3rem;
         }
         .display-4 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
         }
         .display-6, .h1 {
             font-size: 1.6rem;
         }
         .monthly-goals-progress {
+            height: 30vh;
             .current, .goal {
                 > p {
                     font-size: 0.76rem;
@@ -128,6 +129,9 @@ $calender_bg: #000033;
         }
     }
     @media screen and (max-width: 1350px) {
+        .monthly-goals-progress {
+            height: 208px;
+        }
         .display-4 {
             font-size: 2rem;
         }
