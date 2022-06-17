@@ -107,7 +107,7 @@
                     </div>
                     <div class="flex-fill d-flex">
                         <div class="m-auto flex-fill bg-white w-full rounded-5">
-                            <mat-calendar class="stats-calendar px-5 py-2" [headerComponent]="exampleHeader"></mat-calendar>
+                            <mat-calendar [(selected)]="selectedDate" (selectedChange)="selectDate()" class="stats-calendar px-5 py-2" [headerComponent]="exampleHeader"></mat-calendar>
                         </div>
                     </div>
                    

@@ -32,7 +32,7 @@ export class GoalsComponent implements OnInit {
   monthlyGoalPercent!: number;
   dailyGoalPercent!: number;
   exampleHeader = ExampleHeader;
-  monthSelected!: any;
+  selectedDate?: Date;
 
   constructor(
     private goalsService: GoalsService,
@@ -42,9 +42,12 @@ export class GoalsComponent implements OnInit {
     calendarService.monthChangeClick$.subscribe((e: any) => this.updateCalendarActivity(e.month, e.year))
   }
 
-  async ngOnInit(): Promise<void> {
-    this.monthlyGoals = await this.goalsService.getMonthlyGoals(5, 2022);
-    this.dailyGoals = await this.goalsService.getDailyGoals(new Date().toISOString().split('T')[0]);
+  ngOnInit() {
+    this.initStatsValues();
+  }
+  async initStatsValues(selected?: Date) {
+    this.monthlyGoals = await this.goalsService.getMonthlyGoals(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
+    this.dailyGoals = await this.goalsService.getDailyGoals(selected ? selected.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]);
     this.dailyCompletionPercent = (this.dailyGoals * 100)/this.roundMaxGoal(this.dailyGoals);
     this.monthlyCompletion = (this.monthlyGoals.filter((day: any) => day.totalSessionDurationInMin >= 30).length);
     const noOfDays = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate();
@@ -58,15 +61,18 @@ export class GoalsComponent implements OnInit {
         .map(item => (item % 60 === 0 && item !== 0) ? (item/60) + 'hr' : (item%60) + '');
     this.dailyGoalPercent = (this.dailyGoal * 100) / this.roundMaxGoal(this.dailyGoals);
     this.streak = await this.goalsService.getStreak();
-    this.updateCalendarActivity(new Date().getMonth(), new Date().getFullYear());
+    this.updateCalendarActivity(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
 
     this.initMonthlyBar();
     this.initDailyBar();
     this.toggleIndicatorOnOverlap();
   }
   initMonthlyBar() {
+    d3.select('.progress').select('svg').remove();
     let svg = d3.select('.progress')
-      .append('svg');
+      .append('svg')
+      .attr('height', '100%')
+      .attr('width', '100%');
     svg.append('rect')
 		.attr('class', 'bg-rect')
 		.attr('rx', 10)
@@ -87,6 +93,7 @@ export class GoalsComponent implements OnInit {
       .attr('width', this.monthlyCompletionPercent + '%');      
   }
   initDailyBar() {
+    d3.select('.daily-progress').select('svg').remove();
     let svg = d3.select('.daily-progress')
       .append('svg')
       .attr('height', '100%')
@@ -110,9 +117,24 @@ export class GoalsComponent implements OnInit {
       .duration(500)
       .attr('width', this.dailyCompletionPercent + '%');
   }
-  async updateCalendarActivity(month: any, year: any) {
+  async updateCalendarActivity(month: number, year: number) {
+    const noOfDays: number = new Date(year, month+1, 0).getDate();
     this.monthlyGoals = await this.goalsService.getMonthlyGoals(month, year);
     const today = new Date();
+    const upperBound = 
+      month === new Date().getMonth() && year === new Date().getFullYear() ? // if current month, show remaining days as inactive
+        new Date().getDate() :
+      (month > new Date().getMonth() && year === new Date().getFullYear()) ||year > new Date().getFullYear() ? // if month or year comes in future, show no activity
+        0 :
+      noOfDays; //else show acitivity for all days of month
+    for(let i=1; i<= upperBound; i++) {
+      if(!this.monthlyGoals.filter((day: any) => new Date(day.date).getDate() === i).length) {
+        const current_date = new Date(year, month, i);
+        const current_date_str = `${current_date.toLocaleDateString('default', { month: 'long'})} ${i}, ${current_date.getFullYear()}`;
+        const mat_day = this.renderer.selectRootElement(`[aria-label="${current_date_str}"]`, true);
+        this.renderer.addClass(mat_day, 'inactive-day');
+      }
+    }
     this.monthlyGoals.forEach((day: any) => {
       const current_date = new Date(year, month, new Date(day.date).getDate());
       //formatting date to match mui calendar date
@@ -126,19 +148,23 @@ export class GoalsComponent implements OnInit {
       this.renderer.addClass(current_day, 'today');
     }
   }
+  async selectDate() {
+    this.initStatsValues(this.selectedDate);
+  }
   roundMaxGoal(duration: number) {
+    if(duration === 0) return 30;
     if(duration < 60) return Math.ceil(duration/30.0) * 30;
     return Math.ceil(duration/60.0) * 60;
   }
   toggleIndicatorOnOverlap() {
-    if(Math.abs(this.dailyGoalPercent - this.dailyCompletionPercent) <= 15) {
-      const current_indicator = this.renderer.selectRootElement(`.daily-goals-progress .current p`, true);
-      this.renderer.addClass(current_indicator, 'invisible');
-    }
-    if(Math.abs(this.monthlyGoalPercent - this.monthlyCompletionPercent) <= 15) {
-      const current_indicator = this.renderer.selectRootElement(`.monthly-goals-progress .current p`, true);
-      this.renderer.addClass(current_indicator, 'invisible');
-    }
+    const current_daily_indicator = this.renderer.selectRootElement(`.daily-goals-progress .current p`, true);
+    this.renderer.removeClass(current_daily_indicator, 'visible');
+    this.renderer.removeClass(current_daily_indicator, 'invisible');
+    this.renderer.addClass(current_daily_indicator, Math.abs(this.dailyGoalPercent - this.dailyCompletionPercent) <= 15 ? 'invisible' : 'visible');
+    const current_monthly_indicator = this.renderer.selectRootElement(`.monthly-goals-progress .current p`, true);
+    this.renderer.removeClass(current_monthly_indicator, 'visible');
+    this.renderer.removeClass(current_monthly_indicator, 'invisible');
+    this.renderer.addClass(current_monthly_indicator, Math.abs(this.monthlyGoalPercent - this.monthlyCompletionPercent) <= 15 ? 'invisible' : 'visible');
   }
 }
 //custom calendar header
