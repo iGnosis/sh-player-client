@@ -13,8 +13,8 @@
                     
                     <div class="col-12 col-lg-5 ps-6 pe-6 d-flex flex-column justify-content-end">
                         <div class="row">
-                            <button class="btn d-none d-lg-block col-12 btn-primary py-2 px-1 font-bold rounded-2 mb-3 border-none">Share&nbsp;<img src="/assets/icons/share.svg" alt="share"></button>
-                            <button class="view-past-btn col-12 btn py-2 px-1 btn-light rounded-2 font-bold mb-4 text-nowrap">View past sessions&nbsp;<img src="/assets/icons/arrow-right.svg" alt="arrow right"></button>
+                            <button (click)="toggleShareModal()" class="btn d-none d-lg-block col-12 btn-primary py-2 px-1 font-bold rounded-2 mb-3 border-none">Share&nbsp;<img src="/assets/icons/share.svg" alt="share"></button>
+                            <!-- <button (click)="togglePastSessions()" class="view-past-btn col-12 btn py-2 px-1 btn-light rounded-2 font-bold mb-4 text-nowrap">View past sessions&nbsp;<img src="/assets/icons/arrow-right.svg" alt="arrow right"></button> -->
                         </div>
                     </div>
                     <div class="col-12 monthly-goals">
@@ -113,11 +113,31 @@
                    
                 </div>
                 <div class="row mt-6 px-6 d-lg-none">
-                    <button class="btn col-12 btn-primary py-2 px-1 font-bold rounded-2 mb-3 border-none">Share&nbsp;<img src="/assets/icons/share.svg" alt="share"></button>
+                    <button (click)="toggleShareModal()" class="btn col-12 btn-primary py-2 px-1 font-bold rounded-2 mb-3 border-none">Share&nbsp;<img src="/assets/icons/share.svg" alt="share"></button>
                 </div>
             </div>
             
         </div>
         
+    </div>
+<!-- Share Modal -->
+<div class="share-modal modal" [ngClass]="{'active': shareModal }" id="modal_example" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-3 p-7 px-10 rounded-5">
+            <div class="modal-header p-0 pb-3">
+                <h5 class="h1 font-bolder">Share your progress</h5>
+            </div>
+            <div class="modal-body px-0 pb-0">
+                <!-- Social Medias -->
+                <div class="social-container mb-5">
+                    <img class="me-10 cursor-pointer" src="/assets/icons/social/facebook.jpg" alt="facebook">
+                    <img class="me-10 cursor-pointer" src="/assets/icons/social/messenger.jpg" alt="messenger">
+                    <img class="me-10 cursor-pointer" src="/assets/icons/social/gmail.jpg" alt="gmail">
+                    <img class="me-10 cursor-pointer" src="/assets/icons/social/outlook.jpg" alt="outlook">
+                    <img class="me-10 cursor-pointer" src="/assets/icons/social/imessage.jpg" alt="imessage">
+                </div>
+                <span class="mt-2 valid-feedback">Copied!</span>
+            </div>
+        </div>
     </div>
 </div>

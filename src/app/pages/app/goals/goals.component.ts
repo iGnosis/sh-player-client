@@ -33,6 +33,9 @@ export class GoalsComponent implements OnInit {
   dailyGoalPercent!: number;
   exampleHeader = ExampleHeader;
   selectedDate?: Date;
+  shareModal: boolean = false;
+  // pastSessions: boolean = false;
+  // calendarDates!: any;
 
   constructor(
     private goalsService: GoalsService,
@@ -40,9 +43,17 @@ export class GoalsComponent implements OnInit {
     calendarService: CalendarService
   ) {
     calendarService.monthChangeClick$.subscribe((e: any) => this.updateCalendarActivity(e.month, e.year))
+    
+    this.renderer.listen('window', 'click',(e:Event)=>{
+      const clickedElement = e.target as HTMLElement; 
+      if(this.shareModal && clickedElement.classList[0] === 'share-modal'){
+        this.shareModal=false;
+      }
+    });
   }
 
   ngOnInit() {
+    // this.generateCalendar();
     this.initStatsValues();
   }
   async initStatsValues(selected?: Date) {
@@ -127,12 +138,14 @@ export class GoalsComponent implements OnInit {
       (month > new Date().getMonth() && year === new Date().getFullYear()) ||year > new Date().getFullYear() ? // if month or year comes in future, show no activity
         0 :
       noOfDays; //else show acitivity for all days of month
+    // const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     for(let i=1; i<= upperBound; i++) {
       if(!this.monthlyGoals.filter((day: any) => new Date(day.date).getDate() === i).length) {
         const current_date = new Date(year, month, i);
         const current_date_str = `${current_date.toLocaleDateString('default', { month: 'long'})} ${i}, ${current_date.getFullYear()}`;
         const mat_day = this.renderer.selectRootElement(`[aria-label="${current_date_str}"]`, true);
         this.renderer.addClass(mat_day, 'inactive-day');
+        // this.calendarDates[i+firstDay.getDay() - 1].activity = 'inactive';
       }
     }
     this.monthlyGoals.forEach((day: any) => {
@@ -141,11 +154,13 @@ export class GoalsComponent implements OnInit {
       const current_date_str = `${current_date.toLocaleDateString('default', { month: 'long'})} ${new Date(day.date).getDate()}, ${current_date.getFullYear()}`;
       const mat_day = this.renderer.selectRootElement(`[aria-label="${current_date_str}"]`, true);
       this.renderer.addClass(mat_day, day.totalSessionDurationInMin < 30 ? 'inactive-day' : 'active-day');
+      // this.calendarDates[new Date(day.date).getDate()+firstDay.getDay()-1].activity = day.totalSessionDurationInMin < 30 ? 'inactive' : 'active';
     });
     if(month === new Date().getMonth() && year === new Date().getFullYear()) {
       const current_day_str = `${today.toLocaleDateString('default', { month: 'long'})} ${today.getDate()}, ${today.getFullYear()}`;
       const current_day = this.renderer.selectRootElement(`[aria-label="${current_day_str}"]`, true);
       this.renderer.addClass(current_day, 'today');
+      // this.calendarDates[today.getDate()+firstDay.getDay()-1].activity = 'today';
     }
   }
   async selectDate() {
@@ -165,6 +180,11 @@ export class GoalsComponent implements OnInit {
     this.renderer.removeClass(current_monthly_indicator, 'visible');
     this.renderer.removeClass(current_monthly_indicator, 'invisible');
     this.renderer.addClass(current_monthly_indicator, Math.abs(this.monthlyGoalPercent - this.monthlyCompletionPercent) <= 15 ? 'invisible' : 'visible');
+  }
+  toggleShareModal() {
+    setTimeout(() => {
+      this.shareModal = !this.shareModal;
+    }, 0)
   }
 }
 //custom calendar header

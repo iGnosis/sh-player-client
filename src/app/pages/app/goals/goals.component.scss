@@ -140,3 +140,19 @@ $calender_bg: #000033;
         }
     }
 }
+.share-modal {
+    background-color: rgba(0,0,0,0.2);
+    .modal-dialog {
+        max-width: 572px;
+        .modal-content {
+            min-width: 572px;
+            z-index: 5;
+            h5 {
+                color: #000066;
+            }
+        }
+    }
+    &.active {
+        display: block;
+    }
+}
