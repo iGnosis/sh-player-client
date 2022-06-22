@@ -12,8 +12,6 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeTab = this.route.url.split('/').slice(-1)[0];    
-    console.log(this.activeTab === 'goals');
-    
   }
 
 }
