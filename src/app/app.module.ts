@@ -25,6 +25,7 @@ import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { UpdateHeadersInterceptor } from './interceptors/update-headers.interceptor';
 import { PrivateComponent } from './layouts/private/private.component';
+import { CallbackComponent } from './pages/auth/callback/callback.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +39,7 @@ import { PrivateComponent } from './layouts/private/private.component';
     SignupComponent,
     HelpComponent,
     PrivateComponent,
+    CallbackComponent,
   ],
   imports: [
     BrowserModule,

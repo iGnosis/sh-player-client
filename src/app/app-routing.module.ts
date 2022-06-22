@@ -9,6 +9,7 @@ import { GoalsComponent } from './pages/app/goals/goals.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { PrivateComponent } from './layouts/private/private.component';
+import { CallbackComponent } from './pages/auth/callback/callback.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'public/login', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'signup', component: SignupComponent, },
     ]
   },
+  { path: 'oauth/callback', component: CallbackComponent},
   {
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
       { path: 'home', component: HomeComponent, },

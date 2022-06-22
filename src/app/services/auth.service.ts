@@ -55,4 +55,13 @@ export class AuthService {
       return e;
     }
   }
+
+  async exchangeCode(code: string) {
+    try {
+      const response = await this.graphqlService.publicClient.request(GqlConstants.EXCHANGE_CODE, {code})
+      return response.exchangeCodeWithTokens;
+    } catch (err) {
+      console.error(err)
+    }
+  }
 }

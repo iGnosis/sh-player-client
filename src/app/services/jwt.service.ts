@@ -26,4 +26,12 @@ export class JwtService {
     this.currentToken.next(token);
     localStorage.setItem(this.TOKEN, token)
   }
+
+  setAuthTokens(data: {access_token: string, id_token: string, refresh_token: string, expires_in: number, token_type: string}) {
+    localStorage.setItem('auth', JSON.stringify(data))
+  }
+
+  getAuthTokens() {
+    return JSON.parse(localStorage.getItem('auth') || '{}')
+  }
 }

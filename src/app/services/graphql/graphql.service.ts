@@ -15,7 +15,11 @@ export class GraphqlService {
   });
   public publicClient: GraphQLClient = new GraphQLClient(
     environment.gqlEndpoint,
-    {}
+    {
+      headers: {
+        'x-pointmotion-user': 'patient'
+      },
+    }
   );
 
   constructor(private jwtService: JwtService) {

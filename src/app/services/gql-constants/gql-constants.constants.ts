@@ -101,4 +101,28 @@ export const GqlConstants = {
   }
   `,
   
+  EXCHANGE_CODE: `mutation ExchangeCode($code: String!) {
+    exchangeCodeWithTokens(code: $code) {
+      status
+      data {
+        access_token
+        expires_in
+        id_token
+        refresh_token
+        token_type
+      }
+    }
+  }`,
+
+  REFRESH_TOKEN: `mutation RefreshTokens($refreshToken: String!) {
+    refreshTokens(refreshToken: $refreshToken) {
+      status
+      data {
+        AccessToken
+        ExpiresIn
+        IdToken
+        TokenType
+      }
+    }
+  }`
 };
