@@ -12,7 +12,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
 import { HomeComponent } from './pages/app/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SessionComponent } from './pages/app/session/session.component';
 import { SafePipe } from './pipes/safe/safe.pipe';
@@ -23,6 +23,7 @@ import { PublicGuard } from './guards/public-guard';
 import { GoalsComponent } from './pages/app/goals/goals.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
+import { UpdateHeadersInterceptor } from './interceptors/update-headers.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +53,8 @@ import { HelpComponent } from './pages/app/help/help.component';
   ],
   providers: [
     PrivateGuard,
-    PublicGuard
+    PublicGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: UpdateHeadersInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

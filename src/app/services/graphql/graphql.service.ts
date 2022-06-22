@@ -10,6 +10,7 @@ export class GraphqlService {
   public client: GraphQLClient = new GraphQLClient(environment.gqlEndpoint, {
     headers: {
       Authorization: "Bearer " + _getItem("token"),
+      'x-pointmotion-user': 'patient'
     },
   });
   public publicClient: GraphQLClient = new GraphQLClient(
