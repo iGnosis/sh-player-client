@@ -22,6 +22,7 @@ import { PrivateGuard } from './guards/private-guard';
 import { PublicGuard } from './guards/public-guard';
 import { GoalsComponent } from './pages/app/goals/goals.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
+import { HelpComponent } from './pages/app/help/help.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +34,7 @@ import { SignupComponent } from './pages/auth/signup/signup.component';
     SafePipe,
     GoalsComponent,
     SignupComponent,
+    HelpComponent,
   ],
   imports: [
     BrowserModule,
