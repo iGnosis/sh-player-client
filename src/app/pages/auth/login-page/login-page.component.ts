@@ -46,7 +46,7 @@ export class LoginPageComponent implements OnInit {
         next: (data: any) => {
           this.jwtService.setToken(data.token);
           this.userService.set(data.patient);
-          this.router.navigate(["/app/home"]);
+          this.router.navigate(["/app/home"], { state: { loggedIn: true }});
           this.loginMusic();
         },
         error: (err) => {

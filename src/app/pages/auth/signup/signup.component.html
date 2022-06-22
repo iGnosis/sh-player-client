@@ -1,7 +1,7 @@
 <div class="login-container" *ngIf="signupStep < 5">
     <img src="/assets/icons/chat-bubble.svg" alt="chat bubble" class="chat-bubble position-fixed cursor-pointer end-4 bottom-4">
     <div class="d-flex justify-content-center" *ngIf="signupStep === 0">
-        <div class="carousel-container overflow-x-hidden col-lg-6 position-relative">
+        <div class="carousel-container overflow-hidden col-lg-6 position-relative">
             <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
             
             <div class="carousel-images">
@@ -57,10 +57,11 @@
                     signupStep === 3 ? 'What should we call you?' :
                     ''
                 }}</h2>
-                <div class="errors w-full align-self-start" *ngIf="errors.length > 0">
+                <div class="errors w-full align-self-start" *ngIf="errors.length > 0 || signupStep === 1">
                     <div *ngFor="let err of errors" role="alert" class="alert bg-danger text-white my-2 text-sm">{{err}}</div>
+                    <div *ngIf="!validateEmail()" role="alert" class="alert bg-danger text-white my-2 text-sm">Invalid Email Address</div>
                 </div>
-                <input *ngIf="signupStep === 1" placeholder="Email" type="email" name="email" [(ngModel)]="email" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
+                <input *ngIf="signupStep === 1" placeholder="Email" type="email" name="email" [(ngModel)]="email" email="true" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
                 <div *ngIf="signupStep === 2" class="password-container position-relative w-full">
                     <input 
                         [ngClass]="{'border-danger': checkPasswordStrength(password) === 'Weak', 'border-warning': checkPasswordStrength(password) === 'Fair', 'border-success': checkPasswordStrength(password) === 'Good' || checkPasswordStrength(password) === 'Strong'}" 
@@ -103,7 +104,7 @@
                     </p>
                 </button>
                 <div class="completion-confirmation pt-6" *ngIf="signupStep === 3">
-                    <p class="font-bold mt-5 text-center px-2">By completing the sign up, you agree to our Sound Health’s <a href="#">Terms and Conditions of Use.</a></p>
+                    <p class="font-bold mt-5 text-center px-2">By completing the sign up, you agree to our Sound Health’s <a href="https://pointmotion.us/eula" target="_blank">Terms and Conditions of Use.</a></p>
                     <p class="font-bold mt-5 text-center px-2">To learn more about how Sound Health collects, uses, shares and protects your personal data, please read Sound Health’s <a href="#">Privacy Policy.</a></p>
                 </div>
                 <p class="step-heading text-center text-md mt-12 cursor-pointer" *ngIf="signupStep === 4" (click)="goToHome()">Skip for now</p>
@@ -157,8 +158,8 @@
             </div>
             <div *ngIf="interestStep === 3" class="w-full d-flex mt-12 align-items-center">
                 <div class="reminder-times row w-full w-lg-2/5 gy-10 mx-auto position-relative">
-                    <input *ngIf="customTime" (keyup.enter)="toggleCustomTime()" [(ngModel)]="selectedTime" type="time" class="position-absolute bottom-0 start-0 w-full h-12 cursor-pointer rounded-2">
-                    <button *ngFor="let time of reminderTimes; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none" [ngClass]="{'bg-light' : (i !== 4 && selectedTime !== time) || (i === 4 && !getCustomTime()), 'bg-success text-white' : selectedTime === time || (i === 4 && getCustomTime()) }">{{ i < 4 ? time : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
+                    <input *ngIf="customTime" (keyup.enter)="addCustomTime()" [(ngModel)]="selectedTime" type="time" class="position-absolute bottom-0 start-0 w-full h-12 cursor-pointer rounded-2">
+                    <button *ngFor="let time of reminderTimes | keyvalue: originalOrder; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none" [ngClass]="{'bg-light' : (i !== 4 && !time.value) || (i === 4 && !getCustomTime()), 'bg-green text-white' : (i!== 4 && time.value) || (i === 4 && getCustomTime()) }">{{ i < 4 ? time.key : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
                 </div>
             </div>
             <button *ngIf="showNext()" (click)="nextInterestStep()" class="btn btn-light m-auto w-full w-lg-2/5 font-bold mt-10 mb-5">{{interestStep < 3 ? 'Next' : 'Finish'}}</button>

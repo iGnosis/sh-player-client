@@ -1,11 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { SessionService } from "src/app/services/session/session.service";
 import { Patient } from "src/app/types/patient";
 import { session } from "src/app/store/reducers/home.reducer";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
+import { map } from "rxjs";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -34,9 +35,18 @@ import { GoalsService } from "src/app/services/goals/goals.service";
         ),
       ]),
     ]),
+    trigger("fadeOut", [
+      transition(":leave", [
+        animate(
+          "200ms ease-in",
+          style({ opacity: "0" })
+        ),
+      ]),
+    ]),
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+  shScreen: boolean = false;
   user!: Patient;
   careplanId!: string;
   sessionId!: string;
@@ -59,13 +69,25 @@ export class HomeComponent implements OnInit {
     private careplanService: CareplanService,
     private sessionService: SessionService,
     private goalsService: GoalsService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {
     this.user = JSON.parse(localStorage.getItem("user") || "{}");
   }
 
   async ngOnInit(): Promise<void> {
+    this.activatedRoute.paramMap
+      .pipe(map(() => window.history.state))
+      .subscribe(state => {
+        this.shScreen = !!state.loggedIn;
+      });
     this.dailyGoals = await this.goalsService.getDailyGoals(new Date().toISOString().split('T')[0]);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.shScreen = false;
+    }, 4000);
   }
 
   nextSessionState() {

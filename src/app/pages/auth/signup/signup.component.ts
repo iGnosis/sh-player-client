@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -51,13 +52,13 @@ export class SignupComponent implements OnInit {
     { title: 'Viewing Films', img: '/assets/images/activities/9.jpg', selected: false },
     { title: 'Reading', img: '/assets/images/activities/10.jpg', selected: false },
   ];
-  reminderTimes = [
-    'Morning',
-    'Afternoon',
-    'Evening',
-    'Night',
-    'Specify a time',
-  ];
+  reminderTimes: any = {
+    'Morning' : false,
+    'Afternoon' : false,
+    'Evening' : false,
+    'Night' : false,
+    'custom' : [],
+  };
   customTime: boolean = false;
   selectedTime!: string;
 
@@ -76,6 +77,11 @@ export class SignupComponent implements OnInit {
       if (this.carouselSlide === 3) this.carouselSlide = 1;
       else this.carouselSlide++;
     }, 4000);
+  }
+  validateEmail() {
+    return this.email
+    .toLowerCase()
+    .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
   }
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
@@ -172,19 +178,34 @@ export class SignupComponent implements OnInit {
       this.toggleCustomTime();
       return;
     }
-    this.selectedTime = this.reminderTimes[i];
+    let curr: any = Object.keys(this.reminderTimes)[i];
+    this.reminderTimes[curr] = !this.reminderTimes[curr];
+    this.selectedTime = curr;
   }
   toggleCustomTime() {
+    this.selectedTime = '';
     this.customTime = !this.customTime;
   }
+  addCustomTime() {
+    if(this.selectedTime) {
+      this.reminderTimes.custom.push(this.selectedTime);
+    }
+    this.toggleCustomTime();
+  }
   getCustomTime() {
-    if(/\d/.test(this.selectedTime)) {
-      var [h,m] : any[] = this.selectedTime.split(":");
-      [h,m] = [parseInt(h), parseInt(m)];
-      return h%12+(h%12 == 0 ? 12 : 0)+":"+m + " "  + (h >= 12 ? 'PM' : 'AM');
+    if(this.reminderTimes.custom.length > 0) {
+      let customTimes = this.reminderTimes.custom.map((time: any) => {
+        var [h,m] : any[] = time.split(":");
+        [h,m] = [parseInt(h), parseInt(m)];
+        return h%12+(h%12 == 0 ? 12 : 0)+":"+m + " "  + (h >= 12 ? 'PM' : 'AM');
+      });
+      return customTimes.length > 0 ? customTimes.join(', ') : false;
     } else {
       return false;
     }
+  }
+  originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    return 0;
   }
   showNext() {
     if(this.interestStep === 1) {
@@ -192,7 +213,7 @@ export class SignupComponent implements OnInit {
     } else if(this.interestStep === 2) {
       return this.activities.filter((item: any) => item.selected).length > 2;
     } else {
-      return this.selectedTime;
+      return Object.values(this.reminderTimes).filter((item: any) => item === true || item.length).length;
     }
   }
 }
