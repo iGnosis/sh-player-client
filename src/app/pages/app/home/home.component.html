@@ -14,12 +14,10 @@
             >
                 <div class="container-fluid px-xl-10">
                     <div class="row row-grid align-items-center text-white">
-                        <div class="col-lg-6">
-                            <!-- Title -->
+                        <!-- <div class="col-lg-6">
                             <h1 class="ls-tight font-bolder display-3 mb-5 text-white">
                                 {{item.title}}
                             </h1>
-                            <!-- Text -->
                             <p class="lead mb-3">
                                 <img src="/assets/icons/joystick.svg" alt="joystick" class="me-8 text-center">Sound Health Exclusive
                             </p>
@@ -32,9 +30,7 @@
                             <p *ngIf="dailyGoals<30" class="lead mb-3">
                                 <img src="/assets/icons/clock.svg" alt="clock" class="me-8 text-center">{{30 - dailyGoals | number: '1.0-0'}} Minutes Remaining
                             </p>
-                            <!-- Buttons -->
                             <div class="mt-12 mx-n2">
-                                <!-- (click)="nextSessionState()" -->
                                 <button
                                     [disabled]="dailyGoals>30 || dailyGoals === 30"
                                     (click)="startNewSession()"
@@ -49,6 +45,9 @@
                                     }}
                                 </button>
                             </div>
+                        </div> -->
+                        <div class="col-lg-6 offset-1">
+                            <button (click)="startNewSession()" class="start-btn w-64 h-64 rounded-pill text-white display-5">Start</button>
                         </div>
                     </div>
                 </div>
