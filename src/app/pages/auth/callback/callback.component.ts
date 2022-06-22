@@ -23,7 +23,7 @@ export class CallbackComponent implements OnInit {
     const code = this.route.snapshot.queryParamMap.get('code');
     const codes = await this.authService.exchangeCode(code as string);
     if (codes) {
-      this.jwtService.setToken(codes.data.access_token)
+      this.jwtService.setToken(codes.data.id_token)
       this.jwtService.setAuthTokens(codes.data)
       this.router.navigate(['app', 'home'])
     } else {
