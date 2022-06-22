@@ -24,6 +24,7 @@ import { GoalsComponent } from './pages/app/goals/goals.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { UpdateHeadersInterceptor } from './interceptors/update-headers.interceptor';
+import { PrivateComponent } from './layouts/private/private.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +37,7 @@ import { UpdateHeadersInterceptor } from './interceptors/update-headers.intercep
     GoalsComponent,
     SignupComponent,
     HelpComponent,
+    PrivateComponent,
   ],
   imports: [
     BrowserModule,

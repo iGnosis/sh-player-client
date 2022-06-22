@@ -8,6 +8,7 @@ import { SessionComponent } from "./pages/app/session/session.component";
 import { GoalsComponent } from './pages/app/goals/goals.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
+import { PrivateComponent } from './layouts/private/private.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'public/login', pathMatch: 'full' },
@@ -18,7 +19,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'app', canActivateChild: [PrivateGuard], children: [
+    path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
       { path: 'home', component: HomeComponent, },
       { path: 'goals', component: GoalsComponent, },
       { path: "session/:id", component: SessionComponent },
