@@ -12,6 +12,7 @@ import {
 import { MatCalendar } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
 import { CalendarService } from 'src/app/services/calendar/calendar.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-goals',
@@ -19,6 +20,7 @@ import { CalendarService } from 'src/app/services/calendar/calendar.service';
   styleUrls: ['./goals.component.scss'],
 })
 export class GoalsComponent implements OnInit {
+  username: string = '';
   monthRange = d3.range(0, 30.5, 5);
   dailyRange = d3.range(0, 30.5, 5).map(item => item+'');
   monthlyGoals!: any; 
@@ -40,7 +42,8 @@ export class GoalsComponent implements OnInit {
   constructor(
     private goalsService: GoalsService,
     private renderer: Renderer2,
-    calendarService: CalendarService
+    calendarService: CalendarService,
+    private userService: UserService
   ) {
     calendarService.monthChangeClick$.subscribe((e: any) => this.updateCalendarActivity(e.month, e.year))
     
@@ -54,6 +57,7 @@ export class GoalsComponent implements OnInit {
 
   ngOnInit() {
     // this.generateCalendar();
+    this.username = this.userService.get().identifier || '';
     this.initStatsValues();
   }
   async initStatsValues(selected?: Date) {
