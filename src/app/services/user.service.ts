@@ -12,9 +12,9 @@ export class UserService {
     this.patient = JSON.parse(localStorage.getItem('patient') || '{}')
   }
 
-  set(user: Patient) {
+  set(user?: Patient) {
     this.user = user
-    localStorage.setItem('user', JSON.stringify(user))
+    localStorage.setItem('user', JSON.stringify(user) || '')
   }
 
   get(): Patient {
@@ -22,9 +22,9 @@ export class UserService {
     return user as Patient
   }
 
-  setPatient(patient: PatientSignup) {
-    this.patient = patient
-    localStorage.setItem('patient', JSON.stringify(patient))
+  setPatient(patient?: PatientSignup) {
+    this.patient = patient;
+    localStorage.setItem('patient', JSON.stringify(patient) || '')
   }
 
   getPatient(): PatientSignup {
