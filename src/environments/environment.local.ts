@@ -1,4 +1,6 @@
-export const environment = {
+import { Environment } from "src/app/types/pointmotion";
+
+export const environment: Environment = {
     production: false,
     name: 'local',
     gqlEndpoint: 'https://api.dev.pointmotioncontrol.com/v1/graphql',

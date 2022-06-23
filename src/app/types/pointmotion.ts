@@ -28,3 +28,11 @@ export interface SignupRequestDTO {
 }
   
 
+
+export type Environment = {
+    production: boolean;
+    name: 'local' | 'dev' | 'stage' | 'prod';
+    gqlEndpoint: string;
+    servicesEndpoint: string;
+    activityEndpoint: string;
+}

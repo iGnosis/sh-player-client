@@ -2,7 +2,9 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+import { Environment } from "src/app/types/pointmotion";
+
+export const environment: Environment = {
   production: false,
   name: 'dev',
   gqlEndpoint: 'https://api.dev.pointmotioncontrol.com/v1/graphql',
