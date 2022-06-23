@@ -7,6 +7,7 @@ import { session } from "src/app/store/reducers/home.reducer";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
 import { map } from "rxjs";
+import { JwtService } from "src/app/services/jwt.service";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -71,6 +72,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private goalsService: GoalsService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private jwtService: JwtService
   ) {
     this.user = JSON.parse(localStorage.getItem("user") || "{}");
   }
@@ -103,9 +105,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async startNewSession() {
-    const activeCareplans = await this.careplanService.getActiveCareplans();
-    if (activeCareplans.careplan.length > 0) {
-      this.careplanId = activeCareplans.careplan[0].id;
+    if (this.jwtService.checkCareplanAndProviderInJWT()) {
+      const activeCareplans = await this.careplanService.getActiveCareplans();
+      if (activeCareplans.careplan.length > 0) {
+        this.careplanId = activeCareplans.careplan[0].id;
+        this.sessionId = (await this.sessionService.createNewSession(
+          this.careplanId
+          )) as string;
+          this.router.navigate(["/app/session/", this.sessionId]);
+        }
+    } else {
       this.sessionId = (await this.sessionService.createNewSession(
         this.careplanId
       )) as string;

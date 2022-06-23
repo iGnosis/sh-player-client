@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import jwtDecode from 'jwt-decode'
 
 @Injectable({
   providedIn: 'root'
@@ -34,4 +35,18 @@ export class JwtService {
   getAuthTokens() {
     return JSON.parse(localStorage.getItem('auth') || '{}')
   }
+
+  checkCareplanAndProviderInJWT() {
+    const decodedToken: any = jwtDecode(this.getToken());
+    const hasuraJWTClaims = JSON.parse(decodedToken["https://hasura.io/jwt/claims"] as string);
+   if (
+     "x-hasura-careplan-id" in hasuraJWTClaims &&
+     "x-hasura-provider-id" in hasuraJWTClaims
+   ) {
+     return true;
+   } else {
+     return false;
+   }
+  }
+
 }
