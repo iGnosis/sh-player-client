@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { SessionService } from "src/app/services/session/session.service";
-import { Patient } from "src/app/types/patient";
+import { Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/store/reducers/home.reducer";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";

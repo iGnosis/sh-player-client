@@ -4,7 +4,7 @@ import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
-import { LoginRequestDTO, SignupRequestDTO } from '../types/auth';
+import { LoginRequestDTO, SignupRequestDTO } from '../types/pointmotion';
 @Injectable({
   providedIn: 'root'
 })
