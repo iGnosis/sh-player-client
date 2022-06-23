@@ -26,8 +26,10 @@ export interface SignupRequestDTO {
     nickname: string,
     code: string,
 }
-  
 
+export interface LogoutRequestDTO {
+    refreshToken: string,
+}
 
 export type Environment = {
     production: boolean;

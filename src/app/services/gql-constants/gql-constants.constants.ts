@@ -124,5 +124,10 @@ export const GqlConstants = {
         TokenType
       }
     }
-  }`
+  }`,
+  REVOKE_REFRESH_TOKEN: `mutation RevokeRefreshToken($refreshToken: String!) {
+    revokeRefreshToken(refreshToken: $refreshToken) {
+      status
+    }
+  }`,
 };

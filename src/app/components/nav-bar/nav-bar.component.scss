@@ -4,15 +4,15 @@ nav {
 }
 .nav-left {
     a, a.active {
-        color: $primary_color;
+        color: $primary;
         font-weight: 600;
     }
     & > div.active {
-        border-bottom: 3px solid $primary_color;
+        border-bottom: 3px solid $primary;
     }
 }
 .nav-right {
     p {
-        color: $primary_color;
+        color: $primary;
     }
 }
