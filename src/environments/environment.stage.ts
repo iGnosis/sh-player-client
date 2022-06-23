@@ -9,5 +9,7 @@ export const environment: Environment = {
   name: 'stage',
   gqlEndpoint: 'https://api.stage.pointmotioncontrol.com/v1/graphql',
   servicesEndpoint: 'https://services.stage.pointmotioncontrol.com',
-  activityEndpoint: 'https://session.stage.pointmotioncontrol.com'
+  activityEndpoint: 'https://session.stage.pointmotioncontrol.com',
+  cognitoURL: 'https://pointmotion-dev-sh-patient-1.auth.us-east-1.amazoncognito.com',
+  cognitoClientId: '24dshjc1umm04bi12eu46ek727'
 };

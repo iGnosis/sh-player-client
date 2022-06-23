@@ -15,6 +15,8 @@ export class LoginPageComponent implements OnInit {
   password = "";
   showPassword = false;
   carouselSlide = 1;
+  signUpLink = ''
+  loginLink = ''
 
   constructor(
     private router: Router,
@@ -24,9 +26,12 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.signUpLink = this.authService.getSignupLink();
+    this.loginLink = this.authService.getLoginLink();
     setInterval(() => {
       if (this.carouselSlide === 3) this.carouselSlide = 1;
       else this.carouselSlide++;
+      console.log('next slide');
     }, 4000);
   }
 
@@ -40,7 +45,7 @@ export class LoginPageComponent implements OnInit {
 
   async onSignIn() {
     this.errors = [];
-    this.authService
+    await this.authService
       .login({ email: this.email, password: this.password })
       .subscribe({
         next: (data: any) => {
@@ -50,7 +55,10 @@ export class LoginPageComponent implements OnInit {
           this.loginMusic();
         },
         error: (err) => {
-          this.errors = err.error.message;
+          console.error(err)
+          if (err.err) {
+            this.errors = err.error.message;
+          }
         },
       });
   }

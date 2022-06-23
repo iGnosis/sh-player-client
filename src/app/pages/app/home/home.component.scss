@@ -6,7 +6,7 @@
     background-size: cover;
     .session-btn {
         &.start {
-            color: $primary_color;
+            color: $primary;
             font-size: 1.6rem;
             border: none;
         }
@@ -24,7 +24,7 @@
     }
     .start-btn {
         border: 0.2rem solid #fff;
-        background-color: $primary_color;
+        background-color: $primary;
         animation: pulse 2s infinite;
     }
     @keyframes pulse {

@@ -7,27 +7,34 @@ import { JwtService } from "../jwt.service";
   providedIn: "root",
 })
 export class GraphqlService {
-  public client: GraphQLClient = new GraphQLClient(environment.gqlEndpoint, {
-    headers: {
-      Authorization: "Bearer " + _getItem("token"),
-      'x-pointmotion-user': 'patient'
-    },
-  });
-  public publicClient: GraphQLClient = new GraphQLClient(
-    environment.gqlEndpoint,
-    {
-      headers: {
-        'x-pointmotion-user': 'patient'
-      },
-    }
-  );
+  public client: GraphQLClient
+  public publicClient: GraphQLClient
 
   constructor(private jwtService: JwtService) {
+    const additionalHeaders: any = {}
+    if (environment.name == 'local') {
+      additionalHeaders['x-pointmotion-debug'] = 'true'
+    }
+
+    this.client = new GraphQLClient(environment.gqlEndpoint, {
+      headers: Object.assign({
+        Authorization: "Bearer " + _getItem("token"),
+        'x-pointmotion-user': 'patient',
+      }, additionalHeaders),
+    });
+
+    this.publicClient = new GraphQLClient(environment.gqlEndpoint, {
+        headers: Object.assign({
+          'x-pointmotion-user': 'patient'
+        }, additionalHeaders)
+      }
+    );
+
     this.jwtService.watchToken().subscribe((token: string) => {
       this.client = new GraphQLClient(environment.gqlEndpoint, {
-        headers: {
+        headers: Object.assign({
           Authorization: "Bearer " + token,
-        },
+        }, additionalHeaders)
       });
     })}
 }

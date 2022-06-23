@@ -10,13 +10,16 @@ import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { PrivateComponent } from './layouts/private/private.component';
 import { CallbackComponent } from './pages/auth/callback/callback.component';
+import { StartComponent } from './pages/auth/start/start.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'public/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'public/start', pathMatch: 'full' },
   {
     path: 'public', canActivateChild: [PublicGuard], children: [
+      { path: 'start', component: StartComponent },
       { path: 'login', component: LoginPageComponent, },
       { path: 'signup', component: SignupComponent, },
+      { path: 'signup/:step', component: SignupComponent, },
     ]
   },
   { path: 'oauth/callback', component: CallbackComponent},

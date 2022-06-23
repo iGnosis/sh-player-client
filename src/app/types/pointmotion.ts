@@ -35,4 +35,6 @@ export type Environment = {
     gqlEndpoint: string;
     servicesEndpoint: string;
     activityEndpoint: string;
+    cognitoURL: string;
+    cognitoClientId: string;
 }

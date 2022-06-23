@@ -61,6 +61,8 @@ export class SignupComponent implements OnInit {
   };
   customTime: boolean = false;
   selectedTime!: string;
+  signUpLink = ''
+  loginLink = ''
 
   constructor(
     private router: Router, 
@@ -68,7 +70,10 @@ export class SignupComponent implements OnInit {
     private jwtService: JwtService,
     private authService: AuthService,
     private userService: UserService,
-  ) {}
+  ) {
+    this.signUpLink = this.authService.getSignupLink();
+    this.loginLink = this.authService.getLoginLink();
+  }
 
   ngOnInit(): void {    
     this.code = this.route.snapshot.queryParamMap.get('code') || "";

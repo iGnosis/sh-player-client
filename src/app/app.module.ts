@@ -26,6 +26,7 @@ import { HelpComponent } from './pages/app/help/help.component';
 import { UpdateHeadersInterceptor } from './interceptors/update-headers.interceptor';
 import { PrivateComponent } from './layouts/private/private.component';
 import { CallbackComponent } from './pages/auth/callback/callback.component';
+import { StartComponent } from './pages/auth/start/start.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +41,7 @@ import { CallbackComponent } from './pages/auth/callback/callback.component';
     HelpComponent,
     PrivateComponent,
     CallbackComponent,
+    StartComponent,
   ],
   imports: [
     BrowserModule,
