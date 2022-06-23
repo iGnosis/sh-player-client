@@ -20,11 +20,11 @@ const routes: Routes = [
     ]
   },
   { path: 'oauth/callback', component: CallbackComponent},
+  { path: "app/session/:id", component: SessionComponent, canActivate: [PrivateGuard] },
   {
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
       { path: 'home', component: HomeComponent, },
       { path: 'goals', component: GoalsComponent, },
-      { path: "session/:id", component: SessionComponent },
       { path: 'help', component: HelpComponent, },
     ]
   },
