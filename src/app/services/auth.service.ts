@@ -4,7 +4,7 @@ import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
-import { LoginRequestDTO, SignupRequestDTO } from '../types/pointmotion';
+import { LoginRequestDTO, SignupRequestDTO, LogoutRequestDTO } from '../types/pointmotion';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,6 +17,15 @@ export class AuthService {
 
   login(details: LoginRequestDTO) {
     return this.http.post(this.baseURL+'/auth/patient/login', details)
+  }
+
+  async logout(details: LogoutRequestDTO) {
+    try {
+      const res = await this.graphqlService.publicClient.request(GqlConstants.REVOKE_REFRESH_TOKEN, details);
+      return res;
+    } catch(e) {
+      return e;
+    }
   }
 
   async signup(details: SignupRequestDTO) {
