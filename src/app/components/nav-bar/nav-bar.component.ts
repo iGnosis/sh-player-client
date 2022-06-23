@@ -29,7 +29,7 @@ export class NavBarComponent implements OnInit {
     this.jwtService.setToken('');
     this.userService.setPatient();
     this.userService.set();
-    this.router.navigate(['/public/login']);
+    this.router.navigate(['/']);
   }
 
 }
