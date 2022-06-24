@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import jwtDecode from 'jwt-decode'
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -49,4 +50,13 @@ export class JwtService {
    }
   }
 
+  tokenExpiry(): number {
+    const currentToken = this.getToken();
+    const decodedToken: any = jwtDecode(currentToken);
+    const expiry: number = decodedToken.exp * 1000;
+    const minsBeforeExp: number = 2;
+    
+    
+    return expiry - new Date().getTime() - minsBeforeExp * 60000;
+  }
 }
