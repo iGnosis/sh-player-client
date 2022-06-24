@@ -40,6 +40,7 @@ export class JwtService {
   checkCareplanAndProviderInJWT() {
     const decodedToken: any = jwtDecode(this.getToken());
     const hasuraJWTClaims = JSON.parse(decodedToken["https://hasura.io/jwt/claims"] as string);
+    console.log(hasuraJWTClaims);
    if (
      "x-hasura-careplan-id" in hasuraJWTClaims &&
      "x-hasura-provider-id" in hasuraJWTClaims
