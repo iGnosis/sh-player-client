@@ -1,10 +1,47 @@
+@import '../../../variables';
+.sh-screen {
+    z-index: 200;
+}
 .home-container {
-    background-image: url(/assets/images/start-session-bg.jpg);
     background-size: cover;
-    .btn {
-        color: #000066;
-        font-size: 1.6rem;
-        border: none;
+    .session-btn {
+        &.start {
+            color: $primary;
+            font-size: 1.6rem;
+            border: none;
+        }
+        &.completed {
+            background-color: #00BD3E;
+            color: #FFFFFF;
+            font-size: 1.6rem;
+            border: none;
+        }
+        &.locked {
+            color: #4A5568;
+            font-size: 1.6rem;
+            border: none;
+        }
+    }
+    .start-btn {
+        border: 0.2rem solid #fff;
+        background-color: $primary;
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(255,255,255,0.7);
+        }
+        
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 25px rgba(255,255,255,0);
+        }
+        
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(255,255,255,0);
+        }
     }
     .lead {
         font-size:2rem;

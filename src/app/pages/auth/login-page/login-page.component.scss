@@ -8,11 +8,10 @@
     .carousel-container {
         background-color: #F7FAFC;
         .circle-bg-1, .circle-bg-2 {
-            opacity: 0.2;
             width: 75em;
             height: 75em;
-            background-color: #E4ECF7;
             border-radius: 100%;
+            transition: 0.2s;
         }
         .circle-bg-2 {
             width: 62em;
@@ -21,8 +20,49 @@
         .circle-bg-3 {
             width: 42em;
             height: 42em;
-            background-color: #A3B7F0;
             border-radius: 100%;
+        }
+        .circle-bg-1 {
+            &.slide1 {
+                background-color: #E2E8F0;
+                opacity: 0.33;
+            }
+            &.slide2 {
+                background-color: #A3B7F0;
+                opacity: 0.1;
+            }
+            &.slide3 {
+                background-color: #B6E5C8;
+                opacity: 0.1;
+            }
+        }
+        .circle-bg-2 {
+            &.slide1 {
+                background-color: #EDF2F7;
+                opacity: 0.66;
+            }
+            &.slide2 {
+                background-color: #A3B7F0;
+                opacity: 0.3;
+            }
+            &.slide3 {
+                background-color: #B6E5C8;
+                opacity: 0.3;
+            }
+        }
+        .circle-bg-3 {
+            &.slide1 {
+                background-color: #FFFFFF;
+                opacity: 0.8;
+            }
+            &.slide2 {
+                background-color: #A3B7F0;
+                opacity: 0.5;
+            }
+            &.slide3 {
+                background-color: #B6E5C8;
+                opacity: 0.5;
+            }
         }
         .img-bg-overlay {
             width: 50em;
@@ -47,6 +87,9 @@
         }
     }
     .login-card-container {
+        .bg-danger {
+            background-color: rgb(235, 0, 0) !important;
+        }
         label {
             color: #425466;
         }

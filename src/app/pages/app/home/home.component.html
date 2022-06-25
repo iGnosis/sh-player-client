@@ -1,31 +1,56 @@
-<div class="d-flex flex-column h-screen w-screen overflow-x-hidden">
-    <nav-bar></nav-bar>
-    <div class="home-container d-flex align-items-center flex-fill">
-        <div class="container-fluid px-xl-10">
-            <div class="row row-grid align-items-center text-white">
-                <div class="col-lg-6">
-                    <!-- Title -->
-                    <h1 class="ls-tight font-bolder display-3 mb-5 text-white">
-                        Sit,Stand,Achieve
-                    </h1>
-                    <!-- Text -->
-                    <p class="lead mb-3">
-                        <img src="/assets/icons/joystick.svg" alt="joystick" class="me-8 text-center">Sound Health Exclusive
-                    </p>
-                    <p class="lead mb-3">
-                        <i class="fa fa-clock-o me-8 text-center"></i>30 Total Active Minutes
-                    </p>
-                    <p class="lead mb-3">
-                        <i class="fa fa-calendar-o me-8 text-center"></i>14th February, 2022
-                    </p>
-                    <!-- Buttons -->
-                    <div class="mt-12 mx-n2">
-                        <a href="#" class="btn btn-lg btn-white font-bolder mx-2 px-lg-32 px-xl-56 text-nowrap rounded-2">
-                            <i class="fa fa-play me-5 text-center"></i>Start Session
-                        </a>
+<div @fadeOut *ngIf="shScreen" class="sh-screen position-fixed w-screen h-screen top-0 start-0 bg-white">
+    <img src="/assets/icons/point_motion_logo.jpg" alt="point Motion" class="position-absolute top-16 start-16">
+    <img src="/assets/icons/sound_health_logo@3x.jpg" alt="sound health" class="position-absolute translate-middle top-1/2 start-1/2">
+</div>
+<!-- <div class="d-flex flex-column h-screen w-screen overflow-hidden position-relative"> -->
+    <!-- <nav-bar></nav-bar> -->
+    <div *ngFor="let item of dummySessions; let i = index" >
+            <div
+                class="home-container d-flex align-items-center flex-fill position-absolute w-full h-full"
+                [style]="'background-image: url(' + item.bg + ')'"
+                [@slideOut]="i === 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
+                [@slideInOut]="i > 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
+                *ngIf="currentSession === i"
+            >
+                <div class="container-fluid px-xl-10">
+                    <div class="row row-grid align-items-center text-white">
+                        <!-- <div class="col-lg-6">
+                            <h1 class="ls-tight font-bolder display-3 mb-5 text-white">
+                                {{item.title}}
+                            </h1>
+                            <p class="lead mb-3">
+                                <img src="/assets/icons/joystick.svg" alt="joystick" class="me-8 text-center">Sound Health Exclusive
+                            </p>
+                            <p class="lead mb-3">
+                                <i class="fa fa-clock-o me-8 text-center"></i>30 Total Active Minutes
+                            </p>
+                            <p class="lead mb-3">
+                                <i class="fa fa-calendar-o me-8 text-center"></i>14th February, 2022
+                            </p>
+                            <p *ngIf="dailyGoals<30" class="lead mb-3">
+                                <img src="/assets/icons/clock.svg" alt="clock" class="me-8 text-center">{{30 - dailyGoals | number: '1.0-0'}} Minutes Remaining
+                            </p>
+                            <div class="mt-12 mx-n2">
+                                <button
+                                    [disabled]="dailyGoals>30 || dailyGoals === 30"
+                                    (click)="startNewSession()"
+                                    class="session-btn btn btn-lg btn-white font-bolder mx-2 px-lg-32 px-xl-56 text-nowrap rounded-2"
+                                    [ngClass]="{'start': dailyGoals < 30, 'completed' : dailyGoals > 30 || dailyGoals === 30, 'locked' : item.status===3}"
+                                >
+                                    <i class="fa me-5 text-center"
+                                        [ngClass]="{'fa-play': dailyGoals < 30, 'fa-check': dailyGoals > 30 || dailyGoals === 30, 'fa-lock': item.status === 3}"></i>{{
+                                        dailyGoals === 0 ? 'Start Session':
+                                        dailyGoals < 30 ? 'Continue Session':
+                                        'Completed Session'
+                                    }}
+                                </button>
+                            </div>
+                        </div> -->
+                        <div class="col-lg-6 offset-1">
+                            <button (click)="startNewSession()" class="start-btn w-64 h-64 rounded-pill text-white display-5">Start</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
-</div>
+<!-- </div> -->
