@@ -106,6 +106,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   async startNewSession() {
     if (this.jwtService.checkCareplanAndProviderInJWT()) {
+      console.log('startNewSession:JWT has careplan and provider set');
       const activeCareplans = await this.careplanService.getActiveCareplans();
       if (activeCareplans.careplan.length > 0) {
         this.careplanId = activeCareplans.careplan[0].id;
