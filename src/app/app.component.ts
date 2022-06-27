@@ -16,8 +16,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.jwtService.watchToken().pipe(take(1)).subscribe((token: string) => {
       this.jwtService.setToken(token);
-      this.refreshTokenIfExpired();
     })
+    if(this.jwtService.getToken()) {
+      this.refreshTokenIfExpired();
+    }
   }
   
   refreshTokenIfExpired() {
