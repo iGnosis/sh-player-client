@@ -83,7 +83,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .subscribe(state => {
         this.shScreen = !!state.loggedIn;
       });
-    this.dailyGoals = await this.goalsService.getDailyGoals(new Date().toISOString().split('T')[0]);
+
+    let todayMidnight = new Date();
+    todayMidnight.setHours(0, 0, 0, 0);
+    this.dailyGoals = await this.goalsService.getDailyGoals(todayMidnight.toISOString());
   }
 
   ngAfterViewInit(): void {

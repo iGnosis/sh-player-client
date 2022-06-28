@@ -63,7 +63,7 @@ export class GoalsComponent implements OnInit {
   }
   async initStatsValues(selected?: Date) {
     this.monthlyGoals = await this.goalsService.getMonthlyGoals(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
-    this.dailyGoals = await this.goalsService.getDailyGoals(selected ? selected.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]);
+    this.dailyGoals = await this.goalsService.getDailyGoals(selected ? selected.toISOString() : new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
     this.dailyCompletionPercent = (this.dailyGoals * 100)/this.roundMaxGoal(this.dailyGoals);
     this.monthlyCompletion = (this.monthlyGoals.filter((day: any) => day.totalSessionDurationInMin >= 30).length);
     const noOfDays = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate();
@@ -170,6 +170,7 @@ export class GoalsComponent implements OnInit {
     }
   }
   async selectDate() {
+    console.log('selectDate:this.selectedDae:', this.selectedDate);
     this.initStatsValues(this.selectedDate);
   }
   roundMaxGoal(duration: number) {
