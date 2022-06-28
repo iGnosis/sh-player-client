@@ -8,7 +8,7 @@
                         <p class="display-4 font-bolder">Become the best<br/> version of yourself.</p>
                     </div>
                 </div>
-                
+
                 <!-- <div class="col-12 col-lg-5 ps-6 pe-6 d-flex flex-column justify-content-end">
                     <div class="row">
                         <button (click)="toggleShareModal()" class="btn d-none d-lg-block col-12 btn-primary py-2 px-1 font-bold rounded-2 mb-3 border-none">Share&nbsp;<img src="/assets/icons/share.svg" alt="share"></button>
@@ -19,7 +19,7 @@
                     <div class="mt-xxl-4 d-none d-xxl-block">&nbsp;</div>
                     <div class="monthly-goals-progress position-relative w-full  rounded-6 px-10 py-4">
                         <h1 class="text-white display-6">Monthly Goals</h1>
-                        
+
                         <div class="w-full position-relative mt-1">
                             <div class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center" [style.left]="'calc( '+monthlyCompletionPercent + '% - 4px)'">
                                 <p class="font-bold text-nowrap">You are here</p>
@@ -40,7 +40,7 @@
                         <p class="text-center text-white font-bold text-sm position-absolute start-1/2 bottom-2 translate-middle">Day</p>
                     </div>
                 </div>
-                
+
                 <div class="col-12">
                     <div class="mt-xxl-4">&nbsp;</div>
                     <div class="daily-goals-progress position-relative w-full  rounded-6 px-10 py-4">
@@ -65,7 +65,7 @@
                         <p class="text-center text-black font-bold text-sm position-absolute start-1/2 bottom-2 translate-middle">Minutes</p>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="col-12 col-md-5 col-lg-4">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="calendar-stats text-center text-white">
                             <p class="font-bold">Level</p>
-                            <h1 class="display-4 text-white">4</h1>
+                            <h1 class="display-4 text-white">{{level ? level : 0}}</h1>
                         </div>
                         <img src="/assets/icons/streak-bars.svg" alt="bars" style="transform: scale(-1,1)">
                     </div>
@@ -101,22 +101,22 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="flex-fill d-flex">
                     <div class="m-auto flex-fill bg-white w-full rounded-5">
                         <mat-calendar [(selected)]="selectedDate" (selectedChange)="selectDate()" class="stats-calendar px-5 py-2" [headerComponent]="exampleHeader"></mat-calendar>
                     </div>
                 </div>
-                
+
             </div>
             <!-- <div class="row mt-6 px-6 d-lg-none">
                 <button (click)="toggleShareModal()" class="btn col-12 btn-primary py-2 px-1 font-bold rounded-2 mb-3 border-none">Share&nbsp;<img src="/assets/icons/share.svg" alt="share"></button>
             </div> -->
         </div>
-        
+
     </div>
-    
+
 </div>
 <!-- Share Modal -->
 <div class="share-modal modal" [ngClass]="{'active': shareModal }" id="modal_example" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true">

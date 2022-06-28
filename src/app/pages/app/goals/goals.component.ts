@@ -26,6 +26,7 @@ export class GoalsComponent implements OnInit {
   monthlyGoals!: any;
   dailyGoals!: any;
   streak!: any;
+  level!: any;
   monthlyCompletion!: number;
   monthlyCompletionPercent!: number;
   dailyCompletionPercent!: number;
@@ -76,6 +77,7 @@ export class GoalsComponent implements OnInit {
         .map(item => (item % 60 === 0 && item !== 0) ? (item/60) + 'hr' : (item%60) + '');
     this.dailyGoalPercent = (this.dailyGoal * 100) / this.roundMaxGoal(this.dailyGoals);
     this.streak = await this.goalsService.getStreak();
+    this.level = await this.goalsService.getLevel();
     this.updateCalendarActivity(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
 
     this.initMonthlyBar();
