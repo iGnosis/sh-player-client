@@ -170,7 +170,7 @@ export class GoalsComponent implements OnInit {
     }
   }
   async selectDate() {
-    console.log('selectDate:this.selectedDae:', this.selectedDate);
+    console.log('selectDate:this.selectedDate:', this.selectedDate);
     this.initStatsValues(this.selectedDate);
   }
   roundMaxGoal(duration: number) {
