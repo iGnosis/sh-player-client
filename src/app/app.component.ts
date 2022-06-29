@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { JwtService } from './services/jwt.service';
@@ -10,23 +11,35 @@ import { JwtService } from './services/jwt.service';
 })
 export class AppComponent implements OnInit {
   title = 'patient-provider';
+  timer: any;
   
-  constructor(private jwtService: JwtService, private authService: AuthService) {}
+  constructor(
+    private jwtService: JwtService, 
+    private authService: AuthService,
+    private router: Router,
+  ) {}
   
   ngOnInit(): void {
-    this.jwtService.watchToken().pipe(take(1)).subscribe((token: string) => {
-      this.jwtService.setToken(token);
-      this.jwtService.setAuthTokens({id_token: token});
-    })
-    if(this.jwtService.getToken()) {
+    if(!this.jwtService.getToken() || this.jwtService.getToken() === "") {
+      this.jwtService.watchToken().pipe(take(1)).subscribe((token: string) => {
+        this.jwtService.setToken(token);
+        this.jwtService.setAuthTokens({id_token: token});
+        this.refreshTokenIfExpired();
+      })
+    } else {
       this.refreshTokenIfExpired();
     }
+    this.router.events.subscribe((val: any) => {
+      if(val.urlAfterRedirects && val.urlAfterRedirects === '/public/start') {
+        clearTimeout(this.timer);
+      }
+    })
   }
   
   refreshTokenIfExpired() {
     if(!this.jwtService.getToken()) return;
     let expiringIn: number = this.jwtService.tokenExpiry();
-    setTimeout(() => this.resetTokenOnInterval(), expiringIn);
+    this.timer = setTimeout(() => this.resetTokenOnInterval(), expiringIn);
   }
   async resetTokenOnInterval() {
     const newToken = await this.authService.refreshTokens(this.jwtService.getAuthTokens().refresh_token);
@@ -37,6 +50,6 @@ export class AppComponent implements OnInit {
       expires_in: newToken.data.ExpiresIn,
     });
     let expiringIn: number = this.jwtService.tokenExpiry();
-    setTimeout(() => this.resetTokenOnInterval(), expiringIn);
+    this.timer = setTimeout(() => this.resetTokenOnInterval(), expiringIn);
   }
 }
