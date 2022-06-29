@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.jwtService.watchToken().pipe(take(1)).subscribe((token: string) => {
       this.jwtService.setToken(token);
+      this.jwtService.setAuthTokens({id_token: token});
     })
     if(this.jwtService.getToken()) {
       this.refreshTokenIfExpired();
@@ -25,12 +26,16 @@ export class AppComponent implements OnInit {
   refreshTokenIfExpired() {
     if(!this.jwtService.getToken()) return;
     let expiringIn: number = this.jwtService.tokenExpiry();
-    console.log(expiringIn);
     setTimeout(() => this.resetTokenOnInterval(), expiringIn);
   }
   async resetTokenOnInterval() {
     const newToken = await this.authService.refreshTokens(this.jwtService.getAuthTokens().refresh_token);
     this.jwtService.setToken(newToken.data.IdToken);
+    this.jwtService.setAuthTokens({
+      id_token: newToken.data.IdToken,
+      access_token: newToken.data.AccessToken,
+      expires_in: newToken.data.ExpiresIn,
+    });
     let expiringIn: number = this.jwtService.tokenExpiry();
     setTimeout(() => this.resetTokenOnInterval(), expiringIn);
   }
