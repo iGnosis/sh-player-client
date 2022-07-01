@@ -29,8 +29,9 @@ export class JwtService {
     localStorage.setItem(this.TOKEN, token)
   }
 
-  setAuthTokens(data: {access_token: string, id_token: string, refresh_token: string, expires_in: number, token_type: string}) {
-    localStorage.setItem('auth', JSON.stringify(data))
+  setAuthTokens(data: {access_token?: string, id_token: string, refresh_token?: string, expires_in?: number, token_type?: string}) {
+    const newData = {...this.getAuthTokens(), ...data};
+    localStorage.setItem('auth', JSON.stringify(newData))
   }
 
   getAuthTokens() {

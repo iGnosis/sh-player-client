@@ -11,7 +11,9 @@ export class GraphqlService {
   public publicClient: GraphQLClient
 
   constructor(private jwtService: JwtService) {
-    const additionalHeaders: any = {}
+    const additionalHeaders: any = {
+      'x-pointmotion-origin': window.location.origin
+    }
     if (environment.name == 'local') {
       additionalHeaders['x-pointmotion-debug'] = 'true'
     }

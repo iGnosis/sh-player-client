@@ -26,4 +26,7 @@ export class GoalsService {
     const streak = await this.graphqlService.client.request(GqlConstants.GET_STREAK);
     return streak.patientSessionStreak.streak;
   }
+  async getLevel() {
+    return 1;
+  }
 }
