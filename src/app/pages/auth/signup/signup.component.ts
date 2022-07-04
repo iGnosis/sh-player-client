@@ -24,7 +24,7 @@ export class SignupComponent implements OnInit {
   nickname: string = "";
   showPassword: boolean = false;
   carouselSlide: number = 1;
-  signupStep: number = 0;
+  signupStep: number = 4;
   interestStep: number = 1;
   interests: InterestsDTO[] = [
     { title: 'Classical', img: '/assets/images/interests/interest-0.png', selected: false },
@@ -78,6 +78,12 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {    
     this.code = this.route.snapshot.queryParamMap.get('code') || "";
     this.email = this.route.snapshot.queryParamMap.get('email') || "";
+
+    const step = this.route.snapshot.paramMap.get('step')
+    if (step) {
+      this.signupStep = +step;
+    }
+
     setInterval(() => {
       if (this.carouselSlide === 3) this.carouselSlide = 1;
       else this.carouselSlide++;
@@ -110,14 +116,22 @@ export class SignupComponent implements OnInit {
     this.carouselSlide = slide;
   }
 
+  async setNickName() {
+    const res = await this.authService.setNickName({ 
+      nickname: this.nickname,
+    });
+    if(res.response && res.response.errors) {
+      this.errors = res.response.errors.map((err: any) => err.message)
+    }else {
+      this.signupStep++;
+    }
+  }
+
   async nextSignupStep() {
     this.errors = [];
     if(this.signupStep === 3) {
         const res = await this.authService.signup({ 
-            email: this.email, 
-            password: this.password, 
             nickname: this.nickname, 
-            code: this.code! 
           });
         if(res.response && res.response.errors) {
           this.errors = res.response.errors.map((err: any) => err.message)

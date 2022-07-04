@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { JwtService } from 'src/app/services/jwt.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-callback',
@@ -16,6 +17,7 @@ export class CallbackComponent implements OnInit {
     private route: ActivatedRoute, 
     private authService: AuthService,
     private jwtService: JwtService,
+    private userService: UserService,
     private router: Router
   ) { }
 
@@ -25,12 +27,33 @@ export class CallbackComponent implements OnInit {
     if (codes) {
       this.jwtService.setToken(codes.data.id_token)
       this.jwtService.setAuthTokens(codes.data)
-      this.router.navigate(['app', 'home'])
+      const data = this.decodeJWT(codes?.data?.id_token)
+      this.userService.set({
+        email: data.email,
+        id: data.sub,
+      })
+      const step = await this.userService.isOnboarded();
+      if (step == -1) {
+        this.router.navigate(['app', 'home'])
+      } else {
+        // this.router.navigate(['app', 'signup', step])
+        this.router.navigate(['app', 'home'])
+      }
+      
     } else {
       // Show an error message
       this.error = true
       // this.router.navigate(['app', 'home'])
     }  
+  }
+
+  decodeJWT(token: string | undefined) {
+    if(token) {
+      const parts = token.split('.')
+      if(parts.length === 3) {
+        return JSON.parse(atob(parts[1])) 
+      }
+    }
   }
 
 }

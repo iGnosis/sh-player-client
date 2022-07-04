@@ -5,13 +5,14 @@ import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
 import { LoginRequestDTO, SignupRequestDTO, LogoutRequestDTO } from '../types/pointmotion';
+import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
   baseURL: string = ''
-  constructor(private http: HttpClient, private graphqlService: GraphqlService) {
+  constructor(private http: HttpClient, private graphqlService: GraphqlService, private userService: UserService) {
     this.baseURL = environment.servicesEndpoint
   }
 
@@ -28,9 +29,28 @@ export class AuthService {
     }
   }
 
+  async setNickName(details: SignupRequestDTO) {
+    try {
+      const user = this.userService.get()
+      const data = {
+        nickname: details.nickname,
+        id: user.id
+      }
+      const res = await this.graphqlService.client.request(GqlConstants.SET_NICKNAME, data);
+      return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
   async signup(details: SignupRequestDTO) {
     try {
-      const res = await this.graphqlService.publicClient.request(GqlConstants.SIGN_UP_PATIENT, details);
+      const user = this.userService.get()
+      const data = {
+        nickname: details.nickname,
+        id: user.id
+      }
+      const res = await this.graphqlService.client.request(GqlConstants.SET_NICKNAME, data);
       return res;
     } catch(e) {
       return e;
