@@ -36,8 +36,7 @@ export class CallbackComponent implements OnInit {
       if (step == -1) {
         this.router.navigate(['app', 'home'])
       } else {
-        // this.router.navigate(['app', 'signup', step])
-        this.router.navigate(['app', 'home'])
+        this.router.navigate(['app', 'signup', step])
       }
       
     } else {
