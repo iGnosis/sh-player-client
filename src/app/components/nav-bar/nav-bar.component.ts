@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavBarComponent implements OnInit {
   activeTab!: string;
+  hideNavbar: boolean = false;
   constructor(
     private route:Router,
     private jwtService: JwtService,
@@ -20,7 +21,8 @@ export class NavBarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.activeTab = this.route.url.split('/').slice(-1)[0];    
+    this.activeTab = this.route.url.split('/').slice(-1)[0];   
+    if(this.route.url.split('/')[2] === 'signup') this.hideNavbar = true; 
   }
 
   async logout() {
