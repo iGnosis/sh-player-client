@@ -5,7 +5,7 @@ export interface Patient {
     identifier?: string;
     phoneCountryCode?: string;
     phoneNumber?: string;
-    provider: string;
+    provider?: string;
 }
 export interface PatientSignup {
     id: string;
@@ -21,10 +21,10 @@ export interface LoginRequestDTO {
 }
 
 export interface SignupRequestDTO {
-    email: string,
-    password: string,
+    // email: string,
+    // password: string,
     nickname: string,
-    code: string,
+    // code: string,
 }
 
 export interface LogoutRequestDTO {

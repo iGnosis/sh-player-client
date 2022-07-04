@@ -18,14 +18,14 @@ const routes: Routes = [
     path: 'public', canActivateChild: [PublicGuard], children: [
       { path: 'start', component: StartComponent },
       { path: 'login', component: LoginPageComponent, },
-      { path: 'signup', component: SignupComponent, },
-      { path: 'signup/:step', component: SignupComponent, },
     ]
   },
   { path: 'oauth/callback', component: CallbackComponent},
   { path: "app/session/:id", component: SessionComponent, canActivate: [PrivateGuard] },
   {
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
+      { path: 'signup', component: SignupComponent, },
+      { path: 'signup/:step', component: SignupComponent, },
       { path: 'home', component: HomeComponent, },
       { path: 'goals', component: GoalsComponent, },
       { path: 'help', component: HelpComponent, },

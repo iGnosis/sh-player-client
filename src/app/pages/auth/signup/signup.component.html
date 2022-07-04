@@ -50,7 +50,7 @@
         <div class="row position-absolute w-full h-full">
             <div class="col-9 col-lg-7 col-xl-5 col-xxl-4 mx-auto px-xxl-5 d-flex flex-column justify-content-center align-items-center">
                 <img class="pb-16 w-48" *ngIf="signupStep < 4" src="/assets/icons/sound_health_logo.png" alt="sound health">
-                <p class="text-sm align-self-start" *ngIf="signupStep < 4">Step {{signupStep}} out of 3</p>
+                <!-- <p class="text-sm align-self-start" *ngIf="signupStep < 4">Step {{signupStep}} out of 3</p> -->
                 <h2 class="step-heading pb-6 align-self-start">{{
                     signupStep === 1 ? 'Confirm your email address' : 
                     signupStep === 2 ? 'Create a password' : 
@@ -98,9 +98,15 @@
                     <h3 class="mb-10 text-center mx-10">Understanding your interests will help us create a better experience for you.</h3>
                 </div>
                 <input *ngIf="signupStep === 3" placeholder="Nick Name" type="text" name="nickname" [(ngModel)]="nickname" id="nickname" class="w-full h-12 rounded mb-10 text-md px-3">
-                <button [ngClass]="{'shadow-none': signupStep !== 2 }" class="btn w-full text-center bg-transparent p-0" (click)="nextSignupStep()" [disabled]="signupStep === 2 && checkPasswordStrength(password) === 'Weak'">
+                
+                <button *ngIf="signupStep === 3" class="btn w-full text-center bg-transparent p-0" (click)="setNickName()">
+                    <p [ngClass]="{ 'w-full': signupStep < 4 }" class="continue-btn rounded-2 font-bold btn btn-primary">
+                        {{signupStep === 3 ? 'Update Your Nick Name' : 'Continue' }}
+                    </p>
+                </button>
+                <button *ngIf="signupStep !== 3" [ngClass]="{'shadow-none': signupStep !== 2 }" class="btn w-full text-center bg-transparent p-0" (click)="nextSignupStep()">
                     <p [ngClass]="{'w-4/5': signupStep === 4, 'w-full': signupStep < 4 }" class="continue-btn rounded-2 font-bold btn btn-primary">
-                        {{signupStep === 3 ? 'Complete your sign up' : 'Continue' }}
+                        Continue
                     </p>
                 </button>
                 <div class="completion-confirmation pt-6" *ngIf="signupStep === 3">
@@ -113,8 +119,8 @@
     </div>
 </div>
 <div *ngIf="signupStep === 5" class="interest-container overflow-x-hidden">
-    <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_light.svg" alt="sound health">
-    <div class="confirm-email-container w-screen h-full min-h-screen position-relative">
+    <!-- <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_light.svg" alt="sound health"> -->
+    <div class="confirm-email-container w-screen h-full min-h-screen position-relative" style="overflow-y:scroll; height: 100vh !important;">
         <img class="signup-bg position-absolute w-full" src="/assets/images/interest_bg.png" alt="signup background">
         <div
             class="container d-flex flex-column justify-content-center align-items-center text-white text-center position-relative"
@@ -126,7 +132,7 @@
                 'When would you like to be reminded?'
             }}</h1>
             <p *ngIf="interestStep===3">Reminders help develop a stronger routine and achieve consistency.</p>
-            <div *ngIf="interestStep === 1" class="pt-12 row col-12 col-xl-8 gx-md-12 gy-md-16">
+            <div *ngIf="interestStep === 1" class="row col-12 col-xl-8 gx-md-12 gy-md-16">
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer" *ngFor="let interest of interests; let i=index">
                     <div (click)="selectInterest(i)" [class.selected]="interest.selected" class="position-relative rounded-2">
                         <img class="active position-absolute top-1/2 start-1/2 translate-middle" src="/assets/icons/active.svg" alt="active">
@@ -141,7 +147,7 @@
                     <p class="text-lg font-bold pt-2">Explore All</p>
                 </div>
             </div>
-            <div *ngIf="interestStep === 2" class="pt-12 row col-12 col-xl-8 gx-md-12 gy-md-16">
+            <div *ngIf="interestStep === 2" class="row col-12 col-xl-8 gx-md-12 gy-md-16">
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer" *ngFor="let activity of activities; let i=index">
                     <div (click)="selectActivity(i)" [class.selected]="activity.selected" class="position-relative rounded-2">
                         <img class="active position-absolute top-1/2 start-1/2 translate-middle" src="/assets/icons/active.svg" alt="active">
@@ -163,6 +169,7 @@
                 </div>
             </div>
             <button *ngIf="showNext()" (click)="nextInterestStep()" class="btn btn-light m-auto w-full w-lg-2/5 font-bold mt-10 mb-5">{{interestStep < 3 ? 'Next' : 'Finish'}}</button>
+            <div style="height: 100px;">&nbsp;</div>
         </div>
     </div>
 </div>

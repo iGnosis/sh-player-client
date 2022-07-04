@@ -86,6 +86,14 @@ export const GqlConstants = {
     }
   }
   `,
+
+  SET_NICKNAME: `
+  mutation UpdateNickName($id: uuid!, $nickname: String) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {nickname: $nickname}) {
+      nickname
+    }
+  }`,
+
   SET_FAV_GENRE: `
   mutation SetFavGenre($id: uuid!, $genres: jsonb) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {preferredGenres: $genres}) {
@@ -130,4 +138,13 @@ export const GqlConstants = {
       status
     }
   }`,
+
+  GET_PATIENT_DETAILS: `query PatientDetails($user:uuid!) {
+    patient_by_pk(id:$user) {
+      id
+      email
+      preferredGenres
+      nickname
+    }
+  }`
 };
