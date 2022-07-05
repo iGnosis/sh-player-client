@@ -46,10 +46,13 @@
         </div>
     </div>
     <div class="confirm-email-container w-screen h-screen position-relative" *ngIf="signupStep > 0">
-        <img class="signup-bg position-absolute w-full" src="/assets/images/signup_bg.jpg" alt="signup background">
+        <div class="go-back position-absolute top-10 start-12 cursor-pointer">
+            <p (click)="goBack()" *ngIf="signupStep >= 4" class="text-black text-xl"><i class="fa fa-angle-left"></i>&nbsp;<span>Go Back</span></p>
+        </div>
+        <img class="signup-bg" src="/assets/images/backgrounds/signup-bg.png" alt="signup background">
         <div class="row position-absolute w-full h-full">
             <div class="col-9 col-lg-7 col-xl-5 col-xxl-4 mx-auto px-xxl-5 d-flex flex-column justify-content-center align-items-center">
-                <img class="pb-16 w-48" *ngIf="signupStep < 4" src="/assets/icons/sound_health_logo.png" alt="sound health">
+                <img [ngClass]="{'pb-16 w-48': signupStep!==4, 'position-absolute top-10 end-12' : signupStep===4 }" *ngIf="signupStep < 5" src="/assets/icons/sound_health_logo.png" alt="sound health">
                 <!-- <p class="text-sm align-self-start" *ngIf="signupStep < 4">Step {{signupStep}} out of 3</p> -->
                 <h2 class="step-heading pb-6 align-self-start">{{
                     signupStep === 1 ? 'Confirm your email address' : 
@@ -110,8 +113,8 @@
                     </p>
                 </button>
                 <div class="completion-confirmation pt-6" *ngIf="signupStep === 3">
-                    <p class="font-bold mt-5 text-center px-2">By completing the sign up, you agree to our Sound Health’s <a href="https://pointmotion.us/eula" target="_blank">Terms and Conditions of Use.</a></p>
-                    <p class="font-bold mt-5 text-center px-2">To learn more about how Sound Health collects, uses, shares and protects your personal data, please read Sound Health’s <a href="#">Privacy Policy.</a></p>
+                    <p class="font-bold mt-5 text-center px-2">By completing the sign up, you agree to our Sound Health’s <a href="https://www.pointmotion.us/index.php/end-user-license-agreement" target="_blank">Terms and Conditions of Use.</a></p>
+                    <p class="font-bold mt-5 text-center px-2">To learn more about how Sound Health collects, uses, shares and protects your personal data, please read Sound Health’s <a href="" target="_blank">Privacy Policy.</a></p>
                 </div>
                 <p class="step-heading text-center text-md mt-12 cursor-pointer" *ngIf="signupStep === 4" (click)="goToHome()">Skip for now</p>
             </div>
@@ -119,9 +122,12 @@
     </div>
 </div>
 <div *ngIf="signupStep === 5" class="interest-container overflow-x-hidden">
-    <!-- <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_light.svg" alt="sound health"> -->
+    <div class="go-back position-absolute top-10 start-12 cursor-pointer">
+        <p (click)="interestStep === 1 ? goBack() : goBackInterest()" *ngIf="signupStep >= 4" class="text-white text-xl"><i class="fa fa-angle-left"></i>&nbsp;<span>Go Back</span></p>
+    </div>
+    <img class="position-absolute top-10 end-12" src="/assets/icons/sound_health_light.svg" alt="sound health">
     <div class="confirm-email-container w-screen h-full min-h-screen position-relative" style="overflow-y:scroll; height: 100vh !important;">
-        <img class="signup-bg position-absolute w-full" src="/assets/images/interest_bg.png" alt="signup background">
+        <img class="interest-bg" src="/assets/images/backgrounds/interest-bg.png" alt="interests background">
         <div
             class="container d-flex flex-column justify-content-center align-items-center text-white text-center position-relative"
         >

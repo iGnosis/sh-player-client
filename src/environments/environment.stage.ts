@@ -10,6 +10,6 @@ export const environment: Environment = {
   gqlEndpoint: 'https://api.stage.pointmotioncontrol.com/v1/graphql',
   servicesEndpoint: 'https://services.stage.pointmotioncontrol.com',
   activityEndpoint: 'https://session.stage.pointmotioncontrol.com',
-  cognitoURL: 'https://pointmotion-dev-sh-patient-1.auth.us-east-1.amazoncognito.com',
-  cognitoClientId: '24dshjc1umm04bi12eu46ek727'
+  cognitoURL: 'https://pointmotion-stage-sh-patient.auth.us-east-1.amazoncognito.com',
+  cognitoClientId: '4sk7ie58ca65cu7jn2rlgpgjoq'
 };

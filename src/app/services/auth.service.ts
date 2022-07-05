@@ -94,6 +94,15 @@ export class AuthService {
     }
   }
 
+  async refreshTokens(refreshToken: string) {
+    try {
+      const res = await this.graphqlService.publicClient.request(GqlConstants.REFRESH_TOKEN, {refreshToken})
+      return res.refreshTokens;
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   getSignupLink() {
     return environment.cognitoURL+
             '/signup?client_id='+

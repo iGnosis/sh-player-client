@@ -1,9 +1,9 @@
-import { 
-  Component, 
-  OnInit, 
-  Renderer2, 
+import {
+  Component,
+  OnInit,
+  Renderer2,
   ChangeDetectionStrategy,
-  ChangeDetectorRef, 
+  ChangeDetectorRef,
 } from '@angular/core';
 import * as d3 from 'd3';
 import { GoalsService } from 'src/app/services/goals/goals.service';
@@ -23,9 +23,10 @@ export class GoalsComponent implements OnInit {
   username: string = '';
   monthRange = d3.range(0, 30.5, 5);
   dailyRange = d3.range(0, 30.5, 5).map(item => item+'');
-  monthlyGoals!: any; 
-  dailyGoals!: any; 
-  streak!: any; 
+  monthlyGoals!: any;
+  dailyGoals!: any;
+  streak!: any;
+  level!: any;
   monthlyCompletion!: number;
   monthlyCompletionPercent!: number;
   dailyCompletionPercent!: number;
@@ -46,9 +47,9 @@ export class GoalsComponent implements OnInit {
     private userService: UserService
   ) {
     calendarService.monthChangeClick$.subscribe((e: any) => this.updateCalendarActivity(e.month, e.year))
-    
+
     this.renderer.listen('window', 'click',(e:Event)=>{
-      const clickedElement = e.target as HTMLElement; 
+      const clickedElement = e.target as HTMLElement;
       if(this.shareModal && clickedElement.classList[0] === 'share-modal'){
         this.shareModal=false;
       }
@@ -62,7 +63,7 @@ export class GoalsComponent implements OnInit {
   }
   async initStatsValues(selected?: Date) {
     this.monthlyGoals = await this.goalsService.getMonthlyGoals(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
-    this.dailyGoals = await this.goalsService.getDailyGoals(selected ? selected.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]);
+    this.dailyGoals = await this.goalsService.getDailyGoals(selected ? selected.toISOString() : new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
     this.dailyCompletionPercent = (this.dailyGoals * 100)/this.roundMaxGoal(this.dailyGoals);
     this.monthlyCompletion = (this.monthlyGoals.filter((day: any) => day.totalSessionDurationInMin >= 30).length);
     const noOfDays = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate();
@@ -70,12 +71,13 @@ export class GoalsComponent implements OnInit {
     this.monthRange = d3.range(0, noOfDays + 0.001, Math.floor(noOfDays/6))
     this.monthlyGoal = (this.monthlyGoal > this.monthlyCompletion) ? this.monthlyGoal : this.monthRange.slice(-1)[0];
     this.monthlyGoalPercent = (this.monthlyGoal * 100) / this.roundMaxGoal(this.monthlyCompletion);
-    this.dailyRange = 
+    this.dailyRange =
       d3
         .range(0, this.roundMaxGoal(this.dailyGoals) + 0.001, Math.ceil(this.roundMaxGoal(this.dailyGoals)/6))
         .map(item => (item % 60 === 0 && item !== 0) ? (item/60) + 'hr' : (item%60) + '');
     this.dailyGoalPercent = (this.dailyGoal * 100) / this.roundMaxGoal(this.dailyGoals);
     this.streak = await this.goalsService.getStreak();
+    this.level = await this.goalsService.getLevel();
     this.updateCalendarActivity(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
 
     this.initMonthlyBar();
@@ -105,7 +107,7 @@ export class GoalsComponent implements OnInit {
       .attr('y', 0);
     progress.transition()
       .duration(500)
-      .attr('width', this.monthlyCompletionPercent + '%');      
+      .attr('width', this.monthlyCompletionPercent + '%');
   }
   initDailyBar() {
     d3.select('.daily-progress').select('svg').remove();
@@ -136,7 +138,7 @@ export class GoalsComponent implements OnInit {
     const noOfDays: number = new Date(year, month+1, 0).getDate();
     this.monthlyGoals = await this.goalsService.getMonthlyGoals(month, year);
     const today = new Date();
-    const upperBound = 
+    const upperBound =
       month === new Date().getMonth() && year === new Date().getFullYear() ? // if current month, show remaining days as inactive
         new Date().getDate() :
       (month > new Date().getMonth() && year === new Date().getFullYear()) ||year > new Date().getFullYear() ? // if month or year comes in future, show no activity
@@ -157,7 +159,7 @@ export class GoalsComponent implements OnInit {
       //formatting date to match mui calendar date
       const current_date_str = `${current_date.toLocaleDateString('default', { month: 'long'})} ${new Date(day.date).getDate()}, ${current_date.getFullYear()}`;
       const mat_day = this.renderer.selectRootElement(`[aria-label="${current_date_str}"]`, true);
-      this.renderer.addClass(mat_day, day.totalSessionDurationInMin < 30 ? 'inactive-day' : 'active-day');
+      this.renderer.addClass(mat_day, day.totalSessionDurationInMin < 1 ? 'inactive-day' : 'active-day');
       // this.calendarDates[new Date(day.date).getDate()+firstDay.getDay()-1].activity = day.totalSessionDurationInMin < 30 ? 'inactive' : 'active';
     });
     if(month === new Date().getMonth() && year === new Date().getFullYear()) {
@@ -168,6 +170,7 @@ export class GoalsComponent implements OnInit {
     }
   }
   async selectDate() {
+    console.log('selectDate:this.selectedDate:', this.selectedDate);
     this.initStatsValues(this.selectedDate);
   }
   roundMaxGoal(duration: number) {
@@ -214,8 +217,8 @@ export class GoalsComponent implements OnInit {
 })
 export class ExampleHeader<D> {
   constructor(
-      private _calendar: MatCalendar<D>, 
-      private _dateAdapter: DateAdapter<D>, 
+    private _calendar: MatCalendar<D>,
+    private _dateAdapter: DateAdapter<D>,
       cdr: ChangeDetectorRef,
       private calendarService: CalendarService
   ) {
@@ -236,13 +239,13 @@ export class ExampleHeader<D> {
     this._calendar.activeDate = mode === 'month' ?
         this._dateAdapter.addCalendarMonths(this._calendar.activeDate, -1) :
         this._dateAdapter.addCalendarYears(this._calendar.activeDate, -1);
-    this.calendarService.monthChangeClick(this._dateAdapter.getMonth(this._calendar.activeDate), this._dateAdapter.getYear(this._calendar.activeDate));  
+    this.calendarService.monthChangeClick(this._dateAdapter.getMonth(this._calendar.activeDate), this._dateAdapter.getYear(this._calendar.activeDate));
   }
 
   nextClicked(mode: 'month' | 'year') {
     this._calendar.activeDate = mode === 'month' ?
         this._dateAdapter.addCalendarMonths(this._calendar.activeDate, 1) :
         this._dateAdapter.addCalendarYears(this._calendar.activeDate, 1);
-    this.calendarService.monthChangeClick(this._dateAdapter.getMonth(this._calendar.activeDate), this._dateAdapter.getYear(this._calendar.activeDate));  
+    this.calendarService.monthChangeClick(this._dateAdapter.getMonth(this._calendar.activeDate), this._dateAdapter.getYear(this._calendar.activeDate));
   }
 }

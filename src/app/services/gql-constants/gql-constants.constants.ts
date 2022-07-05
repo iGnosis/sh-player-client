@@ -1,5 +1,5 @@
 export const GqlConstants = {
-  CREATE_SESSION: `mutation StartSession($careplan: uuid!) {
+  CREATE_SESSION: `mutation StartSession($careplan: uuid) {
     insert_session_one(object: {careplan: $careplan}) {
       id
       createdAt
