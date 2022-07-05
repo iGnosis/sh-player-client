@@ -1,4 +1,3 @@
-<!-- Part 1 -->
 <div class="reward-stats">
   <div class="waves-bg">
     <img src="assets/images/backgrounds/Asset 30@3x 1.png">
@@ -8,16 +7,14 @@
   </div>
 </div>
 
-<div class="container pt-5">
+<div class="container">
   <div class="row">
-    <!-- Part 2 -->
     <div class="col">
       <div class="row">
-
         <div *ngFor="let reward of rewards" class="col-lg-4 col-md-12 pt-12 text-center">
           <i [ngClass]="reward.isUnlocked ? 'fa-solid fa-lock-open pb-4' : 'fa-solid fa-lock pb-4'"></i>
           <div
-            [ngClass]="reward.isUnlocked ? 'card reward-card reward-card pt-4' : 'card reward-card locked-reward-card pt-4'">
+            [ngClass]="reward.isUnlocked ? 'card reward-card pt-4' : 'card reward-card locked-reward-card pt-4'">
             <img *ngIf="reward.rewardTier === 'bronze'" class="reward-card-img" src="assets/images/rewards/bronze-tier.png"
               alt="Bronze Reward">
             <img *ngIf="reward.rewardTier === 'silver'" class="reward-card-img" src="assets/images/rewards/silver-tier.png"
@@ -26,7 +23,7 @@
               alt="Gold Reward">
             <div class="card-body">
               <h3 class="card-title reward-card-text">{{reward.title}}</h3>
-              <div class="d-grid gap-2">
+              <div>
                 <button *ngIf="reward.isUnlocked" class="btn btn-primary rounded-2 font-bold" type="button">
                   Access Now
                 </button>
