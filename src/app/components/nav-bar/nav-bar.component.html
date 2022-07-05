@@ -49,6 +49,10 @@
                 <div class="h-full" [class.active]="activeTab === 'home'">
                     <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'home'" routerLink="/app/home" aria-current="page">Home</a>
                 </div>
+                <div class="h-full" [class.active]="activeTab === 'rewards'">
+                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'rewards'" routerLink="/app/rewards"
+                        aria-current="page">Rewards</a>
+                </div>
                 <div class="h-full" [class.active]="activeTab === 'goals'">
                     <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'goals'" routerLink="/app/goals">Goals</a>
                 </div>
