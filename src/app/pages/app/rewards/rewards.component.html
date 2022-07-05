@@ -18,9 +18,12 @@
           <i [ngClass]="reward.isUnlocked ? 'fa-solid fa-lock-open pb-4' : 'fa-solid fa-lock pb-4'"></i>
           <div
             [ngClass]="reward.isUnlocked ? 'card reward-card reward-card pt-4' : 'card reward-card locked-reward-card pt-4'">
-            <img *ngIf="reward.rewardTier === 'bronze'" src="assets/images/rewards/bronze-tier.png" alt="Bronze Reward">
-            <img *ngIf="reward.rewardTier === 'silver'" src="assets/images/rewards/silver-tier.png" alt="Silver Reward">
-            <img *ngIf="reward.rewardTier === 'gold'" src="assets/images/rewards/gold-tier.png" alt="Gold Reward">
+            <img *ngIf="reward.rewardTier === 'bronze'" class="reward-card-img" src="assets/images/rewards/bronze-tier.png"
+              alt="Bronze Reward">
+            <img *ngIf="reward.rewardTier === 'silver'" class="reward-card-img" src="assets/images/rewards/silver-tier.png"
+              alt="Silver Reward">
+            <img *ngIf="reward.rewardTier === 'gold'" class="reward-card-img" src="assets/images/rewards/gold-tier.png"
+              alt="Gold Reward">
             <div class="card-body">
               <h3 class="card-title reward-card-text">{{reward.title}}</h3>
               <div class="d-grid gap-2">
