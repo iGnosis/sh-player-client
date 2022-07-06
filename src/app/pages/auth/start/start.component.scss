@@ -58,7 +58,7 @@
         .indicators {
             > div {
                 cursor: pointer;
-                background-color: #CBD5E0;
+                background-color: $border-light;
                 &.active {
                     background-color: #2F51AE;
                 }
