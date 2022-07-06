@@ -11,6 +11,7 @@ import { HelpComponent } from './pages/app/help/help.component';
 import { PrivateComponent } from './layouts/private/private.component';
 import { CallbackComponent } from './pages/auth/callback/callback.component';
 import { StartComponent } from './pages/auth/start/start.component';
+import { RewardsComponent } from './pages/app/rewards/rewards.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'public/start', pathMatch: 'full' },
@@ -18,15 +19,16 @@ const routes: Routes = [
     path: 'public', canActivateChild: [PublicGuard], children: [
       { path: 'start', component: StartComponent },
       { path: 'login', component: LoginPageComponent, },
-      { path: 'signup', component: SignupComponent, },
-      { path: 'signup/:step', component: SignupComponent, },
     ]
   },
   { path: 'oauth/callback', component: CallbackComponent},
   { path: "app/session/:id", component: SessionComponent, canActivate: [PrivateGuard] },
   {
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
+      { path: 'signup', component: SignupComponent, },
+      { path: 'signup/:step', component: SignupComponent, },
       { path: 'home', component: HomeComponent, },
+      { path: 'rewards', component: RewardsComponent },
       { path: 'goals', component: GoalsComponent, },
       { path: 'help', component: HelpComponent, },
     ]

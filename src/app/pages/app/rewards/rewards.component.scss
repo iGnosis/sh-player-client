@@ -1,0 +1,50 @@
+.reward-header {
+  position: relative;
+
+  &::before {
+      content: "";
+      opacity: 1;
+      position: absolute;
+      top: -30px;
+      left: 0;
+      width: 100%;
+      height: calc(100% + 30px);
+        background: url(/assets/images/backgrounds/reward-page-waves.png);
+        background-size: cover;
+        transform: rotate(-1deg);
+      }
+}
+.reward-card {
+  border-radius: 16px;
+  box-shadow: 0px 1px 2px #000066, 0px 0px 1px #000066;
+}
+
+.reward-card-text {
+  color: #000066;
+}
+
+.reward-card-img {
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.locked-reward-card {
+  background: #E2E8F0;
+
+  button {
+    border: none;
+    background: #718096;
+  }
+}
+
+.fa-lock-open {
+  font-size: 3em;
+  color: #00BD3E;
+}
+
+.fa-lock {
+  font-size: 3em;
+  color: #718096;
+}

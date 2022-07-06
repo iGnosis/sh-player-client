@@ -83,7 +83,7 @@
         .indicators {
             > div {
                 cursor: pointer;
-                background-color: #CBD5E0;
+                background-color: $border-light;
                 &.active {
                     background-color: #2F51AE;
                 }
@@ -107,9 +107,14 @@
     .confirm-email-container {
         font-size: 10px;
         .signup-bg {
-            right: 0;
-            top: 0;
+            position: fixed;
+            left: -10vw;
+            top: -45vh;
             z-index: 0;
+            opacity: 0.2;
+            transform: rotate(-10.58deg);
+            width: 111vw;
+            max-width: unset;
         }
         > .row {
             z-index: 1;
@@ -149,6 +154,15 @@
 }
 .interest-container {
     background-color: #000033;
+    .interest-bg {
+        position: fixed;
+        width: 111vw;
+        left: -8vw;
+        top: -10vh;
+        opacity: 0.1;
+        transform: rotate(-10.58deg);
+        max-width: unset;
+    }
     .active {
         display: none;
     }
@@ -176,11 +190,25 @@
     }
     .reminder-times {
         button.btn-light {
-            background-color: #CBD5E0;
+            background-color: $border-light;
             border: none;
         }
         .bg-green {
             background-color: #00BD3E;
+        }
+    }
+}
+.go-back {
+    z-index: 10;
+    p {
+        display: flex;
+        align-items: center;
+        i {
+            font-size: 2.5rem;
+        }
+        span {
+            margin-top: 5px;
+            margin-left: 0.2rem;
         }
     }
 }

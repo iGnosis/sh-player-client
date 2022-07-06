@@ -4,33 +4,22 @@
         <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
         
         <div class="carousel-images">
-            <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto" [ngClass]="'slide'+carouselSlide"></div>
-            <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-2 mx-auto" [ngClass]="'slide'+carouselSlide"></div>
-            <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-3 mx-auto" [ngClass]="'slide'+carouselSlide"></div>
+            <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto slide1"></div>
+            <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-2 mx-auto slide1"></div>
+            <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-3 mx-auto slide1"></div>
             <div class="position-absolute top-1/2 start-1/2 translate-middle img-bg-overlay rounded-4">
-                <img class="w-full h-full" *ngIf="carouselSlide===1" src="/assets/images/carousel-img-1.png" alt="carousel thumbnail">
-                <img class="w-full h-full" *ngIf="carouselSlide===2" src="/assets/images/carousel-img-2.png" alt="carousel thumbnail">
-                <img class="w-full h-full" *ngIf="carouselSlide===3" src="/assets/images/carousel-img-3.png" alt="carousel thumbnail">
+                <img class="w-full h-full" *ngIf="carouselSlide===1" src="/assets/images/carousel-img.png" alt="carousel thumbnail">
             </div>
-            <p class="caption position-absolute bottom-2 bottom-xxl-20 start-1/2 text-lg font-bold text-center translate-middle">
-                {{carouselSlide === 1 ? 
-                    'Take control of your life through the power of music and movement.' : 
-                carouselSlide === 2 ? 
-                    'Stay physically and mentally sharp with our curated list of activities everyday.' 
-                :   'Track relevant statistics and share your progress with your friends and family.'}}
+            <p class="caption position-absolute bottom-5 bottom-xxl-20 start-1/2 text-center translate-middle">
+                Your Home for<br><span class="font-bold">Music</span> and <span class="font-bold">Movement</span>
             </p>
-            <div class="indicators position-absolute bottom-4 bottom-xxl-16 start-1/2 translate-middle row w-3/5 gap-5">
-                <div (click)="updateCarouselSlide(1)" [class.active]="carouselSlide === 1" class="rounded col h-2"></div>
-                <div (click)="updateCarouselSlide(2)" [class.active]="carouselSlide === 2" class="rounded col h-2"></div>
-                <div (click)="updateCarouselSlide(3)" [class.active]="carouselSlide === 3" class="rounded col h-2"></div>
-            </div>
         </div>
     </div>
     <div class="signup-card-container col-10 col-md-9 col-lg-6 min-h-screen d-flex flex-column justify-content-center py-lg-16 px-lg-10 position-relative">
         <div class="row">
             <div class="col-lg-12 col-md-9 col-xl-10 col-xxl-8 mx-auto d-flex flex-column justify-content-center align-items-center">
-                <img class="pb-16 w-48" src="/assets/icons/sound_health_logo.png" alt="sound health">
-                <h1 class="pb-12 display-6 text-nowrap">Welcome to Point Motion.</h1>
+                <img class="pb-16 w-48" src="/assets/images/logo.png" alt="point motion">
+                <h1 class="pb-12 display-6 text-nowrap">Welcome to Sound Health.</h1>
                 <div class="login-btn w-full text-center" (click)="null">
                     <a [href]="signUpLink" class="btn btn-primary w-4/5 rounded-2 font-bold py-4">
                         Get Started
@@ -38,7 +27,7 @@
                 </div>
                 <div class="signup-container mt-12 text-center">
                     <span class="text-black">Already have an account?&nbsp;</span>
-                    <a [href]="loginLink" class="font-semibold">Login</a>
+                    <a [href]="loginLink" class="font-semibold">Log In</a>
                 </div>
             </div>
         </div>

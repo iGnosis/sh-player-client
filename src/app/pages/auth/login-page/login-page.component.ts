@@ -14,7 +14,6 @@ export class LoginPageComponent implements OnInit {
   email = "";
   password = "";
   showPassword = false;
-  carouselSlide = 1;
   signUpLink = ''
   loginLink = ''
 
@@ -28,39 +27,33 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
     this.signUpLink = this.authService.getSignupLink();
     this.loginLink = this.authService.getLoginLink();
-    setInterval(() => {
-      if (this.carouselSlide === 3) this.carouselSlide = 1;
-      else this.carouselSlide++;
-      console.log('next slide');
-    }, 4000);
   }
 
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
 
-  updateCarouselSlide(slide: number) {
-    this.carouselSlide = slide;
-  }
-
   async onSignIn() {
     this.errors = [];
-    await this.authService
-      .login({ email: this.email, password: this.password })
-      .subscribe({
-        next: (data: any) => {
-          this.jwtService.setToken(data.token);
-          this.userService.set(data.patient);
-          this.router.navigate(["/app/home"], { state: { loggedIn: true }});
-          this.loginMusic();
-        },
-        error: (err) => {
-          console.error(err)
-          if (err.err) {
-            this.errors = err.error.message;
-          }
-        },
-      });
+    location.href = this.loginLink;
+
+    // await this.authService
+    //   .login({ email: this.email, password: this.password })
+    //   .subscribe({
+    //     next: (data: any) => {
+    //       this.jwtService.setToken(data.token);
+    //       this.userService.set(data.patient);
+    //       this.router.navigate(["/app/home"], { state: { loggedIn: true }});
+    //       location.href = this.loginLink;
+    //       this.loginMusic();
+    //     },
+    //     error: (err) => {
+    //       console.error(err)
+    //       if (err.err) {
+    //         this.errors = err.error.message;
+    //       }
+    //     },
+    //   });
   }
 
   loginMusic() {

@@ -24,7 +24,7 @@ export class SignupComponent implements OnInit {
   nickname: string = "";
   showPassword: boolean = false;
   carouselSlide: number = 1;
-  signupStep: number = 0;
+  signupStep: number = 3;
   interestStep: number = 1;
   interests: InterestsDTO[] = [
     { title: 'Classical', img: '/assets/images/interests/interest-0.png', selected: false },
@@ -73,11 +73,22 @@ export class SignupComponent implements OnInit {
   ) {
     this.signUpLink = this.authService.getSignupLink();
     this.loginLink = this.authService.getLoginLink();
+    router.events.subscribe(() => {
+      let step = parseInt(this.route.snapshot.paramMap.get('step')!);
+      if(step === -1) router.navigate(['/app/home']);
+      this.signupStep = step;
+    })
   }
 
   ngOnInit(): void {    
-    this.code = this.route.snapshot.queryParamMap.get('code') || "";
-    this.email = this.route.snapshot.queryParamMap.get('email') || "";
+    this.code = this.userService.get().id || "";
+    this.email = this.userService.get().email || "";
+
+    const step = this.route.snapshot.paramMap.get('step')
+    if (step) {
+      this.signupStep = +step;
+    }
+
     setInterval(() => {
       if (this.carouselSlide === 3) this.carouselSlide = 1;
       else this.carouselSlide++;
@@ -110,26 +121,47 @@ export class SignupComponent implements OnInit {
     this.carouselSlide = slide;
   }
 
+  async setNickName() {
+    const res = await this.authService.setNickName({ 
+      nickname: this.nickname,
+    });
+    if(res.response && res.response.errors) {
+      this.errors = res.response.errors.map((err: any) => err.message)
+    }else {
+      this.changeStep(this.signupStep+1);
+    }
+  }
+
+  changeStep(step: number) {
+    this.signupStep = step;
+    this.router.navigate(['/app/signup/' + step])
+  }
+
+  goBack() {
+    this.changeStep(this.signupStep-1);
+  }
+
+  goBackInterest() {
+    this.interestStep--;
+  }
+
   async nextSignupStep() {
     this.errors = [];
     if(this.signupStep === 3) {
         const res = await this.authService.signup({ 
-            email: this.email, 
-            password: this.password, 
             nickname: this.nickname, 
-            code: this.code! 
           });
         if(res.response && res.response.errors) {
           this.errors = res.response.errors.map((err: any) => err.message)
         }else {
           this.userService.setPatient(res.signUpPatient.patient);
           this.jwtService.setToken(res.signUpPatient.token);
-          this.signupStep++;
+          this.changeStep(this.signupStep+1);
         }
 
     }
     else {
-      this.signupStep++;
+      this.changeStep(this.signupStep+1);
     }
   }
   goToHome() {
@@ -146,7 +178,7 @@ export class SignupComponent implements OnInit {
           genres[item.title] = true;
         }
       })
-      const res = await this.authService.setPreferredGenres({ genres, id: this.userService.getPatient().id})
+      const res = await this.authService.setPreferredGenres({ genres, id: this.userService.get().id})
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
@@ -161,7 +193,7 @@ export class SignupComponent implements OnInit {
           activities[item.title] = true;
         }
       })
-      const res = await this.authService.setPreferredActivities({ activities, id: this.userService.getPatient().id})
+      const res = await this.authService.setPreferredActivities({ activities, id: this.userService.get().id})
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
