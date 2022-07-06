@@ -57,7 +57,7 @@ export class SignupComponent implements OnInit {
     'Afternoon' : false,
     'Evening' : false,
     'Night' : false,
-    'custom' : [],
+    // 'custom' : [],
   };
   customTime: boolean = false;
   selectedTime!: string;
@@ -170,7 +170,7 @@ export class SignupComponent implements OnInit {
 
   async nextInterestStep() {
     this.errors = [];
-    if(this.interestStep === 3) this.goToHome();
+    if(this.interestStep === 2) this.goToHome();
     else if(this.interestStep === 1) {
       let genres: any = {};
       this.interests.forEach(item => {
