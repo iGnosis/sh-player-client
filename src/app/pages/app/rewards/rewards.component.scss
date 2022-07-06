@@ -1,41 +1,19 @@
-// needs to be refactored - use globally defined variables for Pointmotion colors.
-.reward-stats {
+.reward-header {
   position: relative;
-  background-color: #000066;
-  height: 35vh;
 
-  .waves-bg img {
-    object-fit: cover;
-    height: 35vh;
-    width: 100%;
-  }
+  &::before {
+      content: "";
+      opacity: 1;
+      position: absolute;
+      top: -30px;
+      left: 0;
+      width: 100%;
+      height: calc(100% + 30px);
+        background: url(/assets/images/backgrounds/reward-page-waves.png);
+        background-size: cover;
+        transform: rotate(-1deg);
+      }
 }
-
-// needs to be refactored - avoid duplicating code
-.reward-text-title {
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffffff;
-}
-
-.reward-text-description {
-  position: absolute;
-  top: 55%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffffff;
-}
-
-.reward-text-score {
-  position: absolute;
-  top: 75%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffffff;
-}
-
 .reward-card {
   border-radius: 16px;
   box-shadow: 0px 1px 2px #000066, 0px 0px 1px #000066;

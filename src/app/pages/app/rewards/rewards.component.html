@@ -1,9 +1,18 @@
-<div class="reward-stats">
-  <div class="waves-bg">
-    <img src="assets/images/backgrounds/Asset 30@3x 1.png">
-    <h1 class="reward-text-title display-4 fw-bold">Rewards</h1>
-    <h1 class="reward-text-description display-5 text-center">Total rewards unlocked</h1>
-    <h1 class="reward-text-score display-5">{{rewardsUnlocked}}</h1>
+<div class="pt-10 pb-10 bg-primary reward-header">
+  <div class="container max-w-screen-xl">
+    <div class="row row-grid align-items-center">
+      <div class="col text-center">
+        <div class="display-1 text-white">
+          Rewards
+        </div>
+        <h1 class="pt-2 ls-tight font-bolder display-6 text-white mb-5">
+          Total Rewards Unlocked
+        </h1>
+        <h1 class="ls-tight font-bolder display-6 text-white mb-5">
+          {{rewardsUnlocked}}
+        </h1>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -23,14 +32,12 @@
               alt="Gold Reward">
             <div class="card-body">
               <h3 class="card-title reward-card-text">{{reward.title}}</h3>
-              <div>
                 <button *ngIf="reward.isUnlocked" class="btn btn-primary rounded-2 font-bold" type="button">
                   Access Now
                 </button>
                 <button *ngIf="!reward.isUnlocked" class="btn btn-primary rounded-2 font-bold" type="button">
                   Finish Monthly Goal to Access
                 </button>
-              </div>
             </div>
           </div>
         </div>
