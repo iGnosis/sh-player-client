@@ -25,7 +25,7 @@ export class SignupComponent implements OnInit {
   showPassword: boolean = false;
   carouselSlide: number = 1;
   signupStep: number = 3;
-  interestStep: number = 1;
+  interestStep: number = 3;
   interests: InterestsDTO[] = [
     { title: 'Classical', img: '/assets/images/interests/interest-0.png', selected: false },
     { title: 'Rock', img: '/assets/images/interests/interest-1.jpg', selected: false },
@@ -57,7 +57,7 @@ export class SignupComponent implements OnInit {
     'Afternoon' : false,
     'Evening' : false,
     'Night' : false,
-    'custom' : [],
+    // 'custom' : [],
   };
   customTime: boolean = false;
   selectedTime!: string;
