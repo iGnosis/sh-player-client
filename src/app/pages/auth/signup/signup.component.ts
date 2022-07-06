@@ -25,7 +25,7 @@ export class SignupComponent implements OnInit {
   showPassword: boolean = false;
   carouselSlide: number = 1;
   signupStep: number = 3;
-  interestStep: number = 3;
+  interestStep: number = 1;
   interests: InterestsDTO[] = [
     { title: 'Classical', img: '/assets/images/interests/interest-0.png', selected: false },
     { title: 'Rock', img: '/assets/images/interests/interest-1.jpg', selected: false },
@@ -170,7 +170,7 @@ export class SignupComponent implements OnInit {
 
   async nextInterestStep() {
     this.errors = [];
-    if(this.interestStep === 3) this.goToHome();
+    if(this.interestStep === 2) this.goToHome();
     else if(this.interestStep === 1) {
       let genres: any = {};
       this.interests.forEach(item => {
