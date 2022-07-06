@@ -18,11 +18,15 @@ export class NavBarComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private authService: AuthService,
-  ) { }
+  ) { 
+    this.router.events.subscribe(() => {
+      this.activeTab = this.route.url.split('/').slice(-1)[0];   
+      if(this.route.url.split('/')[2] === 'signup') this.hideNavbar = true; 
+      else this.hideNavbar = false;
+    })
+  }
 
   ngOnInit(): void {
-    this.activeTab = this.route.url.split('/').slice(-1)[0];   
-    if(this.route.url.split('/')[2] === 'signup') this.hideNavbar = true; 
   }
 
   async logout() {

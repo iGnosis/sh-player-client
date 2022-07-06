@@ -178,7 +178,7 @@ export class SignupComponent implements OnInit {
           genres[item.title] = true;
         }
       })
-      const res = await this.authService.setPreferredGenres({ genres, id: this.userService.getPatient().id})
+      const res = await this.authService.setPreferredGenres({ genres, id: this.userService.get().id})
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
@@ -193,7 +193,7 @@ export class SignupComponent implements OnInit {
           activities[item.title] = true;
         }
       })
-      const res = await this.authService.setPreferredActivities({ activities, id: this.userService.getPatient().id})
+      const res = await this.authService.setPreferredActivities({ activities, id: this.userService.get().id})
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
