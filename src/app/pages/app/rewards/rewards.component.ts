@@ -12,7 +12,7 @@ interface RewardsDTO {
   styleUrls: ['./rewards.component.scss']
 })
 export class RewardsComponent implements OnInit {
-  rewardsUnlocked?: number;
+  rewardsUnlocked: number;
   rewards: Array<RewardsDTO>;
 
   constructor() {
@@ -37,5 +37,4 @@ export class RewardsComponent implements OnInit {
   }
 
   ngOnInit(): void { }
-
 }
