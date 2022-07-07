@@ -46,7 +46,6 @@ import { AnimationItem } from "lottie-web";
   ],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  shScreen: boolean = false;
   user!: Patient;
   careplanId!: string;
   activeCareplans: any;
@@ -96,12 +95,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.activatedRoute.paramMap
-      .pipe(map(() => window.history.state))
-      .subscribe((state) => {
-        this.shScreen = !!state.loggedIn;
-      });
-
     let todayMidnight = new Date();
     todayMidnight.setHours(0, 0, 0, 0);
 
@@ -113,9 +106,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMonthlyBar();
-    setTimeout(() => {
-      this.shScreen = false;
-    }, 4000);
   }
 
   nextSessionState() {
@@ -148,10 +138,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async loginMusic() {
-    const sound = new Audio("assets/sounds/Sound Health Soundscape_LogIn.mp3");
-    sound.play();
-  }
 
   nth(d: number) {
     if (d > 3 && d < 21) return "th";

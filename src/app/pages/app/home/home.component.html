@@ -1,8 +1,4 @@
-<div @fadeOut *ngIf="shScreen" class="sh-screen position-fixed w-screen h-screen top-0 start-0 bg-white">
-  <img src="/assets/icons/point_motion_logo.jpg" alt="point Motion" class="position-absolute top-16 start-16">
-  <img src="/assets/icons/sound_health_logo@3x.jpg" alt="sound health"
-    class="position-absolute translate-middle top-1/2 start-1/2">
-</div>
+
 <div class="w-1/2 h-screen position-absolute top-0 end-0">
   <ng-lottie [options]="options">
   </ng-lottie>
@@ -36,8 +32,8 @@
                 <div class="daily-progress-bar position-absolute h-1 translate-middle-y top-1/2 start-10 end-12">
                   <div class="current-progress h-full bg-success" [style.width]="dailyCompletionPercent+'%'"></div>
                 </div>
-                <div 
-                class="session-index rounded-pill w-12 h-12 d-flex position-relative" 
+                <div
+                class="session-index rounded-pill w-12 h-12 d-flex position-relative"
                 [ngClass]="{'start': session.status === sessionType.Start,'locked': session.status === sessionType.Locked,'completed': session.status === sessionType.Completed }"
                 *ngFor="let session of sessions; let i = index">
                   <p class="m-auto font-bold text-lg">

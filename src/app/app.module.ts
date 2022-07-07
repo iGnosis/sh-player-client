@@ -31,10 +31,11 @@ import { RewardsComponent } from './pages/app/rewards/rewards.component';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 
-export function playerFactory(): any {  
+export function playerFactory(): any {
   return import('lottie-web');
 }
 
+import { ShScreenComponent } from './components/sh-screen/sh-screen.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +52,7 @@ export function playerFactory(): any {
     CallbackComponent,
     StartComponent,
     RewardsComponent,
+    ShScreenComponent,
   ],
   imports: [
     BrowserModule,
