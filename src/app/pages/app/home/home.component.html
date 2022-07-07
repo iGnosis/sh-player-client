@@ -1,56 +1,124 @@
 <div @fadeOut *ngIf="shScreen" class="sh-screen position-fixed w-screen h-screen top-0 start-0 bg-white">
-    <img src="/assets/icons/point_motion_logo.jpg" alt="point Motion" class="position-absolute top-16 start-16">
-    <img src="/assets/icons/sound_health_logo@3x.jpg" alt="sound health" class="position-absolute translate-middle top-1/2 start-1/2">
+  <img src="/assets/icons/point_motion_logo.jpg" alt="point Motion" class="position-absolute top-16 start-16">
+  <img src="/assets/icons/sound_health_logo@3x.jpg" alt="sound health"
+    class="position-absolute translate-middle top-1/2 start-1/2">
 </div>
-<!-- <div class="d-flex flex-column h-screen w-screen overflow-hidden position-relative"> -->
-    <!-- <nav-bar></nav-bar> -->
-    <div *ngFor="let item of dummySessions; let i = index" >
-            <div
-                class="home-container d-flex align-items-center flex-fill position-absolute w-full h-full"
-                [style]="'background-image: url(' + item.bg + ')'"
-                [@slideOut]="i === 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
-                [@slideInOut]="i > 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
-                *ngIf="currentSession === i"
-            >
-                <div class="container-fluid px-xl-10">
-                    <div class="row row-grid align-items-center text-white">
-                        <!-- <div class="col-lg-6">
-                            <h1 class="ls-tight font-bolder display-3 mb-5 text-white">
-                                {{item.title}}
-                            </h1>
-                            <p class="lead mb-3">
-                                <img src="/assets/icons/joystick.svg" alt="joystick" class="me-8 text-center">Sound Health Exclusive
-                            </p>
-                            <p class="lead mb-3">
-                                <i class="fa fa-clock-o me-8 text-center"></i>30 Total Active Minutes
-                            </p>
-                            <p class="lead mb-3">
-                                <i class="fa fa-calendar-o me-8 text-center"></i>14th February, 2022
-                            </p>
-                            <p *ngIf="dailyGoals<30" class="lead mb-3">
-                                <img src="/assets/icons/clock.svg" alt="clock" class="me-8 text-center">{{30 - dailyGoals | number: '1.0-0'}} Minutes Remaining
-                            </p>
-                            <div class="mt-12 mx-n2">
-                                <button
-                                    [disabled]="dailyGoals>30 || dailyGoals === 30"
-                                    (click)="startNewSession()"
-                                    class="session-btn btn btn-lg btn-white font-bolder mx-2 px-lg-32 px-xl-56 text-nowrap rounded-2"
-                                    [ngClass]="{'start': dailyGoals < 30, 'completed' : dailyGoals > 30 || dailyGoals === 30, 'locked' : item.status===3}"
-                                >
-                                    <i class="fa me-5 text-center"
-                                        [ngClass]="{'fa-play': dailyGoals < 30, 'fa-check': dailyGoals > 30 || dailyGoals === 30, 'fa-lock': item.status === 3}"></i>{{
-                                        dailyGoals === 0 ? 'Start Session':
-                                        dailyGoals < 30 ? 'Continue Session':
-                                        'Completed Session'
-                                    }}
-                                </button>
-                            </div>
-                        </div> -->
-                        <div class="col-lg-6 offset-1">
-                            <button (click)="startNewSession()" class="start-btn w-64 h-64 rounded-pill text-white display-5">Start</button>
-                        </div>
-                    </div>
+<div class="d-flex container-fluid flex-column h-screen w-screen overflow-hidden position-relative">
+  <div class="row h-full">
+
+    <div class="col-lg-5 h-full">
+      <div class="row h-full">
+
+        <div class="col-lg-12 mx-auto">
+          &nbsp;
+        </div>
+        <div class="col-lg-12 intro mx-auto d-flex justify-content-center flex-column">
+          <h2 class="text-primary">Be the best version of yourself.</h2>
+          <h1 class="display-6 text-primary ">{{currentDate.day}} of {{currentDate.month}}, {{currentDate.year}}</h1>
+        </div>
+        <div class="col-lg-12 daily-goals mx-auto ">
+          <div class="daily-goals-progress position-relative w-full rounded-6 px-10 py-4">
+            <div class="row">
+              <div class="col-lg-6 text-primary display-6">Daily Goals</div>
+              <div class="col-lg-6 d-flex align-items-center justify-content-center flex-end">
+                <div class="monthly-remainder">
+                  <p class="text-dark font-bold">{{minutesCompletedToday}} minutes completed today</p>
                 </div>
+              </div>
             </div>
+
+            <div
+              class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-dark"
+              [style.left]="'calc( '+ dailyCompletitionPercent + '% - 4px)'">
+              <p class="font-bold text-nowrap">Goal</p>
+              <i class="fa fa-caret-down text-xl text-success"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12 monthly-goals mx-auto">
+          <div class="monthly-goals-progress position-relative w-full rounded-6 px-10 py-4">
+            <div class="row">
+              <div class="col-lg-6 text-primary display-6">Monthly Goals</div>
+              <div class="col-lg-6 d-flex align-items-center justify-content-center flex-end">
+                <div class="monthly-remainder">
+                  <p class="text-dark font-bold">{{daysCompletedThisMonth}} days completed this month</p>
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <div class="w-full position-relative mt-1">
+              <div
+                class="current position-absolute d-flex flex-column justify-content-end align-items-center text-center"
+                [style.left]="'calc( '+monthlyCompletionPercent + '% - 4px)'">
+                <p class="font-bold text-nowrap">&nbsp;</p>
+                <i class="fa fa-caret-down text-lg text-success"></i>
+              </div>
+              <div
+                class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-dark"
+                [style.left]="'calc( '+monthlyGoalPercent + '% - 4px)'">
+                <p class="font-bold text-nowrap">Goal</p>
+                <i class="fa fa-caret-down text-lg text-primary"></i>
+              </div>
+              <div class="progress h-5 w-full top-12 position-relative"></div>
+              <div
+                class="position-absolute top-20 text-gray d-flex justify-content-between align-items-center w-full text-xl">
+                <div *ngFor="let val of monthRange">
+                  <!-- TODO find a better way of -->
+                  <p class="position-relative" *ngIf="!rewardsRange.includes(val); else lockIcon">
+                    &nbsp;
+                  </p>
+                  <ng-template #lockIcon>
+                    <i class="fa fa-solid fa-lock"></i>
+                  </ng-template>
+                </div>
+              </div>
+              <div
+                class="position-relative top-24 text-dark d-flex justify-content-between align-items-center w-full pt-2 font-bold text-lg">
+                <p *ngFor="let val of monthRange" class="position-relative">{{val}}</p>
+                <div
+                  class="subdivisions position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
+                  <img *ngFor="let val of monthRange; let i=index" [style.display]="i===0 && 'none'"
+                    src="/assets/icons/scale-subdivision-dark.svg" alt="scale">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-xxl-4 d-none d-xxl-block">&nbsp;</div>
+        </div>
+      </div>
+
     </div>
-<!-- </div> -->
+
+
+
+    <div class="col-lg-7 h-full">
+      <div class="row h-full w-full">
+        <div class="col-lg-12">&nbsp;</div>
+        <div class="col-lg-12 w-full d-flex align-items-center justify-content-center flex-column">
+          <h1 class="display-4 text-primary text-center ">Next Activity:
+          </h1>
+          <h1 class="display-1 text-primary text-center">Sit, Stand, Achieve</h1>
+          <h1 class="text-primary text-center">Area of Focus: Balance</h1>
+        </div>
+        <div class="col-lg-12 d-flex justify-content-center" *ngFor="let item of dummySessions; let i = index">
+          <div class="home-container"
+            [@slideOut]="i === 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
+            [@slideInOut]="i > 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
+            *ngIf="currentSession === i">
+            <div class="d-flex align-items-center justify-content-center">
+              <div class="col-lg-12 text-center text-white">
+                <button (click)="startNewSession()"
+                  class="start-btn w-64 h-64 rounded-pill text-white text-center display-5">Start</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
