@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
   refreshTokenIfExpired() {
     if(!this.jwtService.getToken()) return;
     let expiringIn: number = this.jwtService.tokenExpiry();
-    this.timer = setTimeout(() => this.resetTokenOnInterval(), expiringIn);
+    setTimeout(() => this.resetTokenOnInterval(), Math.max(0, expiringIn));
   }
   async resetTokenOnInterval() {
     const newToken = await this.authService.refreshTokens(this.jwtService.getAuthTokens().refresh_token);

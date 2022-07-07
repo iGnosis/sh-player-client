@@ -51,7 +51,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   user!: Patient;
   careplanId!: string;
   sessionId!: string;
-  dailyGoals!: any;
   session = session.Start;
   currentSession = 0;
   dummySessions = [
@@ -86,7 +85,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let todayMidnight = new Date();
     todayMidnight.setHours(0, 0, 0, 0);
-    this.dailyGoals = await this.goalsService.getDailyGoals(todayMidnight.toISOString());
   }
 
   ngAfterViewInit(): void {
