@@ -8,19 +8,27 @@ import { GraphqlService } from "src/app/services/graphql/graphql.service";
 export class GoalsService {
   constructor(private graphqlService: GraphqlService) {}
 
-  async getMonthlyGoals(month: number, year: number) {
-    const monthlyGoals = await this.graphqlService.client.request(
-      GqlConstants.GET_MONTHLY_GOALS,
-      { month, year }
-    );
-    return monthlyGoals.patientMonthlyGoals.data;
+  async getMonthlyGoals(startDate: string, endDate: string, userTimezone: string) {
+    try {
+      const monthlyGoals = await this.graphqlService.client.request(
+        GqlConstants.GET_MONTHLY_GOALS,
+        { startDate, endDate, userTimezone }
+      );
+      return monthlyGoals.patientMonthlyGoals.data;
+    } catch(e) {
+      console.log(e);
+    }
   }
-  async getDailyGoals(date: string) {
-    const dailyGoals = await this.graphqlService.client.request(
-      GqlConstants.GET_DAILY_GOALS,
-      { date }
-    );
-    return dailyGoals.patientDailyGoals.dailyMinutesCompleted;
+  async getDailyGoals(activityIds: string[], date: string) {
+    try {
+      const dailyGoals = await this.graphqlService.client.request(
+        GqlConstants.GET_DAILY_GOALS,
+        { activityIds, date }
+      );
+      return dailyGoals;
+    } catch(e) { 
+      console.log(e);
+    }
   }
   async getStreak() {
     const streak = await this.graphqlService.client.request(GqlConstants.GET_STREAK);

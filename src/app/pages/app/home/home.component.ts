@@ -6,9 +6,12 @@ import { Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/store/reducers/home.reducer";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
-import { map } from "rxjs";
+import { first, map } from "rxjs";
 import * as d3 from "d3";
 import { JwtService } from "src/app/services/jwt.service";
+import { UserService } from "src/app/services/user.service";
+import { AnimationOptions } from "ngx-lottie";
+import { AnimationItem } from "lottie-web";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -46,17 +49,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   shScreen: boolean = false;
   user!: Patient;
   careplanId!: string;
+  activeCareplans: any;
   sessionId!: string;
   session = session.Start;
   currentSession = 0;
 
-  monthlyCompletionPercent: number = 70;
+  monthlyCompletionPercent: number = 0;
   monthlyGoalPercent: number = 100;
-  monthRange = d3.range(0, 30.5, 5);
+  monthRange = d3.range(0, 30.5, 1);
 
   // TODO: has to be changed based on monthly goals API
-  rewardsRange = [5, 10, 15];
-  daysCompletedThisMonth = 22;
+  rewardsRange: number[] = [];
+  daysCompletedThisMonth = 0;
 
   // TODO: has to be changed based on daily goals API
   minutesCompletedToday = 15;
@@ -64,18 +68,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   currentDate = {
     day: `${new Date().getDate()}${this.nth(new Date().getDate())}`,
     month: new Date().toLocaleDateString("default", { month: "long" }),
+    monthIndex: new Date().getMonth(),
     year: new Date().getFullYear(),
   };
 
-  dailyCompletitionPercent!: number;
+  dailyCompletionPercent: number = 0;
+  sessionType = session;
 
-  dummySessions = [
-    {
-      title: "Sit. Stand. Achieve",
-      bg: "/assets/images/start-session-bg.jpg",
-      status: session.Start,
-    },
-  ];
+  sessions: any = [];
+  nextSession: any = {};
+  
+  options: AnimationOptions = {    
+    path: '/assets/images/animations/wave.json'  
+  };  
 
   constructor(
     private careplanService: CareplanService,
@@ -83,9 +88,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private goalsService: GoalsService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private userService: UserService
   ) {
-    this.user = JSON.parse(localStorage.getItem("user") || "{}");
+    this.user = this.userService.get();
     console.log(this.monthRange);
   }
 
@@ -98,6 +104,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let todayMidnight = new Date();
     todayMidnight.setHours(0, 0, 0, 0);
+
+    this.activeCareplans = await this.careplanService.getActiveCareplans();
+    
+    this.getMonthlyGoals();
+    this.getDailyGoals();
   }
 
   ngAfterViewInit(): void {
@@ -108,23 +119,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   nextSessionState() {
-    if (this.dummySessions[this.currentSession].status === session.Completed) {
+    if (this.sessions[this.currentSession].status === session.Completed) {
       this.currentSession++;
     } else if (
-      this.dummySessions[this.currentSession].status === session.Locked
+      this.sessions[this.currentSession].status === session.Locked
     ) {
-      this.dummySessions[this.currentSession].status = session.Start;
+      this.sessions[this.currentSession].status = session.Start;
     } else {
-      this.dummySessions[this.currentSession].status++;
+      this.sessions[this.currentSession].status++;
     }
   }
 
   async startNewSession() {
     if (this.jwtService.checkCareplanAndProviderInJWT()) {
       console.log("startNewSession:JWT has careplan and provider set");
-      const activeCareplans = await this.careplanService.getActiveCareplans();
-      if (activeCareplans.careplan.length > 0) {
-        this.careplanId = activeCareplans.careplan[0].id;
+      if (this.activeCareplans.careplan.length > 0) {
+        this.careplanId = this.activeCareplans.careplan[0].id;
         this.sessionId = (await this.sessionService.createNewSession(
           this.careplanId
         )) as string;
@@ -155,6 +165,67 @@ export class HomeComponent implements OnInit, AfterViewInit {
       default:
         return "th";
     }
+  }
+
+  async getMonthlyGoals() {
+    const firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
+    const lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
+
+    firstDayOfMonth.setHours(0,0,0,0);
+    lastDayOfMonth.setHours(24,0,0,0);
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const response = 
+      await this.goalsService.getMonthlyGoals(
+        firstDayOfMonth.toISOString(), 
+        lastDayOfMonth.toISOString(), 
+        userTimezone
+      );
+
+    this.daysCompletedThisMonth = response.daysCompleted || 0;
+    this.rewardsRange = response.rewardsCountDown;
+
+    this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
+    this.initMonthlyBar();
+  }
+
+  async getDailyGoals() {
+    const activitiesResponse = await this.careplanService.getCareplanActivities();
+    const activityList = activitiesResponse.careplan_activity;
+
+    const activities = activityList.map((item: any) => item.activityByActivity.id);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const dailyGoalsRes = await this.goalsService.getDailyGoals(activities, today.toISOString());
+    let dailyGoalsActivities = dailyGoalsRes.patientDailyGoals.data.activities;
+
+    dailyGoalsActivities = dailyGoalsActivities.map((item: any, idx: number) => { //sets activity status
+      let status = session.Start;
+      if(item.isCompleted) status = session.Completed;
+      if(idx !== 0) {
+        if(item.isCompleted !== dailyGoalsActivities[idx-1].isCompleted) status = session.Start;
+        else if(!item.isCompleted) status = session.Locked;
+      }
+      return {
+        ...item,
+        status,
+      }
+    });
+
+    this.sessions = activityList.map((item: any, idx: number) => {
+      return Object.assign({}, item.activityByActivity, dailyGoalsActivities[idx]) // merge arrays
+    })
+
+    const idxOfCurrentSession = this.sessions.findIndex((item: any) => item.status === session.Start);
+    if(idxOfCurrentSession === -1) {
+      this.dailyCompletionPercent = 100;
+      this.nextSession = this.sessions[0];
+    } else {
+      this.dailyCompletionPercent = Math.min(idxOfCurrentSession, 2) *50;
+      this.nextSession = this.sessions[idxOfCurrentSession];
+    }
+
   }
 
   initMonthlyBar() {

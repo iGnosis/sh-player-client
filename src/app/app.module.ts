@@ -28,6 +28,13 @@ import { PrivateComponent } from './layouts/private/private.component';
 import { CallbackComponent } from './pages/auth/callback/callback.component';
 import { StartComponent } from './pages/auth/start/start.component';
 import { RewardsComponent } from './pages/app/rewards/rewards.component';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+export function playerFactory(): any {  
+  return import('lottie-web');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +62,7 @@ import { RewardsComponent } from './pages/app/rewards/rewards.component';
     FormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    LottieModule.forRoot({ player: playerFactory }),
     StoreModule.forRoot({
       home: homeReducer
     })

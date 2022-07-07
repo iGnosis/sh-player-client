@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-    if(!this.jwtService.getToken() || this.jwtService.getToken() === "") {
+    if(!this.jwtService.getToken()) {
       this.jwtService.watchToken().pipe(take(1)).subscribe((token: string) => {
         this.jwtService.setToken(token);
         this.jwtService.setAuthTokens({id_token: token});

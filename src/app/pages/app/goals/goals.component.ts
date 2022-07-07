@@ -62,8 +62,8 @@ export class GoalsComponent implements OnInit {
     this.initStatsValues();
   }
   async initStatsValues(selected?: Date) {
-    this.monthlyGoals = await this.goalsService.getMonthlyGoals(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
-    this.dailyGoals = await this.goalsService.getDailyGoals(selected ? selected.toISOString() : new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
+    // this.monthlyGoals = await this.goalsService.getMonthlyGoals(selected ? selected.getMonth() : new Date().getMonth(), selected ? selected.getFullYear() : new Date().getFullYear());
+    // this.dailyGoals = await this.goalsService.getDailyGoals(selected ? selected.toISOString() : new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
     this.dailyCompletionPercent = (this.dailyGoals * 100)/this.roundMaxGoal(this.dailyGoals);
     this.monthlyCompletion = (this.monthlyGoals.filter((day: any) => day.totalSessionDurationInMin >= 30).length);
     const noOfDays = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate();
@@ -136,7 +136,7 @@ export class GoalsComponent implements OnInit {
   }
   async updateCalendarActivity(month: number, year: number) {
     const noOfDays: number = new Date(year, month+1, 0).getDate();
-    this.monthlyGoals = await this.goalsService.getMonthlyGoals(month, year);
+    // this.monthlyGoals = await this.goalsService.getMonthlyGoals(month, year);
     const today = new Date();
     const upperBound =
       month === new Date().getMonth() && year === new Date().getFullYear() ? // if current month, show remaining days as inactive

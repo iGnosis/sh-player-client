@@ -15,20 +15,14 @@ export const GqlConstants = {
       estimatedDuration
     }
   }`,
-  GET_CAREPLAN_DETAILS: `query GetCarePlanDetails($careplan: uuid = "40f81454-c97d-42bc-b20f-829cc3d2728e") {
-  careplan(where: {id: {_eq: $careplan}}) {
-    name
-    id
-    careplan_activities {
+  GET_CAREPLAN_DETAILS: `query GetCareplanActivities {
+    careplan_activity {
       activityByActivity {
-        name
-        duration
         id
+        name
       }
-      reps
     }
-  }
-}`,
+  }`,
   GET_SESSIONS: `query GetSessions($offset: Int, $limit: Int, $patientId: uuid) {
       session_aggregate(where: {patient: {_eq: $patientId}, status: {_neq: trashed}}) {
         aggregate {
@@ -50,19 +44,26 @@ export const GqlConstants = {
     }
   `,
   GET_MONTHLY_GOALS: `
-  query MonthlyGoals($month: Int = 0, $year: Int = 0) {
-    patientMonthlyGoals(month: $month, year: $year) {
+  query PatientMonthlyGoal($startDate: String!, $endDate: String!, $userTimezone: String!) {
+    patientMonthlyGoals(endDate: $endDate, startDate: $startDate, userTimezone: $userTimezone) {
+      status
       data {
-        date
-        totalSessionDurationInMin
+        daysCompleted
+        rewardsCountDown
       }
     }
   }
   `,
   GET_DAILY_GOALS: `
-  query DailyGoals($date: String = "") {
-    patientDailyGoals(date: $date) {
-      dailyMinutesCompleted
+  query PatientDailyGoals($activityIds: [String!]!, $date: String!) {
+    patientDailyGoals(activityIds: $activityIds, date: $date) {
+      status
+      data {
+        activities {
+          id
+          isCompleted
+        }
+      }
     }
   }
   `,
@@ -73,6 +74,11 @@ export const GqlConstants = {
     }
   }
   `,
+  UPDATE_REWARDS: `mutation UpdateRewards {
+    updateRewards {
+      status
+    }
+  }`,
   SIGN_UP_PATIENT: `
   mutation SignUpPatient($code: String = "", $email: String = "", $nickname: String = "", $password: String = "") {
     signUpPatient(code: $code, email: $email, nickname: $nickname, password: $password) {

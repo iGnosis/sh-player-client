@@ -26,6 +26,8 @@
     "d3": "^7.4.4",
     "graphql-request": "^4.2.0",
     "jwt-decode": "^3.1.2",
+    "lottie-web": "^5.9.6",
+    "ngx-lottie": "^8.2.0",
     "ngx-owl-carousel-o": "^7.0.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

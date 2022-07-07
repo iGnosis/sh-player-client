@@ -3,10 +3,14 @@
   <img src="/assets/icons/sound_health_logo@3x.jpg" alt="sound health"
     class="position-absolute translate-middle top-1/2 start-1/2">
 </div>
+<div class="w-1/2 h-screen position-absolute top-0 end-0">
+  <ng-lottie [options]="options">
+  </ng-lottie>
+</div>
 <div class="d-flex container-fluid flex-column h-screen w-screen overflow-hidden position-relative">
-  <div class="row h-full">
+  <div class="row overflow-y-scroll" [style.height]="'calc(100% - 60px)'">
 
-    <div class="col-lg-5 h-full">
+    <div class="col-lg-7 col-xxl-5 h-full">
       <div class="row h-full">
 
         <div class="col-lg-12 mx-auto">
@@ -16,7 +20,8 @@
           <h2 class="text-primary">Be the best version of yourself.</h2>
           <h1 class="display-6 text-primary ">{{currentDate.day}} of {{currentDate.month}}, {{currentDate.year}}</h1>
         </div>
-        <div class="col-lg-12 daily-goals mx-auto ">
+        <div>&nbsp;</div>
+        <div class="col-lg-12 daily-goals mx-auto">
           <div class="daily-goals-progress position-relative w-full rounded-6 px-10 py-4">
             <div class="row">
               <div class="col-lg-6 text-primary display-6">Daily Goals</div>
@@ -26,17 +31,29 @@
                 </div>
               </div>
             </div>
-
-            <div
-              class="goal position-absolute d-flex flex-column justify-content-end align-items-center text-center text-dark"
-              [style.left]="'calc( '+ dailyCompletitionPercent + '% - 4px)'">
-              <p class="font-bold text-nowrap">Goal</p>
-              <i class="fa fa-caret-down text-xl text-success"></i>
+            <div class="row daily-session-progress">
+              <div class="col-12 d-flex justify-content-between mt-14 px-10 position-relative">
+                <div class="daily-progress-bar position-absolute h-1 translate-middle-y top-1/2 start-10 end-12">
+                  <div class="current-progress h-full bg-success" [style.width]="dailyCompletionPercent+'%'"></div>
+                </div>
+                <div 
+                class="session-index rounded-pill w-12 h-12 d-flex position-relative" 
+                [ngClass]="{'start': session.status === sessionType.Start,'locked': session.status === sessionType.Locked,'completed': session.status === sessionType.Completed }"
+                *ngFor="let session of sessions; let i = index">
+                  <p class="m-auto font-bold text-lg">
+                    {{ session.status != sessionType.Completed ? i+1 : '' }}
+                    <i *ngIf="session.status === sessionType.Completed" class="fa fa-check"></i>
+                  </p>
+                  <p class="title position-absolute top-16 translate-middle-x start-1/2 text-nowrap font-bold text-md">{{ session.name }}</p>
+                </div>
+              </div>
+              <div class="col-12"></div>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-12 monthly-goals mx-auto">
+        <div>&nbsp;</div>
+        <div class="col-lg-12 monthly-goals mx-auto pb-12">
           <div class="monthly-goals-progress position-relative w-full rounded-6 px-10 py-4">
             <div class="row">
               <div class="col-lg-6 text-primary display-6">Monthly Goals</div>
@@ -46,8 +63,6 @@
                 </div>
               </div>
             </div>
-
-
 
 
             <div class="w-full position-relative mt-1">
@@ -66,24 +81,15 @@
               <div class="progress h-5 w-full top-12 position-relative"></div>
               <div
                 class="position-absolute top-20 text-gray d-flex justify-content-between align-items-center w-full text-xl">
-                <div *ngFor="let val of monthRange">
-                  <!-- TODO find a better way of -->
-                  <p class="position-relative" *ngIf="!rewardsRange.includes(val); else lockIcon">
-                    &nbsp;
-                  </p>
-                  <ng-template #lockIcon>
-                    <i class="fa fa-solid fa-lock"></i>
-                  </ng-template>
-                </div>
               </div>
               <div
-                class="position-relative top-24 text-dark d-flex justify-content-between align-items-center w-full pt-2 font-bold text-lg">
-                <p *ngFor="let val of monthRange" class="position-relative">{{val}}</p>
-                <div
-                  class="subdivisions position-absolute w-full d-flex justify-content-between align-items-start pe-14 ps-8">
-                  <img *ngFor="let val of monthRange; let i=index" [style.display]="i===0 && 'none'"
-                    src="/assets/icons/scale-subdivision-dark.svg" alt="scale">
-                </div>
+                class="position-relative top-18 text-dark d-flex justify-content-between align-items-center w-full pt-2 font-bold text-lg">
+                <p *ngFor="let val of monthRange" class="position-relative">
+                  {{val % 5 === 0 ? val : '\''}}
+                  <span class="lock position-absolute translate-middle-x start-1/2" *ngIf="rewardsRange.includes(val)">
+                    <i class="fa fa-solid" [ngClass]="val > daysCompletedThisMonth ? 'fa-lock' : 'fa-unlock'"></i>
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -95,16 +101,16 @@
 
 
 
-    <div class="col-lg-7 h-full">
+    <div class="col-lg-5 col-xxl-7 h-full">
       <div class="row h-full w-full">
         <div class="col-lg-12">&nbsp;</div>
         <div class="col-lg-12 w-full d-flex align-items-center justify-content-center flex-column">
-          <h1 class="display-4 text-primary text-center ">Next Activity:
+          <h1 class="display-5 text-primary text-center ">Next Activity:
           </h1>
-          <h1 class="display-1 text-primary text-center">Sit, Stand, Achieve</h1>
-          <h1 class="text-primary text-center">Area of Focus: Balance</h1>
+          <h1 class="display-3 text-primary text-center">{{nextSession.name}}</h1>
+          <h1 class="font-light text-primary text-center">Area of Focus: <span class="font-normal">Balance</span></h1>
         </div>
-        <div class="col-lg-12 d-flex justify-content-center" *ngFor="let item of dummySessions; let i = index">
+        <div class="col-lg-12 d-flex justify-content-center" *ngFor="let item of sessions; let i = index">
           <div class="home-container"
             [@slideOut]="i === 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
             [@slideInOut]="i > 0 ? {value:'', params:{duration : 200}} : {value:'', params:{duration : 0}}"
@@ -119,6 +125,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
