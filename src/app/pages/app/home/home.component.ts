@@ -10,6 +10,7 @@ import * as d3 from "d3";
 import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
 import { AnimationOptions } from "ngx-lottie";
+import { take } from "rxjs";
 
 interface RewardsDTO {
   tier: "bronze" | "silver" | "gold";
@@ -103,6 +104,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit(): Promise<void> {
+    let expiringIn: number = this.jwtService.tokenExpiry();
+    if(expiringIn <= 0) {
+      this.jwtService.watchToken().pipe(take(1)).subscribe((token: string) => {
+        this.jwtService.setToken(token);
+        this.initHome();
+      });
+    } else {
+      this.initHome();
+    }
+  }
+  async initHome() {
     this.rewards = await this.goalsService.getRewards();
 
     let todayMidnight = new Date();
