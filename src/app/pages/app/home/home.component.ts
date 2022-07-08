@@ -66,14 +66,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   monthlyGoalPercent: number = 100;
   monthRange = d3.range(0, 30.5, 1);
 
-  // TODO: has to be changed based on monthly goals API
   rewards!: RewardsDTO[];
   rewardsRange: number[] = [];
   currentReward: RewardsDTO | null = null;
   daysCompletedThisMonth = 0;
 
-  // TODO: has to be changed based on daily goals API
-  minutesCompletedToday = 0;
+  activitiesCompletedToday = 0;
+  totalActivities = 3;
 
   currentDate = {
     day: `${new Date().getDate()}${this.nth(new Date().getDate())}`,
@@ -204,6 +203,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const activitiesResponse = await this.careplanService.getCareplanActivities();
     const activityList = activitiesResponse.careplan_activity;
 
+    this.totalActivities = activityList.length;
+
     const activities = activityList.map((item: any) => item.activityByActivity.id);
     const today = new Date();
     today.setHours(0,0,0,0);
@@ -227,6 +228,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.sessions = activityList.map((item: any, idx: number) => {
       return Object.assign({}, item.activityByActivity, dailyGoalsActivities[idx]) // merge arrays
     })
+
+    this.activitiesCompletedToday = dailyGoalsActivities.filter((activity: any) => activity.isCompleted).length;
 
     const idxOfCurrentSession = this.sessions.findIndex((item: any) => item.status === session.Start);
     if(idxOfCurrentSession === -1) {
