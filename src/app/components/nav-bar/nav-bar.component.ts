@@ -18,10 +18,10 @@ export class NavBarComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private authService: AuthService,
-  ) { 
+  ) {
     this.router.events.subscribe(() => {
-      this.activeTab = this.route.url.split('/').slice(-1)[0];   
-      if(this.route.url.split('/')[2] === 'signup') this.hideNavbar = true; 
+      this.activeTab = this.route.url.split('/').slice(-1)[0];
+      if (this.route.url.split('/')[2] === 'signup') this.hideNavbar = true;
       else this.hideNavbar = false;
     })
   }
@@ -31,8 +31,10 @@ export class NavBarComponent implements OnInit {
 
   async logout() {
     const tokens = this.jwtService.getAuthTokens();
-    await this.authService.logout(tokens && tokens.refresh_token);
-    this.jwtService.setToken('');
+    if (tokens && tokens.refresh_token) {
+      await this.authService.logout({ refreshToken: tokens.refresh_token });
+    };
+    this.jwtService.clearAuthTokens();
     this.userService.setPatient();
     this.userService.set();
     this.router.navigate(['/']);

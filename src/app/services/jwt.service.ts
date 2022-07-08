@@ -10,7 +10,7 @@ export class JwtService {
   private jwt?: string
   private currentToken = new Subject<string>();
   private TOKEN = 'token'
-  
+
   constructor() {
     this.jwt = localStorage.getItem(this.TOKEN) || ''
   }
@@ -37,6 +37,11 @@ export class JwtService {
     return JSON.parse(localStorage.getItem('auth') || '{}')
   }
 
+  clearAuthTokens() {
+    localStorage.removeItem(this.TOKEN);
+    localStorage.removeItem('auth');
+  }
+
   checkCareplanAndProviderInJWT() {
     const decodedToken: any = jwtDecode(this.getToken());
     const hasuraJWTClaims = JSON.parse(decodedToken["https://hasura.io/jwt/claims"] as string);
@@ -56,8 +61,8 @@ export class JwtService {
     const decodedToken: any = jwtDecode(currentToken);
     const expiry: number = decodedToken.exp * 1000;
     const minsBeforeExp: number = 2;
-    
-    
+
+
     return expiry - new Date().getTime() - minsBeforeExp * 60000;
   }
 }
