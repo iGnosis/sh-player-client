@@ -20,11 +20,17 @@
                             <p>Loved it</p>
                         </div>
                     </div>
-                    <p class="text-nowrap mt-4 text-white font-bold">
-                        What were your biggest frustrations? (optional)
+                    <p class="text-nowrap mt-4 text-white font-bold text-start">
+                        {{
+                            currentRating <= 2 ?
+                                'What were your biggest frustrations?' :
+                            currentRating <= 4 ?
+                                'What can we do better?' :
+                                'What did you like the most?'
+                        }} (optional)
                     </p>
                     <textarea [(ngModel)]="description" class="rounded-2 w-full mt-2 p-2" name="feedback" id="feedback" rows="5" style="resize: none;"></textarea>
-                    <button [disabled]="currentRating === 0" (click)="submitFeedback()" class="send-feedback-btn btn-light rounded-2 w-full h-12 text-md font-bolder mt-4">
+                    <button (click)="submitFeedback()" class="send-feedback-btn btn-light rounded-2 w-full h-12 text-md font-bolder mt-4">
                         Send Feedback
                     </button>
                 </div>
