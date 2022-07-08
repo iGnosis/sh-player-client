@@ -5,9 +5,7 @@
 <div class="modal feedback-modal top-full start-full pe-5 pb-20" id="modal_example" tabindex="-1" [class.active]="feedbackModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-4 position-relative">
-            <div (click)="toggleFeedbackModal()" class="cursor-pointer">
-                <i class="fa fa-xmark position-absolute end-0 top-0 rounded-pill bg-white h3 text-center h-8 w-8 pt-1" style="color: #000066; transform: translate(50%, -50%);"></i>
-            </div>
+            <i (click)="toggleFeedbackModal()" class="fa fa-xmark cursor-pointer position-absolute end-0 top-0 rounded-pill bg-white h3 text-center h-8 w-8 pt-1" style="color: #000066; transform: translate(50%, -50%);"></i>
             <div class="modal-body">
                 <div class="text-center py-3 px-3">
                     <!-- Title -->
@@ -25,8 +23,8 @@
                     <p class="text-nowrap mt-4 text-white font-bold">
                         What were your biggest frustrations? (optional)
                     </p>
-                    <textarea class="rounded-2 w-full mt-2 p-2" name="feedback" id="feedback" rows="5" style="resize: none;"></textarea>
-                    <button [disabled]="currentRating === 0" (click)="toggleFeedbackRecievedModal()" class="send-feedback-btn btn-light rounded-2 w-full h-12 text-md font-bolder mt-4">
+                    <textarea [(ngModel)]="description" class="rounded-2 w-full mt-2 p-2" name="feedback" id="feedback" rows="5" style="resize: none;"></textarea>
+                    <button [disabled]="currentRating === 0" (click)="submitFeedback()" class="send-feedback-btn btn-light rounded-2 w-full h-12 text-md font-bolder mt-4">
                         Send Feedback
                     </button>
                 </div>
@@ -34,35 +32,35 @@
         </div>
     </div>
 </div>
-<div class="modal feedback-recieved-modal top-full start-full pe-5 pb-20" id="modal_example" tabindex="-1" [class.active]="feedbackRecievedModal">
+<div class="modal feedback-recieved-modal top-full start-full pe-5 pb-20" id="modal_example" tabindex="-1" [class.active]="recommendationScoreModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-4 position-relative">
-                <div class="text-center py-5 px-5">
-                    <!-- Title -->
-                    <h3 class="mb-4 text-white h4 text-center font-bolder">
-                        Thank you!<br/>
-                        Your feedback has been received.
-                    </h3>
-                    <div class="checkmark d-flex h-18 w-18 rounded-pill text-center mx-auto mb-3">
-                        <i class="fa fa-check text-white text-xl m-auto"></i>
-                    </div>
-                    <p class="text-nowrap pt-5 text-white font-bolder h3 w-full border-top">
-                        How likely are you to recommend<br/> this product to someone?
-                    </p>
-                    <!-- Rating -->
-                    <div class="d-flex flex-column justify-content-between align-items-center">
-                        <div class="w-full ratings d-flex justify-content-between px-12 my-3">
-                            <p *ngFor="let rating of [1,2,3,4,5]" (click)="setProductRating(rating)" [class.rating-color]="rating === currentProductRating" class="rating text-black font-bolder text-xl rounded h-12 px-4 pt-1 cursor-pointer">{{ rating }}</p>
-                        </div>
-                        <div class="rating-description w-full d-flex justify-content-between ps-12 pe-6 text-xs text-white">
-                            <p>Unlikely</p>
-                            <p>Most Definitely</p>
-                        </div>
-                    </div>
-                    <button (click)="toggleFeedbackRecievedModal()" class="send-feedback-btn btn-light rounded-2 w-full h-10 text-md font-bolder mt-4">
-                        Close
-                    </button>
+            <div class="text-center py-5 px-5">
+                <!-- Title -->
+                <h3 class="mb-4 text-white h4 text-center font-bolder">
+                    Thank you!<br/>
+                    Your feedback has been received.
+                </h3>
+                <div class="checkmark d-flex h-18 w-18 rounded-pill text-center mx-auto mb-3">
+                    <i class="fa fa-check text-white text-xl m-auto"></i>
                 </div>
+                <p class="text-nowrap pt-5 text-white font-bolder h3 w-full border-top">
+                    How likely are you to recommend<br/> this product to someone?
+                </p>
+                <!-- Rating -->
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                    <div class="w-full ratings d-flex justify-content-between px-12 my-3">
+                        <p *ngFor="let rating of [1,2,3,4,5]" (click)="setProductRating(rating)" [class.rating-color]="rating === currentRecommendationScore" class="rating text-black font-bolder text-xl rounded h-12 px-4 pt-1 cursor-pointer">{{ rating }}</p>
+                    </div>
+                    <div class="rating-description w-full d-flex justify-content-between ps-12 pe-6 text-xs text-white">
+                        <p>Unlikely</p>
+                        <p>Most Definitely</p>
+                    </div>
+                </div>
+                <button (click)="submitProductFeedback()" class="send-feedback-btn btn-light rounded-2 w-full h-10 text-md font-bolder mt-4">
+                    Close
+                </button>
+            </div>
         </div>
     </div>
 </div>

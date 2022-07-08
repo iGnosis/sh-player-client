@@ -67,6 +67,20 @@ export const GqlConstants = {
     }
   }
   `,
+  GET_PATIENT_REWARDS: `
+  query GetPatientRewards {
+    patient {
+      rewards
+    }
+  }
+  `,
+  MARK_REWARD_AS_VIEWED: `
+  mutation MarkRewardAsViewed($rewardTier: String!) {
+    markRewardAsViewed(rewardTier: $rewardTier) {
+      status
+    }
+  }
+  `,
   GET_STREAK: `
   query GetStreak {
     patientSessionStreak {
@@ -74,9 +88,16 @@ export const GqlConstants = {
     }
   }
   `,
-  UPDATE_REWARDS: `mutation UpdateRewards {
-    updateRewards {
-      status
+  USER_FEEDBACK: `mutation InsertFeedback($description: String, $rating: Int!) {
+    insert_patient_feedback(objects: {description: $description, rating: $rating}) {
+      returning {
+        id
+      }
+    }
+  }`,
+  SET_RECOMMENDATION_SCORE: `mutation SetRecommendationScore($feedbackId: uuid!, $recommendationScore: Int!) {
+    update_patient_feedback_by_pk(pk_columns: {id: $feedbackId}, _set: {recommendationScore: $recommendationScore}) {
+      id
     }
   }`,
   SIGN_UP_PATIENT: `

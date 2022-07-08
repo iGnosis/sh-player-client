@@ -54,4 +54,24 @@ export class UserService {
     }
   }
 
+  async sendUserFeedback(rating: number, description?: string) {
+    const user = this.get()
+    if (user && user.id) {
+      const response = await this.gqlService.client.request(GqlConstants.USER_FEEDBACK, {description, rating})
+      return response.insert_patient_feedback.returning[0].id;
+    } else {
+      throw new Error('User not set');
+    }
+  }
+
+  async sendRecommendationScore(feedbackId: string, recommendationScore: number) {
+    const user = this.get()
+    if (user && user.id) {
+      const response = await this.gqlService.client.request(GqlConstants.SET_RECOMMENDATION_SCORE, {feedbackId, recommendationScore})
+      return response.update_patient_feedback_by_pk.id;
+    } else {
+      throw new Error('User not set');
+    }
+  }
+
 }

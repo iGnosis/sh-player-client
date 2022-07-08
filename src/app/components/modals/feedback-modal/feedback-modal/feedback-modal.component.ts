@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'feedback-modal',
@@ -7,11 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedbackModalComponent implements OnInit {
   feedbackModal: boolean = false;
-  feedbackRecievedModal: boolean = false;
+  recommendationScoreModal: boolean = false;
   currentRating: number = 0;
-  currentProductRating: number = 0;
+  description: string = "";
+  feedbackId: string = "";
+  currentRecommendationScore: number = 0;
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
   }
@@ -21,12 +24,22 @@ export class FeedbackModalComponent implements OnInit {
   setCurrentRating(i: number) {
     this.currentRating = i;
   }
-  toggleFeedbackRecievedModal() {
-    this.feedbackModal = false;
-    this.feedbackRecievedModal = !this.feedbackRecievedModal;
+  async submitFeedback() {
+    this.feedbackId = await this.userService.sendUserFeedback(this.currentRating, this.description);
+    this.toggleFeedbackModal();
+    this.toggleRecommendationScoreModal();
+  }
+  submitProductFeedback() {
+    if(this.currentRecommendationScore > 0) {
+      this.userService.sendRecommendationScore(this.feedbackId, this.currentRecommendationScore);
+    }
+    this.toggleRecommendationScoreModal();
+  }
+  toggleRecommendationScoreModal() {
+    this.recommendationScoreModal = !this.recommendationScoreModal;
   }
   setProductRating(i: number) {
-    this.currentProductRating = i;
+    this.currentRecommendationScore = i;
   }
 
 }
