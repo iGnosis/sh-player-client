@@ -15,6 +15,11 @@
         width: 80%;
         left: 10%;
     }
+    button {
+        @extend a;
+        border: none;
+        background: #718096;
+    }
 }
 
 .help-header {

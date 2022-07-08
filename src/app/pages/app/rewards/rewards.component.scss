@@ -38,6 +38,10 @@
     background: #718096;
   }
 }
+// TODO: Remove this after rewards are implemented
+.reward-card {
+  @extend .locked-reward-card;
+}
 
 .fa-lock-open {
   font-size: 3em;

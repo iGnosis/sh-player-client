@@ -32,11 +32,14 @@
               alt="Gold Reward">
             <div class="card-body">
               <h3 class="card-title reward-card-text">{{reward.title}}</h3>
-                <button *ngIf="reward.isUnlocked" class="btn btn-primary rounded-2 font-bold" type="button">
+                <!-- <button *ngIf="reward.isUnlocked" class="btn btn-primary rounded-2 font-bold" type="button">
                   Access Now
                 </button>
                 <button *ngIf="!reward.isUnlocked" class="btn btn-primary rounded-2 font-bold" type="button">
                   Finish Monthly Goal to Access
+                </button> -->
+                <button class="btn btn-primary rounded-2 font-bold position-relative w-full text-lg" type="button">
+                  Coming Soon<span class="position-absolute end-3"><i class="fa fa-arrow-right"></i></span>
                 </button>
             </div>
           </div>
