@@ -36,6 +36,7 @@ export function playerFactory(): any {
 }
 
 import { ShScreenComponent } from './components/sh-screen/sh-screen.component';
+import { FeedbackModalComponent } from './components/modals/feedback-modal/feedback-modal/feedback-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +54,7 @@ import { ShScreenComponent } from './components/sh-screen/sh-screen.component';
     StartComponent,
     RewardsComponent,
     ShScreenComponent,
+    FeedbackModalComponent,
   ],
   imports: [
     BrowserModule,
