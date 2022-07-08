@@ -30,6 +30,22 @@ export class GoalsService {
       console.log(e);
     }
   }
+  async getRewards() {
+    try {
+      const response = await this.graphqlService.client.request(GqlConstants.GET_PATIENT_REWARDS);
+      return response.patient[0].rewards;
+    } catch(e) {
+      console.log(e);
+    }
+  }
+  async markRewardAsViewed(rewardTier: string) {
+    try {
+      const response = await this.graphqlService.client.request(GqlConstants.MARK_REWARD_AS_VIEWED, { rewardTier });
+      return response;
+    } catch(e) {
+      console.log(e);
+    }
+  }
   async getStreak() {
     const streak = await this.graphqlService.client.request(GqlConstants.GET_STREAK);
     return streak.patientSessionStreak.streak;

@@ -162,3 +162,19 @@ $daily_card_bg: #B6E5C8;
         }
     }
 }
+.reward-modal {
+    .active {
+        display: block;
+    }
+}
+.reward-card {
+    animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

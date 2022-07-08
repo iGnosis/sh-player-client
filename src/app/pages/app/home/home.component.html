@@ -123,3 +123,37 @@
     </div>
   </div>
 </div>
+
+<div class="modal reward-modal" id="modal_example" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true" [style.display]="'block'" *ngIf="currentReward !== null">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content reward-card shadow-3 bg-primary">
+      <div class="modal-header border-bottom-0 py-0">
+        <div class="cursor-pointer text-xl ms-auto mt-2">
+          <i (click)="closeRewardCard()" class="fa fa-close text-white"></i>
+        </div>
+      </div>
+      <div class=" modal-body text-center p-1">
+        <h2 class="text-white font-bolder">You have unlocked a<br/>reward!</h2>
+        <img 
+          *ngIf="currentReward!.tier === 'bronze'" 
+          src="assets/images/rewards/bronze-tier.png" alt="Bronze Reward"
+          class="h-12 my-10">
+        <img 
+          *ngIf="currentReward!.tier === 'silver'" 
+          src="assets/images/rewards/bronze-tier.png" alt="Silver Reward"
+          class="h-12 my-10">
+        <img 
+          *ngIf="currentReward!.tier === 'gold'" 
+          src="assets/images/rewards/bronze-tier.png" alt="Gold Reward"
+          class="h-12 my-10">
+          <h3 class="card-title reward-card-text text-white">{{currentReward!.description}}</h3>
+      </div>
+      <div class="w-full d-flex flex-column text-lg">
+        <a routerLink="/app/rewards" (click)="closeRewardCard()" class="w-3/4 mx-auto text-primary font-bold rounded bg-white text-center position-relative">Access Now
+          <span class="position-absolute end-3"><i class="fa fa-arrow-right"></i></span>
+        </a>
+        <p class="my-5 text-white w-3/4 mx-auto text-center">All Rewards can be accessed under the <span class="font-bold">Rewards</span> tab</p>
+      </div>
+    </div>
+  </div>
+</div>

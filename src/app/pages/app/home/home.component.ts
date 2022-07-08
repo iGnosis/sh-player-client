@@ -1,17 +1,26 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { SessionService } from "src/app/services/session/session.service";
 import { Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/store/reducers/home.reducer";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
-import { first, map } from "rxjs";
 import * as d3 from "d3";
 import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
 import { AnimationOptions } from "ngx-lottie";
-import { AnimationItem } from "lottie-web";
+
+interface RewardsDTO {
+  tier: "bronze" | "silver" | "gold";
+  isViewed: boolean;
+  isUnlocked: boolean;
+  isVisited: boolean;
+  isAccessed: boolean;
+  description: string;
+  unlockAtDayCompleted: number;
+}
+
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -58,11 +67,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   monthRange = d3.range(0, 30.5, 1);
 
   // TODO: has to be changed based on monthly goals API
+  rewards!: RewardsDTO[];
   rewardsRange: number[] = [];
+  currentReward: RewardsDTO | null = null;
   daysCompletedThisMonth = 0;
 
   // TODO: has to be changed based on daily goals API
-  minutesCompletedToday = 15;
+  minutesCompletedToday = 0;
 
   currentDate = {
     day: `${new Date().getDate()}${this.nth(new Date().getDate())}`,
@@ -86,15 +97,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private sessionService: SessionService,
     private goalsService: GoalsService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
     private jwtService: JwtService,
-    private userService: UserService
+    private userService: UserService,
   ) {
     this.user = this.userService.get();
-    console.log(this.monthRange);
   }
 
   async ngOnInit(): Promise<void> {
+    this.rewards = await this.goalsService.getRewards();
+
     let todayMidnight = new Date();
     todayMidnight.setHours(0, 0, 0, 0);
 
@@ -102,6 +113,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
     
     this.getMonthlyGoals();
     this.getDailyGoals();
+
+    const unlockedRewards = this.rewards.filter((reward: RewardsDTO) => reward.isUnlocked && !reward.isViewed);
+    if(unlockedRewards.length) {
+      this.displayRewardCard(unlockedRewards[0]);
+    }
+  }
+
+  async displayRewardCard(reward: RewardsDTO) {
+    await this.goalsService.markRewardAsViewed(reward.tier);
+    this.currentReward = reward;
+  }
+
+  closeRewardCard() {
+    this.currentReward = null;
   }
 
   ngAfterViewInit(): void {
@@ -122,7 +147,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   async startNewSession() {
     if (this.jwtService.checkCareplanAndProviderInJWT()) {
-      console.log("startNewSession:JWT has careplan and provider set");
       if (this.activeCareplans.careplan.length > 0) {
         this.careplanId = this.activeCareplans.careplan[0].id;
         this.sessionId = (await this.sessionService.createNewSession(
@@ -156,6 +180,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   async getMonthlyGoals() {
     const firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
     const lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
+ 
+    this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
 
     firstDayOfMonth.setHours(0,0,0,0);
     lastDayOfMonth.setHours(24,0,0,0);
@@ -171,7 +197,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.daysCompletedThisMonth = response.daysCompleted || 0;
     this.rewardsRange = response.rewardsCountDown;
 
-    this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
     this.initMonthlyBar();
   }
 
