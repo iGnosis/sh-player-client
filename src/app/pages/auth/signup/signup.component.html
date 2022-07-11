@@ -174,7 +174,7 @@
                     <button *ngFor="let time of reminderTimes | keyvalue: originalOrder; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none" [ngClass]="{'bg-light' : (i !== 4 && !time.value) || (i === 4 && !getCustomTime()), 'bg-green text-white' : (i!== 4 && time.value) || (i === 4 && getCustomTime()) }">{{ i < 4 ? time.key : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
                 </div>
             </div>
-            <button [disabled]="!showNext()" (click)="nextInterestStep()" [ngClass]="{ 'position-fixed bottom-4 w-lg-1/3' : interestStep < 3, 'w-full w-lg-2/5': interestStep === 3 }" class="btn btn-light m-auto w-full w-lg-2/5 font-bold mt-10 mb-5">{{interestStep < 3 ? 'Next' : 'Finish'}}</button>
+            <button style="z-index: 2;" [disabled]="!showNext()" (click)="nextInterestStep()" [ngClass]="{ 'position-fixed bottom-4 w-lg-1/3' : interestStep < 3, 'w-full w-lg-2/5': interestStep === 3 }" class="btn btn-light m-auto w-full w-lg-2/5 font-bold mt-10 mb-5">{{interestStep < 3 ? 'Next' : 'Finish'}}</button>
             <div style="height: 100px;">&nbsp;</div>
         </div>
     </div>
