@@ -36,7 +36,7 @@ export class CallbackComponent implements OnInit {
       const step = await this.userService.isOnboarded();
       if (step == -1) {
         await this.showSHScreen();
-        this.router.navigate(["app", "home"]);
+        this.router.navigate(["app", "mood"]);
       } else {
         await this.showSHScreen();
         this.router.navigate(["app", "signup", step]);

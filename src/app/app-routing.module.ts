@@ -12,6 +12,7 @@ import { PrivateComponent } from './layouts/private/private.component';
 import { CallbackComponent } from './pages/auth/callback/callback.component';
 import { StartComponent } from './pages/auth/start/start.component';
 import { RewardsComponent } from './pages/app/rewards/rewards.component';
+import { MoodCheckinComponent } from './components/mood-checkin/mood-checkin/mood-checkin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'public/start', pathMatch: 'full' },
@@ -27,6 +28,8 @@ const routes: Routes = [
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
       { path: 'signup', component: SignupComponent, },
       { path: 'signup/:step', component: SignupComponent, },
+      { path: 'signup/:step/:interest', component: SignupComponent, },
+      { path: 'mood', component: MoodCheckinComponent, },
       { path: 'home', component: HomeComponent, },
       { path: 'rewards', component: RewardsComponent },
       { path: 'goals', component: GoalsComponent, },
