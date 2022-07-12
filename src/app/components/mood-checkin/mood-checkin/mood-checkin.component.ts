@@ -2,14 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, transition, animate, style, state } from "@angular/animations";
 import { AnimationOptions } from 'ngx-lottie';
 import { Router } from '@angular/router';
-
-enum mood {
-  irritated,
-  anxious,
-  okay,
-  happy,
-  daring,
-};
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-mood-checkin',
@@ -40,43 +33,42 @@ export class MoodCheckinComponent implements OnInit {
       title: 'Irritated',
       img: '/assets/images/moods/irritated.jpg',
       color: '#EB0000',
-      choice: mood.irritated,
     },
     {
       title: 'Anxious',
       img: '/assets/images/moods/anxious.jpg',
       color: '#F26161',
-      choice: mood.anxious,
     },
     {
       title: 'Okay',
       img: '/assets/images/moods/okay.jpg',
       color: '#FFC440',
-      choice: mood.okay,
     },
     {
       title: 'Happy',
       img: '/assets/images/moods/happy.jpg',
       color: '#62D989',
-      choice: mood.happy,
     },
     {
       title: 'Daring',
       img: '/assets/images/moods/daring.jpg',
       color: '#00BD3E',
-      choice: mood.daring,
     },
   ];
-  selectedMood?: mood;
+  selectedMood?: string;
   slideOut: boolean = false;
   
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private userService: UserService,
+  ) { }
 
   ngOnInit(): void {
   }
 
-  selectMood(choice: mood) {
+  async selectMood(choice: string) {
     this.selectedMood = choice;
+    await this.userService.updateUserMood(choice.toLowerCase());
     setTimeout(() => this.slideOut = true, 500);
     setTimeout(() => this.router.navigate(['/app/home']), 1200);
   }

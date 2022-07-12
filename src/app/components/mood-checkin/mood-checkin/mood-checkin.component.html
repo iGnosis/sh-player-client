@@ -9,10 +9,10 @@
         <h1 class="display-6 text-primary">How are you feeling today?</h1>
         <div class="mood-cards d-flex justify-content-between mt-10 position-relative h-24">
             <div 
-            (click)="selectMood(mood.choice)" 
+            (click)="selectMood(mood.title)" 
             *ngFor="let mood of moodList" 
             class="mood-card top-1/2 start-1/2 bg-white cursor-pointer h-24 w-24 p-3 border rounded-2" 
-            [class.active]="mood.choice === selectedMood"
+            [class.active]="mood.title === selectedMood"
             [class.stack]="selectedMood !== undefined"
             [style.border-color]="mood.color">
                 <img class="w-10 mb-2" [src]="mood.img" [alt]="mood.title">

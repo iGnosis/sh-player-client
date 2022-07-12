@@ -36,7 +36,11 @@ export class CallbackComponent implements OnInit {
       const step = await this.userService.isOnboarded();
       if (step == -1) {
         await this.showSHScreen();
-        this.router.navigate(["app", "mood"]);
+        if(await this.isCheckedIn()) {
+          this.router.navigate(["app", "home"]);
+        } else {
+          this.router.navigate(["app", "mood"]);
+        }
       } else {
         await this.showSHScreen();
         this.router.navigate(["app", "signup", step]);
@@ -46,6 +50,13 @@ export class CallbackComponent implements OnInit {
       this.error = true;
       // this.router.navigate(['app', 'home'])
     }
+  }
+
+  async isCheckedIn() {
+    const res = await this.userService.getLastMood();
+    const checkedInAt = new Date(res.checkin[0].created_at);
+    const today = new Date();
+    return checkedInAt.setHours(0,0,0,0) == today.setHours(0,0,0,0);
   }
 
   decodeJWT(token: string | undefined) {

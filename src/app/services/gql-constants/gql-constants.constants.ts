@@ -88,6 +88,18 @@ export const GqlConstants = {
     }
   }
   `,
+  USER_MOOD_CHECKIN: `mutation InsertUserMoodCheckin($mood: mood_enum!) {
+    insert_checkin_one(object: {mood: $mood}) {
+      mood
+    }
+  }
+  `,
+  GET_USER_LAST_CHECKIN: `query GetUserLastCheckin {
+    checkin(limit: 1, order_by: {created_at: desc}) {
+      created_at
+    }
+  }
+  `,
   USER_FEEDBACK: `mutation InsertFeedback($description: String, $rating: Int!) {
     insert_patient_feedback(objects: {description: $description, rating: $rating}) {
       returning {
