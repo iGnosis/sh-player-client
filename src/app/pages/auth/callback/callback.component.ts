@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ShScreenComponent } from "src/app/components/sh-screen/sh-screen.component";
 import { AuthService } from "src/app/services/auth.service";
 import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
@@ -11,6 +12,7 @@ import { UserService } from "src/app/services/user.service";
 })
 export class CallbackComponent implements OnInit {
   shScreen = false;
+  isMusicEnded = false;
 
   error = false;
 
@@ -35,14 +37,17 @@ export class CallbackComponent implements OnInit {
       });
       const step = await this.userService.isOnboarded();
       if (step == -1) {
-        await this.showSHScreen();
-        if(await this.isCheckedIn()) {
+        this.shScreen = true;
+        await this.waitForMusicToEnd();
+
+        if (await this.isCheckedIn()) {
           this.router.navigate(["app", "home"]);
         } else {
           this.router.navigate(["app", "mood"]);
         }
       } else {
-        await this.showSHScreen();
+        this.shScreen = true;
+        await this.waitForMusicToEnd();
         this.router.navigate(["app", "signup", step]);
       }
     } else {
@@ -50,6 +55,19 @@ export class CallbackComponent implements OnInit {
       this.error = true;
       // this.router.navigate(['app', 'home'])
     }
+  }
+
+  async waitForMusicToEnd() {
+    return new Promise((resolve) => {
+      const intervalId = setInterval(() => {
+        if (this.isMusicEnded === true) {
+          setTimeout(() => {
+            resolve({});
+            clearInterval(intervalId);
+          }, 300);
+        }
+      }, 300);
+    });
   }
 
   async isCheckedIn() {
@@ -67,19 +85,5 @@ export class CallbackComponent implements OnInit {
         return JSON.parse(atob(parts[1]));
       }
     }
-  }
-
-  async showSHScreen() {
-    return new Promise((resolve) => {
-      const sound = new Audio(
-        "assets/sounds/Sound Health Soundscape_LogIn.mp3"
-      );
-      sound.play();
-      this.shScreen = true;
-      sound.addEventListener("ended", () => {
-        this.shScreen = false;
-        resolve({});
-      });
-    });
   }
 }

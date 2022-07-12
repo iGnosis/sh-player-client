@@ -6,6 +6,7 @@ import {
   style,
   keyframes,
 } from "@angular/animations";
+import { CallbackComponent } from "src/app/pages/auth/callback/callback.component";
 
 @Component({
   selector: "app-sh-screen",
@@ -41,7 +42,11 @@ export class ShScreenComponent implements OnInit, AfterViewInit {
   showPointMotionLogo = false;
   showSoundHealthLogo = false;
   showSoundHealth = false;
-  constructor() {}
+  isMusicEnded = false;
+
+  constructor(
+    private callbackComponent: CallbackComponent
+  ) {}
 
   ngOnInit() {}
 
@@ -56,10 +61,9 @@ export class ShScreenComponent implements OnInit, AfterViewInit {
         this.showSoundHealth = true;
       }, 650);
     }, 1800);
+  }
 
-    // setTimeout(() => {
-    //   this.showSoundHealthLogo = false;
-    //   this.showSoundHealth = true;
-    // }, 2450);
+  musicEnded() {
+    this.callbackComponent.isMusicEnded = true;
   }
 }
