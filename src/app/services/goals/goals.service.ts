@@ -26,23 +26,7 @@ export class GoalsService {
         { activityIds, date }
       );
       return dailyGoals;
-    } catch(e) { 
-      console.log(e);
-    }
-  }
-  async getRewards() {
-    try {
-      const response = await this.graphqlService.client.request(GqlConstants.GET_PATIENT_REWARDS);
-      return response.patient[0].rewards;
-    } catch(e) {
-      console.log(e);
-    }
-  }
-  async markRewardAsViewed(rewardTier: string) {
-    try {
-      const response = await this.graphqlService.client.request(GqlConstants.MARK_REWARD_AS_VIEWED, { rewardTier });
-      return response;
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }

@@ -11,17 +11,8 @@ import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
 import { AnimationOptions } from "ngx-lottie";
 import { take } from "rxjs";
-
-interface RewardsDTO {
-  tier: "bronze" | "silver" | "gold";
-  isViewed: boolean;
-  isUnlocked: boolean;
-  isVisited: boolean;
-  isAccessed: boolean;
-  description: string;
-  unlockAtDayCompleted: number;
-}
-
+import { RewardsDTO } from "src/app/types/pointmotion";
+import { RewardsService } from "src/app/services/rewards/rewards.service";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -87,15 +78,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   sessions: any = [];
   nextSession: any = {};
-  
-  options: AnimationOptions = {    
-    path: '/assets/images/animations/wave.json'  
-  };  
+
+  options: AnimationOptions = {
+    path: '/assets/images/animations/wave.json'
+  };
 
   constructor(
     private careplanService: CareplanService,
     private sessionService: SessionService,
     private goalsService: GoalsService,
+    private rewardsService: RewardsService,
     private router: Router,
     private jwtService: JwtService,
     private userService: UserService,
@@ -115,13 +107,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
   async initHome() {
-    this.rewards = await this.goalsService.getRewards();
+    this.rewards = await this.rewardsService.getRewards();
 
     let todayMidnight = new Date();
     todayMidnight.setHours(0, 0, 0, 0);
 
     this.activeCareplans = await this.careplanService.getActiveCareplans();
-    
+
     this.getMonthlyGoals();
     this.getDailyGoals();
 
@@ -132,7 +124,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async displayRewardCard(reward: RewardsDTO) {
-    await this.goalsService.markRewardAsViewed(reward.tier);
+    await this.rewardsService.markRewardAsViewed(reward.tier);
     this.currentReward = reward;
   }
 
@@ -191,17 +183,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   async getMonthlyGoals() {
     const firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
     const lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
- 
+
     this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
 
     firstDayOfMonth.setHours(0,0,0,0);
     lastDayOfMonth.setHours(24,0,0,0);
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    const response = 
+    const response =
       await this.goalsService.getMonthlyGoals(
-        firstDayOfMonth.toISOString(), 
-        lastDayOfMonth.toISOString(), 
+        firstDayOfMonth.toISOString(),
+        lastDayOfMonth.toISOString(),
         userTimezone
       );
 
