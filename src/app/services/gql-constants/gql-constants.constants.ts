@@ -94,8 +94,8 @@ export const GqlConstants = {
     }
   }
   `,
-  GET_USER_LAST_CHECKIN: `query GetUserLastCheckin {
-    checkin(limit: 1, order_by: {created_at: desc}) {
+  GET_LAST_CHECKIN: `query GetLastCheckin($user: uuid!) {
+    checkin(limit: 1, order_by: {created_at: desc}, where: {patient: {_eq: $user}}) {
       created_at
     }
   }

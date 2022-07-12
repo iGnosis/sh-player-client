@@ -67,7 +67,7 @@ export class UserService {
   async getLastMood() {
     const user = this.get()
     if (user && user.id) {
-      const response = await this.gqlService.client.request(GqlConstants.GET_USER_LAST_CHECKIN)
+      const response = await this.gqlService.client.request(GqlConstants.GET_LAST_CHECKIN, {user: user.id})
       return response;
     } else {
       throw new Error('User not set');

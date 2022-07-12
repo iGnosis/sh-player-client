@@ -54,6 +54,7 @@ export class CallbackComponent implements OnInit {
 
   async isCheckedIn() {
     const res = await this.userService.getLastMood();
+    if(!res.checkin[0]) return false;
     const checkedInAt = new Date(res.checkin[0].created_at);
     const today = new Date();
     return checkedInAt.setHours(0,0,0,0) == today.setHours(0,0,0,0);
