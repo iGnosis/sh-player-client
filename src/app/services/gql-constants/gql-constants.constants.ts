@@ -81,6 +81,12 @@ export const GqlConstants = {
     }
   }
   `,
+  MARK_REWARD_AS_ACCESSED: `
+  mutation MarkRewardAsAccessed($rewardTier: String!) {
+    markRewardAsAccessed(rewardTier: $rewardTier) {
+      status
+    }
+  }`,
   GET_STREAK: `
   query GetStreak {
     patientSessionStreak {
@@ -147,7 +153,7 @@ export const GqlConstants = {
     }
   }
   `,
-  
+
   EXCHANGE_CODE: `mutation ExchangeCode($code: String!) {
     exchangeCodeWithTokens(code: $code) {
       status
