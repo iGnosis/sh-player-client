@@ -24,9 +24,15 @@ export class FeedbackModalComponent implements OnInit {
   setCurrentRating(i: number) {
     this.currentRating = i;
   }
+  clearFeedbackForm() {
+    this.currentRating = 0;
+    this.description = "";
+    this.currentRecommendationScore = 0;
+  }
   async submitFeedback() {
     this.feedbackId = await this.userService.sendUserFeedback(this.currentRating, this.description);
     this.toggleFeedbackModal();
+    this.clearFeedbackForm();
     this.toggleRecommendationScoreModal();
   }
   submitProductFeedback() {
@@ -34,6 +40,7 @@ export class FeedbackModalComponent implements OnInit {
       this.userService.sendRecommendationScore(this.feedbackId, this.currentRecommendationScore);
     }
     this.toggleRecommendationScoreModal();
+    this.clearFeedbackForm();
   }
   toggleRecommendationScoreModal() {
     this.recommendationScoreModal = !this.recommendationScoreModal;
