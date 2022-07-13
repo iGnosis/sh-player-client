@@ -25,12 +25,10 @@ export class HelpComponent implements OnInit {
 
   accessSoundhealthFaq() {
     this.helpService.faqAccessed();
-    this.helpService.goToLink('https://www.pointmotion.us/index.php/docs/');
   }
 
   freeParkinsonResourcesAccessed() {
     this.helpService.freeParkinsonResourcesAccessed();
-    this.helpService.goToLink('https://www.parkinson.org/Living-with-Parkinsons/Resources-and-Support');
   }
 
   toggleRewardModal() {

@@ -35,8 +35,4 @@ export class HelpService {
       console.log(e);
     }
   }
-
-  goToLink(url: string) {
-    window.open(url, "_blank");
-  }
 }
