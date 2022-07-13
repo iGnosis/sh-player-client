@@ -94,15 +94,15 @@ export const GqlConstants = {
     }
   }
   `,
-  USER_MOOD_CHECKIN: `mutation InsertUserMoodCheckin($mood: mood_enum!) {
-    insert_checkin_one(object: {mood: $mood}) {
-      mood
+  USER_DAILY_CHECKIN: `mutation InsertCheckin($type: checkin_type_enum!, $value: String!) {
+    insert_checkin_one(object: {type: $type, value: $value}) {
+      id
     }
   }
   `,
-  GET_LAST_CHECKIN: `query GetLastCheckin($user: uuid!) {
-    checkin(limit: 1, order_by: {created_at: desc}, where: {patient: {_eq: $user}}) {
-      created_at
+  GET_LAST_CHECKIN: `query GetLastCheckin {
+    checkin(limit: 1, order_by: {createdAt: desc}) {
+      createdAt
     }
   }
   `,

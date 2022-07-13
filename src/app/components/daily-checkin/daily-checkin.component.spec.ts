@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MoodCheckinComponent } from './mood-checkin.component';
+import { MoodCheckinComponent } from './daily-checkin.component';
 
 describe('MoodCheckinComponent', () => {
   let component: MoodCheckinComponent;

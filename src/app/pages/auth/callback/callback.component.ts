@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ShScreenComponent } from "src/app/components/sh-screen/sh-screen.component";
 import { AuthService } from "src/app/services/auth.service";
+import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checkin.service";
 import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
 
@@ -21,6 +22,7 @@ export class CallbackComponent implements OnInit {
     private authService: AuthService,
     private jwtService: JwtService,
     private userService: UserService,
+    private dailyCheckinService: DailyCheckinService,
     private router: Router
   ) {}
 
@@ -40,10 +42,10 @@ export class CallbackComponent implements OnInit {
         this.shScreen = true;
         await this.waitForMusicToEnd();
 
-        if (await this.isCheckedIn()) {
+        if (await this.isCheckedInToday()) {
           this.router.navigate(["app", "home"]);
         } else {
-          this.router.navigate(["app", "mood"]);
+          this.router.navigate(["app", "checkin"]);
         }
       } else {
         this.shScreen = true;
@@ -70,10 +72,10 @@ export class CallbackComponent implements OnInit {
     });
   }
 
-  async isCheckedIn() {
-    const res = await this.userService.getLastMood();
+  async isCheckedInToday() {
+    const res = await this.dailyCheckinService.getLastCheckin();
     if(!res.checkin[0]) return false;
-    const checkedInAt = new Date(res.checkin[0].created_at);
+    const checkedInAt = new Date(res.checkin[0].createdAt);
     const today = new Date();
     return checkedInAt.setHours(0,0,0,0) == today.setHours(0,0,0,0);
   }
