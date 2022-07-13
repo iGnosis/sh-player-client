@@ -196,7 +196,6 @@ export class SignupComponent implements OnInit {
       }else {
         this.changeStep(this.signupStep, this.interestStep+1);
       }
-      return;
     }
     else if(this.interestStep === 2) {
       let activities: any = {};
@@ -211,10 +210,12 @@ export class SignupComponent implements OnInit {
       }else {
         this.changeStep(this.signupStep, this.interestStep+1);
       }
-      this.goToHome();
-      return;
     }
-    this.changeStep(this.signupStep, this.interestStep+1);
+    else if(this.interestStep === 3) {
+      this.goToHome();
+    } else {
+      this.changeStep(this.signupStep, this.interestStep+1);
+    }
   }
   selectInterest(i: number) {
     this.interests[i].selected = !this.interests[i].selected;

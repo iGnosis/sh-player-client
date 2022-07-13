@@ -135,9 +135,9 @@
             <h1 class="col-12 text-center text-white pt-5 pb-4">{{
                 interestStep === 1 ? 'Select 3 or more styles of music you like.' : 
                 interestStep === 2 ? 'Select 3 or more activities you enjoy the most.' : 
-                'When would you like to be reminded?'
+                'When would you like to do your daily exercises?'
             }}</h1>
-            <p *ngIf="interestStep===3">Reminders help develop a stronger routine and achieve consistency.</p>
+            <p *ngIf="interestStep===3">Setting reminders helps develop a stronger routine and achieve consistency.</p>
             <div *ngIf="interestStep === 1" class="row col-12 col-xl-8 gx-md-12 gy-md-16">
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer" *ngFor="let interest of interests; let i=index">
                     <div (click)="selectInterest(i)" [class.selected]="interest.selected" class="position-relative rounded-2">
