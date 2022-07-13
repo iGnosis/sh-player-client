@@ -183,8 +183,7 @@ export class SignupComponent implements OnInit {
 
   async nextInterestStep() {
     this.errors = [];
-    if(this.interestStep === 2) this.goToHome();
-    else if(this.interestStep === 1) {
+    if(this.interestStep === 1) {
       let genres: any = {};
       this.interests.forEach(item => {
         if(item.selected) {
@@ -212,6 +211,7 @@ export class SignupComponent implements OnInit {
       }else {
         this.changeStep(this.signupStep, this.interestStep+1);
       }
+      this.goToHome();
       return;
     }
     this.changeStep(this.signupStep, this.interestStep+1);
