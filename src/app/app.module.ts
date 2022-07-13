@@ -38,6 +38,7 @@ export function playerFactory(): any {
 import { ShScreenComponent } from './components/sh-screen/sh-screen.component';
 import { FeedbackModalComponent } from './components/modals/feedback-modal/feedback-modal/feedback-modal.component';
 import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
+import { ShareRewardModalComponent } from './components/share-reward-modal/share-reward-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +58,7 @@ import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.
     ShScreenComponent,
     FeedbackModalComponent,
     DailyCheckinComponent,
+    ShareRewardModalComponent,
   ],
   imports: [
     BrowserModule,

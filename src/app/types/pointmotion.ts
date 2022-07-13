@@ -38,6 +38,7 @@ export interface RewardsDTO {
     isAccessed: boolean;
     description: string;
     unlockAtDayCompleted: number;
+    couponCode: string;
 }
 
 export type Environment = {

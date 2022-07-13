@@ -46,3 +46,5 @@
     </div>
   </div>
 </div>
+
+<share-reward-modal *ngIf="showRewardModal" [currentReward]="currentReward" (changeModalState)="toggleRewardModal()"></share-reward-modal>

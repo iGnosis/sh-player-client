@@ -39,10 +39,12 @@
                     <div class="card help pt-6 ps-3 pe-3 text-center">
                         <img src="assets/icons/exertools_logo.png" alt="Exertools Logo">
                         <h2 class="text-primary pt-6">5% off on all therapy equipment</h2>
-                        <a href="https://www.pointmotion.us/index.php/docs/" target="_blank" class="btn btn-primary btn-block">Access Now</a>
+                        <button (click)="toggleRewardModal()" class="btn btn-primary btn-block">Access Now</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<share-reward-modal *ngIf="showRewardModal" [currentReward]="currentReward" (changeModalState)="toggleRewardModal()"></share-reward-modal>
