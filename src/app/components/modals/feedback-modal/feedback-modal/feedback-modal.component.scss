@@ -1,5 +1,7 @@
 @import '../../../../variables';
-
+.chat-bubble {
+    z-index: 1056;
+}
 .modal.feedback-modal, .modal.feedback-recieved-modal {
     transform: translate(-100%, -100%);
     width: unset;

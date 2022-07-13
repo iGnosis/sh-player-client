@@ -19,7 +19,11 @@ export class FeedbackModalComponent implements OnInit {
   ngOnInit(): void {
   }
   toggleFeedbackModal() {
-    this.feedbackModal = !this.feedbackModal;
+    if(this.recommendationScoreModal) {
+      this.submitProductFeedback();
+    } else {
+      this.feedbackModal = !this.feedbackModal;
+    }
   }
   setCurrentRating(i: number) {
     this.currentRating = i;
