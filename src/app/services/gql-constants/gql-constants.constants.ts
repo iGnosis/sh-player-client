@@ -191,5 +191,20 @@ export const GqlConstants = {
       preferredGenres
       nickname
     }
+  }`,
+  SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
+    faqAccessed {
+      status
+    }
+  }`,
+  FREE_PARKINSON_RESOURCES_ACCESSED: `mutation FreeParkinsonResourcesAccessed {
+    freeParkinsonResourcesAccessed {
+      status
+    }
+  }`,
+  FREE_REWARD_ACCESSED: `mutation FreeRewardAccessed {
+    freeRewardAccessed {
+      status
+    }
   }`
 };

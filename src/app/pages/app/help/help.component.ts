@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HelpService } from 'src/app/services/help/help.service';
 import { RewardsDTO } from 'src/app/types/pointmotion';
 
 @Component({
@@ -17,13 +18,23 @@ export class HelpComponent implements OnInit {
     description: "5% off on all therapy equipment from EXERTOOLS",
     couponCode: "PTMONU",
   }
-  constructor() { }
+  constructor(private helpService: HelpService) { }
 
   ngOnInit(): void {
   }
 
-  toggleRewardModal() {
-    this.showRewardModal = !this.showRewardModal;
+  accessSoundhealthFaq() {
+    this.helpService.faqAccessed();
+    this.helpService.goToLink('https://www.pointmotion.us/index.php/docs/');
   }
 
+  freeParkinsonResourcesAccessed() {
+    this.helpService.freeParkinsonResourcesAccessed();
+    this.helpService.goToLink('https://www.parkinson.org/Living-with-Parkinsons/Resources-and-Support');
+  }
+
+  toggleRewardModal() {
+    this.showRewardModal = !this.showRewardModal;
+    this.helpService.freeRewardAccessed();
+  }
 }
