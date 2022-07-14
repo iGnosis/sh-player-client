@@ -40,7 +40,7 @@ export class CallbackComponent implements OnInit {
       const step = await this.userService.isOnboarded();
       if (step == -1) {
         this.shScreen = true;
-        await this.waitForMusicToEnd();
+        await this.waitForTimeout(6500);
 
         if (await this.isCheckedInToday()) {
           this.router.navigate(["app", "home"]);
@@ -49,7 +49,7 @@ export class CallbackComponent implements OnInit {
         }
       } else {
         this.shScreen = true;
-        await this.waitForMusicToEnd();
+        await this.waitForTimeout(6500);
         this.router.navigate(["app", "signup", step]);
       }
     } else {
@@ -59,25 +59,20 @@ export class CallbackComponent implements OnInit {
     }
   }
 
-  async waitForMusicToEnd() {
-    return new Promise((resolve) => {
-      const intervalId = setInterval(() => {
-        if (this.isMusicEnded === true) {
-          setTimeout(() => {
-            resolve({});
-            clearInterval(intervalId);
-          }, 300);
-        }
-      }, 300);
+  async waitForTimeout(timeout: number) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({});
+      }, timeout);
     });
   }
 
   async isCheckedInToday() {
     const res = await this.dailyCheckinService.getLastCheckin();
-    if(!res.checkin[0]) return false;
+    if (!res.checkin[0]) return false;
     const checkedInAt = new Date(res.checkin[0].createdAt);
     const today = new Date();
-    return checkedInAt.setHours(0,0,0,0) == today.setHours(0,0,0,0);
+    return checkedInAt.setHours(0, 0, 0, 0) == today.setHours(0, 0, 0, 0);
   }
 
   decodeJWT(token: string | undefined) {
