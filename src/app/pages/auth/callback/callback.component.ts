@@ -1,58 +1,91 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { JwtService } from 'src/app/services/jwt.service';
-import { UserService } from 'src/app/services/user.service';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ShScreenComponent } from "src/app/components/sh-screen/sh-screen.component";
+import { AuthService } from "src/app/services/auth.service";
+import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checkin.service";
+import { JwtService } from "src/app/services/jwt.service";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
-  selector: 'app-callback',
-  templateUrl: './callback.component.html',
-  styleUrls: ['./callback.component.scss']
+  selector: "app-callback",
+  templateUrl: "./callback.component.html",
+  styleUrls: ["./callback.component.scss"],
 })
 export class CallbackComponent implements OnInit {
+  shScreen = false;
+  isMusicEnded = false;
 
-  error = false
+  error = false;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private authService: AuthService,
     private jwtService: JwtService,
     private userService: UserService,
+    private dailyCheckinService: DailyCheckinService,
     private router: Router
-  ) { }
+  ) {}
 
   async ngOnInit() {
-    const code = this.route.snapshot.queryParamMap.get('code');
+    const code = this.route.snapshot.queryParamMap.get("code");
     const codes = await this.authService.exchangeCode(code as string);
     if (codes) {
-      this.jwtService.setToken(codes.data.id_token)
-      this.jwtService.setAuthTokens(codes.data)
-      const data = this.decodeJWT(codes?.data?.id_token)
+      this.jwtService.setToken(codes.data.id_token);
+      this.jwtService.setAuthTokens(codes.data);
+      const data = this.decodeJWT(codes?.data?.id_token);
       this.userService.set({
         email: data.email,
         id: data.sub,
-      })
+      });
       const step = await this.userService.isOnboarded();
       if (step == -1) {
-        this.router.navigate(['app', 'home'])
+        this.shScreen = true;
+        await this.waitForMusicToEnd();
+
+        if (await this.isCheckedInToday()) {
+          this.router.navigate(["app", "home"]);
+        } else {
+          this.router.navigate(["app", "checkin"]);
+        }
       } else {
-        this.router.navigate(['app', 'signup', step])
+        this.shScreen = true;
+        await this.waitForMusicToEnd();
+        this.router.navigate(["app", "signup", step]);
       }
-      
     } else {
       // Show an error message
-      this.error = true
+      this.error = true;
       // this.router.navigate(['app', 'home'])
-    }  
-  }
-
-  decodeJWT(token: string | undefined) {
-    if(token) {
-      const parts = token.split('.')
-      if(parts.length === 3) {
-        return JSON.parse(atob(parts[1])) 
-      }
     }
   }
 
+  async waitForMusicToEnd() {
+    return new Promise((resolve) => {
+      const intervalId = setInterval(() => {
+        if (this.isMusicEnded === true) {
+          setTimeout(() => {
+            resolve({});
+            clearInterval(intervalId);
+          }, 300);
+        }
+      }, 300);
+    });
+  }
+
+  async isCheckedInToday() {
+    const res = await this.dailyCheckinService.getLastCheckin();
+    if(!res.checkin[0]) return false;
+    const checkedInAt = new Date(res.checkin[0].createdAt);
+    const today = new Date();
+    return checkedInAt.setHours(0,0,0,0) == today.setHours(0,0,0,0);
+  }
+
+  decodeJWT(token: string | undefined) {
+    if (token) {
+      const parts = token.split(".");
+      if (parts.length === 3) {
+        return JSON.parse(atob(parts[1]));
+      }
+    }
+  }
 }

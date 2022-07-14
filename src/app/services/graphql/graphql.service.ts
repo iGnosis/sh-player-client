@@ -12,7 +12,8 @@ export class GraphqlService {
 
   constructor(private jwtService: JwtService) {
     const additionalHeaders: any = {
-      'x-pointmotion-origin': window.location.origin
+      'x-pointmotion-origin': window.location.origin,
+      'x-pointmotion-user': 'patient',
     }
     if (environment.name == 'local') {
       additionalHeaders['x-pointmotion-debug'] = 'true'
@@ -21,13 +22,11 @@ export class GraphqlService {
     this.client = new GraphQLClient(environment.gqlEndpoint, {
       headers: Object.assign({
         Authorization: "Bearer " + _getItem("token"),
-        'x-pointmotion-user': 'patient',
       }, additionalHeaders),
     });
 
     this.publicClient = new GraphQLClient(environment.gqlEndpoint, {
-        headers: Object.assign({
-          'x-pointmotion-user': 'patient'
+      headers: Object.assign({
         }, additionalHeaders)
       }
     );

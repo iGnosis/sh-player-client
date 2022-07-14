@@ -15,4 +15,10 @@ export class CareplanService {
     console.log("active careplans", activeCareplans);
     return activeCareplans;
   }
+  async getCareplanActivities() {
+    const activities = await this.graphqlService.client.request(
+      GqlConstants.GET_CAREPLAN_DETAILS
+    );
+    return activities;
+  }
 }

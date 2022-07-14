@@ -22,7 +22,7 @@ export class AuthService {
 
   async logout(details: LogoutRequestDTO) {
     try {
-      const res = await this.graphqlService.publicClient.request(GqlConstants.REVOKE_REFRESH_TOKEN, details);
+      const res = await this.graphqlService.client.request(GqlConstants.REVOKE_REFRESH_TOKEN, details);
       return res;
     } catch(e) {
       return e;
@@ -56,7 +56,7 @@ export class AuthService {
       return e;
     }
   }
-  
+
   async setPreferredGenres(details: {id: string, genres: any}) {
     try {
       const newClient = new GraphQLClient(environment.gqlEndpoint, {
@@ -70,7 +70,7 @@ export class AuthService {
       return e;
     }
   }
-  
+
   async setPreferredActivities(details: {id: string, activities: any}) {
     try {
       const newClient = new GraphQLClient(environment.gqlEndpoint, {

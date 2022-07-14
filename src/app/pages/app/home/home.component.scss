@@ -2,6 +2,101 @@
 .sh-screen {
     z-index: 200;
 }
+
+$monthly_card_bg: #007F6E;
+$daily_card_bg: #B6E5C8;
+
+.monthly-remainder{
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.intro {
+  width: 90%;
+}
+
+.monthly-goals {
+  width: 90%;
+}
+
+.daily-goals{
+  width: 90%;
+}
+
+.daily-goals-progress{
+  height: 275px;
+  background-color: '#ffffff';
+  box-shadow: 0px 2px 4px #000066, 0px 2px 4px #000066;
+}
+
+.daily-session-progress {
+    .daily-progress-bar {
+        background-color: #718096;
+    }
+    .session-index {
+        &.start {
+            color: $success;
+            background-color: #fff;
+            border: 2px solid $success;
+            &::before {
+                content: '▼';
+                position: absolute;
+                top: -30px;
+                height: 10px;
+                transform: translateX(-50%);
+                left: 50%;
+                font-size: 20px;
+            }
+        }
+        &.locked {
+            color: #fff;
+            background-color: #718096;
+            .title {
+                color: #718096;
+            }
+        }
+        &.completed {
+            color: #fff;
+            background-color: $success;
+            .title {
+                color: $success;
+            }
+        }
+    }
+}
+
+.monthly-goals-progress {
+  height: 275px;
+  background-color: '#ffffff';
+  box-shadow: 0px 2px 4px #000066, 0px 2px 4px #000066;
+    .current {
+        left: 0%;
+        transform: translateX(-50%);
+        transition: left 0.5s;
+        color: '#00BD3E';
+        top: 8px;
+    }
+    .goal {
+        left: 99%;
+        transform: translateX(-50%);
+        top: 8px;
+    }
+}
+.lock {
+    top: -2rem;
+    color: #A0AEC0;
+    .fa-lock {
+        color: $warning;
+    }
+}
+.monthly-goals-card {
+      box-shadow: 0px 2px 4px '#000066', 0px 0px 2px '#000066';
+      .card-info {
+          color: #425466;
+      }
+  }
 .home-container {
     background-size: cover;
     .session-btn {
@@ -23,24 +118,24 @@
         }
     }
     .start-btn {
-        border: 0.2rem solid #fff;
+        border: 0.2rem solid #000066;
         background-color: $primary;
         animation: pulse 2s infinite;
     }
     @keyframes pulse {
         0% {
             transform: scale(0.95);
-            box-shadow: 0 0 0 0 rgba(255,255,255,0.7);
+            box-shadow: 0 0 0 0 rgba(0,0,102,0.7);
         }
-        
+
         70% {
             transform: scale(1);
-            box-shadow: 0 0 0 25px rgba(255,255,255,0);
+            box-shadow: 0 0 0 25px rgba(0,0,102,0);
         }
-        
+
         100% {
             transform: scale(0.95);
-            box-shadow: 0 0 0 0 rgba(255,255,255,0);
+            box-shadow: 0 0 0 0 rgba(0,0,102,0);
         }
     }
     .lead {
@@ -65,5 +160,21 @@
         .lead {
             font-size: 1.3rem;
         }
+    }
+}
+.reward-modal {
+    .active {
+        display: block;
+    }
+}
+.reward-card {
+    animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
     }
 }

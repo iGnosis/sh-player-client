@@ -9,7 +9,7 @@
         margin-right: auto;
         max-height: 75px;
     }
-    a {
+    a, button {
         position: absolute;
         bottom: 30px;
         width: 80%;
@@ -29,44 +29,5 @@
         height: calc( 100% + 30px );
         background: url(/assets/images/waves.png);
         background-size: cover;
-    }
-}
-.modal.feedback-modal, .modal.feedback-recieved-modal {
-    &.active {
-        display: block;
-    }
-    .modal-content {
-        width: 450px;
-        background-color: $primary;
-    }
-    .ratings i{
-        color:$border-light;
-        font-size: 2rem;
-        &.rating-color{
-            color:#FFC440;
-        }
-    }
-    .rating-description {
-        border-bottom: 1px solid $border-light;
-    }
-    textarea {
-        background-color: #EDF2F7;
-    }
-    .send-feedback-btn {
-        color: $primary;
-    }
-}
-.modal.feedback-recieved-modal {
-    .ratings p {
-        background-color:#fff;
-        &.rating-color{
-            background-color:#A0AEC0;
-        }
-    }
-    .rating-description {
-        border-bottom: 0px;
-    }
-    .checkmark {
-        background-color: $success;
     }
 }

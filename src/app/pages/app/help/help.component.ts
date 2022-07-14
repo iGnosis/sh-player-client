@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HelpService } from 'src/app/services/help/help.service';
+import { RewardsDTO } from 'src/app/types/pointmotion';
 
 @Component({
   selector: 'app-help',
@@ -6,27 +8,31 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./help.component.scss']
 })
 export class HelpComponent implements OnInit {
-  feedbackModal: boolean = false;
-  feedbackRecievedModal: boolean = false;
-  currentRating: number = 0;
-  currentProductRating: number = 0;
-
-  constructor() { }
+  showRewardModal: boolean = false;
+  currentReward: RewardsDTO = {
+    tier: "bronze",
+    isViewed: false,
+    isUnlocked: false,
+    isAccessed: false,
+    unlockAtDayCompleted: 0,
+    description: "5% off on all therapy equipment from EXERTOOLS",
+    couponCode: "PTMONU",
+  }
+  constructor(private helpService: HelpService) { }
 
   ngOnInit(): void {
   }
-  toggleFeedbackModal() {
-    this.feedbackModal = !this.feedbackModal;
-  }
-  setCurrentRating(i: number) {
-    this.currentRating = i;
-  }
-  toggleFeedbackRecievedModal() {
-    this.feedbackModal = false;
-    this.feedbackRecievedModal = !this.feedbackRecievedModal;
-  }
-  setProductRating(i: number) {
-    this.currentProductRating = i;
+
+  accessSoundhealthFaq() {
+    this.helpService.faqAccessed();
   }
 
+  freeParkinsonResourcesAccessed() {
+    this.helpService.freeParkinsonResourcesAccessed();
+  }
+
+  toggleRewardModal() {
+    this.showRewardModal = !this.showRewardModal;
+    this.helpService.freeRewardAccessed();
+  }
 }

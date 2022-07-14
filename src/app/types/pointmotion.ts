@@ -31,6 +31,16 @@ export interface LogoutRequestDTO {
     refreshToken: string,
 }
 
+export interface RewardsDTO {
+    tier: "bronze" | "silver" | "gold";
+    isViewed: boolean;
+    isUnlocked: boolean;
+    isAccessed: boolean;
+    description: string;
+    unlockAtDayCompleted: number;
+    couponCode: string;
+}
+
 export type Environment = {
     production: boolean;
     name: 'local' | 'dev' | 'stage' | 'prod';

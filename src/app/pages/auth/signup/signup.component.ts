@@ -75,8 +75,10 @@ export class SignupComponent implements OnInit {
     this.loginLink = this.authService.getLoginLink();
     router.events.subscribe(() => {
       let step = parseInt(this.route.snapshot.paramMap.get('step')!);
+      let interest = parseInt(this.route.snapshot.paramMap.get('interest') || '');
       if(step === -1) router.navigate(['/app/home']);
       this.signupStep = step;
+      if(interest) this.interestStep = interest;
     })
   }
 
@@ -132,9 +134,13 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  changeStep(step: number) {
+  changeStep(step: number, interest?: number) {
     this.signupStep = step;
-    this.router.navigate(['/app/signup/' + step])
+    if(interest) {
+      this.router.navigate(['app/signup/' + step + '/' + interest]);
+    } else {
+      this.router.navigate(['/app/signup/' + step]);
+    }
   }
 
   goBack() {
@@ -142,7 +148,11 @@ export class SignupComponent implements OnInit {
   }
 
   goBackInterest() {
-    this.interestStep--;
+    if(this.interestStep > 1) {
+      this.changeStep(this.signupStep, this.interestStep-1);
+    } else {
+      this.changeStep(this.signupStep-1);
+    }
   }
 
   async nextSignupStep() {
@@ -160,6 +170,9 @@ export class SignupComponent implements OnInit {
         }
 
     }
+    else if(this.signupStep === 4) {
+      this.changeStep(this.signupStep+1, this.interestStep);
+    }
     else {
       this.changeStep(this.signupStep+1);
     }
@@ -170,8 +183,7 @@ export class SignupComponent implements OnInit {
 
   async nextInterestStep() {
     this.errors = [];
-    if(this.interestStep === 2) this.goToHome();
-    else if(this.interestStep === 1) {
+    if(this.interestStep === 1) {
       let genres: any = {};
       this.interests.forEach(item => {
         if(item.selected) {
@@ -182,9 +194,8 @@ export class SignupComponent implements OnInit {
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
-        this.interestStep++;
+        this.changeStep(this.signupStep, this.interestStep+1);
       }
-      return;
     }
     else if(this.interestStep === 2) {
       let activities: any = {};
@@ -197,11 +208,14 @@ export class SignupComponent implements OnInit {
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
-        this.interestStep++;
+        this.changeStep(this.signupStep, this.interestStep+1);
       }
-      return;
     }
-    this.interestStep++;
+    else if(this.interestStep === 3) {
+      this.goToHome();
+    } else {
+      this.changeStep(this.signupStep, this.interestStep+1);
+    }
   }
   selectInterest(i: number) {
     this.interests[i].selected = !this.interests[i].selected;

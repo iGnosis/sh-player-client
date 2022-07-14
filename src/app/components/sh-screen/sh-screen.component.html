@@ -1,0 +1,11 @@
+<audio (ended)="musicEnded()" src="assets/sounds/Sound Health Soundscape_LogIn.mp3" [autoplay]="true"></audio>
+<div class="sh-screen position-fixed w-screen h-screen top-0 start-0 bg-white">
+  <img *ngIf="showPointMotionLogo" src="/assets/icons/point_motion_logo.jpg" alt="Point Motion"
+    class="point-motion-logo position-absolute top-16 start-16">
+  <div class=" position-absolute translate-middle top-1/2 start-1/2">
+    <img @slideInForLogo *ngIf="showSoundHealthLogo" src="/assets/images/sound_health_logo@3x.png" alt="Sound Health"
+      class="sound-health-logo">
+    <img @slideInForSH *ngIf="showSoundHealth" src="/assets/images/sound_health.png" alt="Sound Health"
+      class="sound-health">
+  </div>
+</div>

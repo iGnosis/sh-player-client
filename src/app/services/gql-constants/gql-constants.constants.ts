@@ -15,20 +15,14 @@ export const GqlConstants = {
       estimatedDuration
     }
   }`,
-  GET_CAREPLAN_DETAILS: `query GetCarePlanDetails($careplan: uuid = "40f81454-c97d-42bc-b20f-829cc3d2728e") {
-  careplan(where: {id: {_eq: $careplan}}) {
-    name
-    id
-    careplan_activities {
+  GET_CAREPLAN_DETAILS: `query GetCareplanActivities {
+    careplan_activity {
       activityByActivity {
-        name
-        duration
         id
+        name
       }
-      reps
     }
-  }
-}`,
+  }`,
   GET_SESSIONS: `query GetSessions($offset: Int, $limit: Int, $patientId: uuid) {
       session_aggregate(where: {patient: {_eq: $patientId}, status: {_neq: trashed}}) {
         aggregate {
@@ -50,22 +44,49 @@ export const GqlConstants = {
     }
   `,
   GET_MONTHLY_GOALS: `
-  query MonthlyGoals($month: Int = 0, $year: Int = 0) {
-    patientMonthlyGoals(month: $month, year: $year) {
+  query PatientMonthlyGoal($startDate: String!, $endDate: String!, $userTimezone: String!) {
+    patientMonthlyGoals(endDate: $endDate, startDate: $startDate, userTimezone: $userTimezone) {
+      status
       data {
-        date
-        totalSessionDurationInMin
+        daysCompleted
+        rewardsCountDown
       }
     }
   }
   `,
   GET_DAILY_GOALS: `
-  query DailyGoals($date: String = "") {
-    patientDailyGoals(date: $date) {
-      dailyMinutesCompleted
+  query PatientDailyGoals($activityIds: [String!]!, $date: String!) {
+    patientDailyGoals(activityIds: $activityIds, date: $date) {
+      status
+      data {
+        activities {
+          id
+          isCompleted
+        }
+      }
     }
   }
   `,
+  GET_PATIENT_REWARDS: `
+  query GetPatientRewards {
+    patient {
+      rewards
+    }
+  }
+  `,
+  MARK_REWARD_AS_VIEWED: `
+  mutation MarkRewardAsViewed($rewardTier: String!) {
+    markRewardAsViewed(rewardTier: $rewardTier) {
+      status
+    }
+  }
+  `,
+  MARK_REWARD_AS_ACCESSED: `
+  mutation MarkRewardAsAccessed($rewardTier: String!) {
+    markRewardAsAccessed(rewardTier: $rewardTier) {
+      status
+    }
+  }`,
   GET_STREAK: `
   query GetStreak {
     patientSessionStreak {
@@ -73,6 +94,30 @@ export const GqlConstants = {
     }
   }
   `,
+  USER_DAILY_CHECKIN: `mutation InsertCheckin($type: checkin_type_enum!, $value: String!) {
+    insert_checkin_one(object: {type: $type, value: $value}) {
+      id
+    }
+  }
+  `,
+  GET_LAST_CHECKIN: `query GetLastCheckin {
+    checkin(limit: 1, order_by: {createdAt: desc}) {
+      createdAt
+    }
+  }
+  `,
+  USER_FEEDBACK: `mutation InsertFeedback($description: String, $rating: Int!) {
+    insert_patient_feedback(objects: {description: $description, rating: $rating}) {
+      returning {
+        id
+      }
+    }
+  }`,
+  SET_RECOMMENDATION_SCORE: `mutation SetRecommendationScore($feedbackId: uuid!, $recommendationScore: Int!) {
+    update_patient_feedback_by_pk(pk_columns: {id: $feedbackId}, _set: {recommendationScore: $recommendationScore}) {
+      id
+    }
+  }`,
   SIGN_UP_PATIENT: `
   mutation SignUpPatient($code: String = "", $email: String = "", $nickname: String = "", $password: String = "") {
     signUpPatient(code: $code, email: $email, nickname: $nickname, password: $password) {
@@ -108,7 +153,7 @@ export const GqlConstants = {
     }
   }
   `,
-  
+
   EXCHANGE_CODE: `mutation ExchangeCode($code: String!) {
     exchangeCodeWithTokens(code: $code) {
       status
@@ -145,6 +190,21 @@ export const GqlConstants = {
       email
       preferredGenres
       nickname
+    }
+  }`,
+  SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
+    faqAccessed {
+      status
+    }
+  }`,
+  FREE_PARKINSON_RESOURCES_ACCESSED: `mutation FreeParkinsonResourcesAccessed {
+    freeParkinsonResourcesAccessed {
+      status
+    }
+  }`,
+  FREE_REWARD_ACCESSED: `mutation FreeRewardAccessed {
+    freeRewardAccessed {
+      status
     }
   }`
 };
