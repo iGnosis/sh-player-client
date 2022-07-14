@@ -178,3 +178,11 @@ $daily_card_bg: #B6E5C8;
         transform: scale(1);
     }
 }
+@media screen and (max-width: 1300px) {
+    .display-6 {
+        font-size: 2rem;
+    } 
+    .monthly-remainder {
+        font-size: 0.8rem;
+    }
+}
