@@ -1,5 +1,7 @@
 @import '../../../variables';
-
+.help-container {
+    height: calc(100vh - 3.6875rem);
+}
 .help.card {
     min-height: 300px;
     position: relative;
