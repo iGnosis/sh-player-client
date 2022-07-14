@@ -3,16 +3,16 @@
         <ng-lottie [options]="options">
         </ng-lottie>
     </div>
-    <div 
+    <div
     *ngIf="!showGenreCard"
-    [@slideInOut]="{value:moodSlideOut ? 'slideOut' : '', params:{duration : 500}}" 
+    [@slideInOut]="{value:moodSlideOut ? 'slideOut' : '', params:{duration : 500}}"
     class="cards-container text-center position-fixed top-1/2 start-1/2 bg-white p-16 rounded-6">
         <h1 class="display-6 text-primary">How are you feeling today?</h1>
         <div class="mood-cards d-flex justify-content-between mt-10 position-relative h-24">
-            <div 
-            (click)="selectMood(mood.title)" 
-            *ngFor="let mood of moodList" 
-            class="mood-card top-1/2 start-1/2 bg-white cursor-pointer h-24 w-24 p-3 border rounded-2 position-absolute" 
+            <div
+            (click)="selectMood(mood.title)"
+            *ngFor="let mood of moodList"
+            class="mood-card top-1/2 start-1/2 bg-white cursor-pointer h-24 w-24 p-3 border rounded-2 position-absolute"
             [class.active]="mood.title === selectedMood"
             [class.stack]="selectedMood !== undefined"
             [style.border-color]="mood.color">
@@ -23,14 +23,14 @@
     </div>
     <div
     *ngIf="showGenreCard"
-    [@slideInOut]="{value:!showGenreCard ? 'slideIn' : !genreSlideOut ? 'open' : 'slideOut'}" 
+    [@slideInOut]="{value:!showGenreCard ? 'slideIn' : !genreSlideOut ? 'open' : 'slideOut'}"
     class="genre-cards-container text-center position-fixed top-1/2 start-1/2 bg-white p-16 rounded-6 w-3/5">
         <h1 class="display-6 text-primary">Select genre of music</h1>
         <div class="mood-cards d-flex justify-content-between my-5 position-relative h-32">
-            <div 
-            *ngFor="let genre of genreList" 
-            (click)="selectGenre(genre.title)" 
-            class="mood-card top-1/2 start-1/2 bg-white cursor-pointer h-32 w-32 p-3 m-2 border rounded-2 position-absolute" 
+            <div (mouseenter)="debouncedPlayMusic(genre.title)" (mouseleave)="stopMusic(genre.title)"
+            *ngFor="let genre of genreList"
+            (click)="selectGenre(genre.title)"
+            class="mood-card top-1/2 start-1/2 bg-white cursor-pointer h-32 w-32 p-3 m-2 border rounded-2 position-absolute"
             [class.active]="genre.title === selectedGenre"
             [class.stack]="selectedGenre !== undefined">
                 <img class="w-20" [src]="genre.img" [alt]="genre.title">
