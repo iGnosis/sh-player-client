@@ -7,6 +7,7 @@ import {
   keyframes,
 } from "@angular/animations";
 import { CallbackComponent } from "src/app/pages/auth/callback/callback.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-sh-screen",
@@ -36,6 +37,17 @@ import { CallbackComponent } from "src/app/pages/auth/callback/callback.componen
         ),
       ]),
     ]),
+    trigger("slideUp", [
+      transition(":enter", [
+        animate(
+          "400ms 0ms ease-in-out",
+          keyframes([
+            style({ transform: "translateY(75vh)" }),
+            style({ transform: "translateY(0)" }),
+          ])
+        ),
+      ]),
+    ]),
   ],
 })
 export class ShScreenComponent implements OnInit, AfterViewInit {
@@ -43,14 +55,17 @@ export class ShScreenComponent implements OnInit, AfterViewInit {
   showSoundHealthLogo = false;
   showSoundHealth = false;
   isMusicEnded = false;
+  showHomePageLink = false;
 
-  constructor(
-    private callbackComponent: CallbackComponent
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {}
 
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.showHomePageLink = true;
+    }, 7000);
+
     setTimeout(() => {
       this.showPointMotionLogo = true;
     }, 600);
@@ -63,7 +78,7 @@ export class ShScreenComponent implements OnInit, AfterViewInit {
     }, 1800);
   }
 
-  musicEnded() {
-    this.callbackComponent.isMusicEnded = true;
+  redirectToHome() {
+    this.router.navigate(["/"]);
   }
 }

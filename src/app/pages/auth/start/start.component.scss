@@ -11,6 +11,9 @@
     }
     .carousel-container {
         background-color: #F7FAFC;
+        img {
+            z-index: 1;
+        }
         
         .circle-bg-1, .circle-bg-2, .circle-bg-3 {
             width: 75em;
