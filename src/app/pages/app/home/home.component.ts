@@ -181,10 +181,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async getMonthlyGoals() {
-    const firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
-    const lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
-
-    this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
+    let firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
+    let lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
 
     firstDayOfMonth.setHours(0,0,0,0);
     lastDayOfMonth.setHours(24,0,0,0);
@@ -199,6 +197,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.daysCompletedThisMonth = response.daysCompleted || 0;
     this.rewardsRange = response.rewardsCountDown;
+    
+    lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
+    this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
 
     this.initMonthlyBar();
   }
