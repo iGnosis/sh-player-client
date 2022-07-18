@@ -36,7 +36,7 @@ $daily_card_bg: #B6E5C8;
         background-color: #718096;
     }
     .session-index {
-        &.start {
+        &:nth-child(2) {
             color: $success;
             background-color: #fff;
             border: 2px solid $success;
@@ -50,7 +50,7 @@ $daily_card_bg: #B6E5C8;
                 font-size: 20px;
             }
         }
-        &.locked {
+        &:nth-child(3), &:nth-child(4) {
             color: #fff;
             background-color: #718096;
             .title {
