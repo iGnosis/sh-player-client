@@ -201,7 +201,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
     lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
     this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
 
+    this.monthlyGoalPercent = response.rewardsCountDown.find((day: number) => day > this.daysCompletedThisMonth);
+    this.monthlyGoalPercent = this.monthlyGoalPercent !== -1 ? (this.monthlyGoalPercent /  lastDayOfMonth.getDate() * 100) : 100;
+
+    this.monthRange = d3.range(0, lastDayOfMonth.getDate() + 0.5, 1);
+
     this.initMonthlyBar();
+  }
+  monthlyDivision(value: number) {
+    const lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
+    if(value % 5 === 0 || value === lastDayOfMonth.getDate()) {
+      if(value === 30 && lastDayOfMonth.getDate() !== 30) {
+        return '\'';
+      } else {
+        return value;
+      }
+    } else {
+      return '\'';
+    }
   }
 
   async getDailyGoals() {
@@ -242,7 +259,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.nextSession = this.sessions[0];
     } else {
       this.dailyCompletionPercent = Math.min(idxOfCurrentSession, 2) *50;
-      this.nextSession = this.sessions[idxOfCurrentSession];
+      // this.nextSession = this.sessions[idxOfCurrentSession];
+      this.nextSession = this.sessions[0];
     }
 
   }
