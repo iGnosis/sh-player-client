@@ -1,5 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "src/app/services/auth.service";
+import { JwtService } from "src/app/services/jwt.service";
+import { UserService } from "src/app/services/user.service";
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -11,7 +14,13 @@ export class SessionComponent implements OnInit {
   url = "";
   sessionId = "";
   @ViewChild("session") session!: ElementRef<HTMLIFrameElement>;
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private jwtService: JwtService,
+    private userService: UserService,
+    private authService: AuthService,
+  ) {
     this.sessionId = this.route.snapshot.paramMap.get("id") as string;
     console.log(this.sessionId);
     this.url = environment.activityEndpoint + "?session=" + this.sessionId;
@@ -29,7 +38,7 @@ export class SessionComponent implements OnInit {
     //   );
     // }, 1000);
 
-    window.addEventListener("message", (event) => {
+    window.addEventListener("message", async (event) => {
       
       if(event && event.data && event.data.type ) {
         console.log(event);
@@ -47,6 +56,16 @@ export class SessionComponent implements OnInit {
       
       if(event && event.data && event.data.session && event.data.session.id) {
         this.router.navigate(['/app/home'])
+      }
+      if(event && event.data && event.data.type === 'check-auth' && !event.data.token) {
+        const tokens = this.jwtService.getAuthTokens();
+        if (tokens && tokens.refresh_token) {
+          await this.authService.logout({ refreshToken: tokens.refresh_token });
+        };
+        this.jwtService.clearAuthTokens();
+        this.userService.setPatient();
+        this.userService.set();
+        window.location.href = this.authService.getLoginLink();
       }
     }, false);
   }
