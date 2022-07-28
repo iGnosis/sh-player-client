@@ -9,14 +9,14 @@ export class CareplanService {
   constructor(private graphqlService: GraphqlService) {}
 
   async getActiveCareplans(patientId?: string) {
-    const activeCareplans = await this.graphqlService.client.request(
+    const activeCareplans = await this.graphqlService.gqlRequest(
       GqlConstants.GET_ACTIVE_PLANS
     );
     console.log("active careplans", activeCareplans);
     return activeCareplans;
   }
   async getCareplanActivities() {
-    const activities = await this.graphqlService.client.request(
+    const activities = await this.graphqlService.gqlRequest(
       GqlConstants.GET_CAREPLAN_DETAILS
     );
     return activities;

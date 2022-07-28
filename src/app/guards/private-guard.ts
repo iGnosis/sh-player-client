@@ -7,8 +7,8 @@ import { JwtService } from '../services/jwt.service';
 export class PrivateGuard implements CanActivateChild, CanActivate {
     constructor(private router: Router, private jwtService: JwtService) {}
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-        if (this.jwtService.getToken()) {
+    async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (await this.jwtService.getToken()) {
             return true
         } else {
             this.router.navigate(['/'])
@@ -16,8 +16,8 @@ export class PrivateGuard implements CanActivateChild, CanActivate {
         }
     }
 
-    canActivateChild(route: ActivatedRouteSnapshot, state:RouterStateSnapshot): any {
-        if (this.jwtService.getToken()) {
+    async canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (await this.jwtService.getToken()) {
             return true
         } else {
             this.router.navigate(['/'])
