@@ -10,7 +10,7 @@ export class GoalsService {
 
   async getMonthlyGoals(startDate: string, endDate: string, userTimezone: string) {
     try {
-      const monthlyGoals = await this.graphqlService.client.request(
+      const monthlyGoals = await this.graphqlService.gqlRequest(
         GqlConstants.GET_MONTHLY_GOALS,
         { startDate, endDate, userTimezone }
       );
@@ -21,7 +21,7 @@ export class GoalsService {
   }
   async getDailyGoals(activityIds: string[], date: string) {
     try {
-      const dailyGoals = await this.graphqlService.client.request(
+      const dailyGoals = await this.graphqlService.gqlRequest(
         GqlConstants.GET_DAILY_GOALS,
         { activityIds, date }
       );
@@ -31,7 +31,7 @@ export class GoalsService {
     }
   }
   async getStreak() {
-    const streak = await this.graphqlService.client.request(GqlConstants.GET_STREAK);
+    const streak = await this.graphqlService.gqlRequest(GqlConstants.GET_STREAK);
     return streak.patientSessionStreak.streak;
   }
   async getLevel() {

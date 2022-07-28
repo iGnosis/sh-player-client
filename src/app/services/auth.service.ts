@@ -20,15 +20,6 @@ export class AuthService {
     return this.http.post(this.baseURL+'/auth/patient/login', details)
   }
 
-  async logout(details: LogoutRequestDTO) {
-    try {
-      const res = await this.graphqlService.client.request(GqlConstants.REVOKE_REFRESH_TOKEN, details);
-      return res;
-    } catch(e) {
-      return e;
-    }
-  }
-
   async setNickName(details: SignupRequestDTO) {
     try {
       const user = this.userService.get()
@@ -36,7 +27,7 @@ export class AuthService {
         nickname: details.nickname,
         id: user.id
       }
-      const res = await this.graphqlService.client.request(GqlConstants.SET_NICKNAME, data);
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_NICKNAME, data);
       return res;
     } catch(e) {
       return e;
@@ -50,7 +41,7 @@ export class AuthService {
         nickname: details.nickname,
         id: user.id
       }
-      const res = await this.graphqlService.client.request(GqlConstants.SET_NICKNAME, data);
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_NICKNAME, data);
       return res;
     } catch(e) {
       return e;
@@ -82,24 +73,6 @@ export class AuthService {
       return res;
     } catch(e) {
       return e;
-    }
-  }
-
-  async exchangeCode(code: string) {
-    try {
-      const response = await this.graphqlService.publicClient.request(GqlConstants.EXCHANGE_CODE, {code})
-      return response.exchangeCodeWithTokens;
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  async refreshTokens(refreshToken: string) {
-    try {
-      const res = await this.graphqlService.publicClient.request(GqlConstants.REFRESH_TOKEN, {refreshToken})
-      return res.refreshTokens;
-    } catch (err) {
-      console.error(err)
     }
   }
 

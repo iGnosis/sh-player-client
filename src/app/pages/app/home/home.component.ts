@@ -10,7 +10,6 @@ import * as d3 from "d3";
 import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
 import { AnimationOptions } from "ngx-lottie";
-import { take } from "rxjs";
 import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
 @Component({
@@ -96,16 +95,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit(): Promise<void> {
-    let expiringIn: number = this.jwtService.tokenExpiry();
-    if(expiringIn <= 0) {
-      this.jwtService.watchToken().pipe(take(1)).subscribe((token: string) => {
-        this.jwtService.setToken(token);
-        this.initHome();
-      });
-    } else {
-      this.initHome();
-    }
+    this.initHome();
   }
+
   async initHome() {
     this.rewards = await this.rewardsService.getRewards();
 
@@ -149,22 +141,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async startNewSession() {
-    if (this.jwtService.checkCareplanAndProviderInJWT()) {
-      if (this.activeCareplans.careplan.length > 0) {
-        this.careplanId = this.activeCareplans.careplan[0].id;
-        this.sessionId = (await this.sessionService.createNewSession(
-          this.careplanId
-        )) as string;
-        this.router.navigate(["/app/session/", this.sessionId]);
-      }
-    } else {
-      this.sessionId = (await this.sessionService.createNewSession(
-        this.careplanId
-      )) as string;
-      this.router.navigate(["/app/session/", this.sessionId]);
-    }
+    this.sessionId = (await this.sessionService.createNewSession()) as string;
+    this.router.navigate(["/app/session/", this.sessionId]);
   }
-
 
   nth(d: number) {
     if (d > 3 && d < 21) return "th";
@@ -197,7 +176,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.daysCompletedThisMonth = response.daysCompleted || 0;
     this.rewardsRange = response.rewardsCountDown;
-    
+
     lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
     this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
 
