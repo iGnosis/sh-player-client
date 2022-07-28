@@ -2,9 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ShScreenComponent } from "src/app/components/sh-screen/sh-screen.component";
 import { AuthService } from "src/app/services/auth.service";
+import { Auth0Service } from "src/app/services/auth0/auth0.service";
 import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checkin.service";
 import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-callback",
@@ -23,39 +25,56 @@ export class CallbackComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private dailyCheckinService: DailyCheckinService,
-    private router: Router
+    private router: Router,
+    private auth0Service: Auth0Service
   ) {}
 
   async ngOnInit() {
-    const code = this.route.snapshot.queryParamMap.get("code");
-    const codes = await this.authService.exchangeCode(code as string);
-    if (codes) {
-      this.jwtService.setToken(codes.data.id_token);
-      this.jwtService.setAuthTokens(codes.data);
-      const data = this.decodeJWT(codes?.data?.id_token);
-      this.userService.set({
-        email: data.email,
-        id: data.sub,
-      });
-      const step = await this.userService.isOnboarded();
-      if (step == -1) {
-        this.shScreen = true;
-        await this.waitForTimeout(6500);
+    await this.auth0Service.auth0Client.handleRedirectCallback();
 
-        if (await this.isCheckedInToday()) {
-          this.router.navigate(["app", "home"]);
-        } else {
-          this.router.navigate(["app", "checkin"]);
-        }
-      } else {
-        this.shScreen = true;
-        await this.waitForTimeout(6500);
-        this.router.navigate(["app", "signup", step]);
-      }
-    } else {
+    const user = await this.auth0Service.auth0Client.getUser({
+      scope: environment.auth0Scope,
+      audience: environment.auth0Audience
+    })
+
+    console.log('CallbackComponent:user:', user);
+
+    const accessToken = await this.auth0Service.auth0Client.getTokenSilently()
+    console.log('accessToken:', accessToken);
+
+    // fetches access_token & sends it to the token observers.
+    await this.jwtService.getToken();
+
+    if (!accessToken) {
       // Show an error message
       this.error = true;
       // this.router.navigate(['app', 'home'])
+      return;
+    }
+
+    const accessTokenData = this.decodeJWT(accessToken);
+    const userId = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
+    const userEmail = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-email"];
+
+    this.userService.set({
+      email: userEmail,
+      id: userId,
+    });
+
+    const step = await this.userService.isOnboarded();
+    if (step == -1) {
+      this.shScreen = true;
+      await this.waitForTimeout(6500);
+
+      if (await this.isCheckedInToday()) {
+        this.router.navigate(["app", "home"]);
+      } else {
+        this.router.navigate(["app", "checkin"]);
+      }
+    } else {
+      this.shScreen = true;
+      await this.waitForTimeout(6500);
+      this.router.navigate(["app", "signup", step]);
     }
   }
 

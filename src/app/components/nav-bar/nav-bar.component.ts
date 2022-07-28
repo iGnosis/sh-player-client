@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { Auth0Service } from 'src/app/services/auth0/auth0.service';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'nav-bar',
@@ -17,7 +18,7 @@ export class NavBarComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private router: Router,
-    private authService: AuthService,
+    private auth0Service: Auth0Service
   ) {
     this.router.events.subscribe(() => {
       this.activeTab = this.route.url.split('/').slice(-1)[0];
@@ -30,13 +31,9 @@ export class NavBarComponent implements OnInit {
   }
 
   async logout() {
-    const tokens = this.jwtService.getAuthTokens();
-    if (tokens && tokens.refresh_token) {
-      await this.authService.logout({ refreshToken: tokens.refresh_token });
-    };
-    this.jwtService.clearAuthTokens();
-    this.userService.setPatient();
-    this.userService.set();
+    this.auth0Service.auth0Client.logout({
+      returnTo: environment.auth0LogoutUrl
+    });
     this.router.navigate(['/']);
   }
 
