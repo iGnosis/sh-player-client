@@ -6,8 +6,8 @@ import { JwtService } from '../services/jwt.service';
 export class PublicGuard implements CanActivateChild {
     constructor(private router: Router, private jwtService: JwtService) {}
 
-    canActivateChild(route: ActivatedRouteSnapshot, state:RouterStateSnapshot): any {
-        if (this.jwtService.getToken()) {
+    async canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (await this.jwtService.getToken()) {
             this.router.navigate(['/app/home'])
             return false
         } else {

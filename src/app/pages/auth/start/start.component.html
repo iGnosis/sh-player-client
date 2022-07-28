@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-center">
     <div class="carousel-container overflow-hidden col-lg-6 position-relative">
         <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
-        
+
         <div class="carousel-images">
             <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto slide1"></div>
             <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-2 mx-auto slide1"></div>
@@ -21,7 +21,7 @@
                 <img class="pb-16 w-48" src="/assets/images/logo.png" alt="point motion">
                 <h1 class="pb-12 display-6 text-nowrap">Welcome to Sound Health.</h1>
                 <div class="login-btn w-full text-center" (click)="null">
-                    <a [href]="signUpLink" class="btn btn-primary w-4/5 rounded-2 font-bold py-4">
+                    <a (click)="signUp()" class="btn btn-primary w-4/5 rounded-2 font-bold py-4">
                         Get Started
                     </a>
                 </div>

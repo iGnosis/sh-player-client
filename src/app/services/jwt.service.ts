@@ -1,68 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import jwtDecode from 'jwt-decode'
+import { Auth0Service } from './auth0/auth0.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JwtService {
-
-  private jwt?: string
   private currentToken = new Subject<string>();
-  private TOKEN = 'token'
 
-  constructor() {
-    this.jwt = localStorage.getItem(this.TOKEN) || ''
-  }
+  constructor(private auth0Service: Auth0Service) { }
 
   watchToken(): Observable<any> {
     return this.currentToken.asObservable();
   }
 
-  getToken(): string {
-    return localStorage.getItem(this.TOKEN) || ''
-  }
+  async getToken() {
+    const isAuthenticated = await this.auth0Service.auth0Client.isAuthenticated();
+    if (!isAuthenticated) {
+      return
+    }
 
-  setToken(token: string) {
-    this.currentToken.next(token);
-    localStorage.setItem(this.TOKEN, token)
-  }
+    try {
+      // fetches the latest valid access_token.
+      // automatically refreshes a token if it's near expiry or already expired.
+      const token = await this.auth0Service.auth0Client.getTokenSilently();
 
-  setAuthTokens(data: {access_token?: string, id_token: string, refresh_token?: string, expires_in?: number, token_type?: string}) {
-    const newData = {...this.getAuthTokens(), ...data};
-    localStorage.setItem('auth', JSON.stringify(newData))
-  }
-
-  getAuthTokens() {
-    return JSON.parse(localStorage.getItem('auth') || '{}')
-  }
-
-  clearAuthTokens() {
-    localStorage.removeItem(this.TOKEN);
-    localStorage.removeItem('auth');
-  }
-
-  checkCareplanAndProviderInJWT() {
-    const decodedToken: any = jwtDecode(this.getToken());
-    const hasuraJWTClaims = JSON.parse(decodedToken["https://hasura.io/jwt/claims"] as string);
-    console.log(hasuraJWTClaims);
-   if (
-     "x-hasura-careplan-id" in hasuraJWTClaims &&
-     "x-hasura-provider-id" in hasuraJWTClaims
-   ) {
-     return true;
-   } else {
-     return false;
-   }
-  }
-
-  tokenExpiry(): number {
-    const currentToken = this.getToken();
-    const decodedToken: any = jwtDecode(currentToken);
-    const expiry: number = decodedToken.exp * 1000;
-    const minsBeforeExp: number = 2;
-
-
-    return expiry - new Date().getTime() - minsBeforeExp * 60000;
+      // notify the observers.
+      this.currentToken.next(token);
+      return token;
+    } catch (error) {
+      console.log(error);
+      return;
+    }
   }
 }
