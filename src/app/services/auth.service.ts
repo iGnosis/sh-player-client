@@ -4,7 +4,7 @@ import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
-import { LoginRequestDTO, SignupRequestDTO, LogoutRequestDTO } from '../types/pointmotion';
+import { LoginRequestDTO, SignupRequestDTO } from '../types/pointmotion';
 import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
@@ -59,12 +59,7 @@ export class AuthService {
 
   async setPreferredGenres(details: {id: string, genres: any}) {
     try {
-      const newClient = new GraphQLClient(environment.gqlEndpoint, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
-      const res = await newClient.request(GqlConstants.SET_FAV_GENRE, details);
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_FAV_GENRE, details)
       return res;
     } catch(e) {
       return e;
@@ -73,12 +68,7 @@ export class AuthService {
 
   async setPreferredActivities(details: {id: string, activities: any}) {
     try {
-      const newClient = new GraphQLClient(environment.gqlEndpoint, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
-      const res = await newClient.request(GqlConstants.SET_FAV_ACTIVITIES, details);
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_FAV_ACTIVITIES, details);
       return res;
     } catch(e) {
       return e;
