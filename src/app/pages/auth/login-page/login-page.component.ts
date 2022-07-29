@@ -1,8 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "src/app/services/auth.service";
-import { JwtService } from "src/app/services/jwt.service";
-import { Router } from "@angular/router";
-import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-login-page",
@@ -14,20 +10,10 @@ export class LoginPageComponent implements OnInit {
   email = "";
   password = "";
   showPassword = false;
-  signUpLink = ''
-  loginLink = ''
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private jwtService: JwtService,
-    private userService: UserService
-  ) {}
+  constructor() { }
 
-  ngOnInit(): void {
-    this.signUpLink = this.authService.getSignupLink();
-    this.loginLink = this.authService.getLoginLink();
-  }
+  ngOnInit(): void { }
 
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
@@ -35,7 +21,6 @@ export class LoginPageComponent implements OnInit {
 
   async onSignIn() {
     this.errors = [];
-    location.href = this.loginLink;
 
     // await this.authService
     //   .login({ email: this.email, password: this.password })

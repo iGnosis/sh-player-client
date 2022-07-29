@@ -12,7 +12,7 @@ export class HelpService {
   // pinpoint event
   async faqAccessed() {
     try {
-      this.graphqlService.client.request(GqlConstants.SOUNDHEALTH_FAQ_ACCESSED);
+      this.graphqlService.gqlRequest(GqlConstants.SOUNDHEALTH_FAQ_ACCESSED);
     } catch (e) {
       console.log(e);
     }
@@ -21,7 +21,7 @@ export class HelpService {
   // pinpoint event
   async freeParkinsonResourcesAccessed() {
     try {
-      this.graphqlService.client.request(GqlConstants.FREE_PARKINSON_RESOURCES_ACCESSED);
+      this.graphqlService.gqlRequest(GqlConstants.FREE_PARKINSON_RESOURCES_ACCESSED);
     } catch (e) {
       console.log(e);
     }
@@ -30,7 +30,7 @@ export class HelpService {
   // pinpoint event
   async freeRewardAccessed() {
     try {
-      this.graphqlService.client.request(GqlConstants.FREE_REWARD_ACCESSED);
+      this.graphqlService.gqlRequest(GqlConstants.FREE_REWARD_ACCESSED);
     } catch (e) {
       console.log(e);
     }

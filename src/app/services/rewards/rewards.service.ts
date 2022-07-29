@@ -10,7 +10,7 @@ export class RewardsService {
 
   async getRewards() {
     try {
-      const response = await this.graphqlService.client.request(GqlConstants.GET_PATIENT_REWARDS);
+      const response = await this.graphqlService.gqlRequest(GqlConstants.GET_PATIENT_REWARDS);
       return response.patient[0].rewards;
     } catch (e) {
       console.log(e);
@@ -19,7 +19,7 @@ export class RewardsService {
 
   async markRewardAsAccessed(rewardTier: string) {
     try {
-      const response = await this.graphqlService.client.request(GqlConstants.MARK_REWARD_AS_ACCESSED, { rewardTier });
+      const response = await this.graphqlService.gqlRequest(GqlConstants.MARK_REWARD_AS_ACCESSED, { rewardTier });
       return response;
     } catch (e) {
       console.log(e);
@@ -28,7 +28,7 @@ export class RewardsService {
 
   async markRewardAsViewed(rewardTier: string) {
     try {
-      const response = await this.graphqlService.client.request(GqlConstants.MARK_REWARD_AS_VIEWED, { rewardTier });
+      const response = await this.graphqlService.gqlRequest(GqlConstants.MARK_REWARD_AS_VIEWED, { rewardTier });
       return response;
     } catch (e) {
       console.log(e);

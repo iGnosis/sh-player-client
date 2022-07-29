@@ -8,6 +8,7 @@ import {
 } from "@angular/animations";
 import { CallbackComponent } from "src/app/pages/auth/callback/callback.component";
 import { Router } from "@angular/router";
+import { SoundsService } from "src/app/services/sounds/sounds.service";
 
 @Component({
   selector: "app-sh-screen",
@@ -57,7 +58,9 @@ export class ShScreenComponent implements OnInit, AfterViewInit {
   isMusicEnded = false;
   showHomePageLink = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private soundService: SoundsService) {
+    this.soundService.loginSound.play();
+  }
 
   ngOnInit() {}
 

@@ -12,6 +12,11 @@ export class SoundsService {
   preSessionGenreSurpriseId!: number;
   constructor() {}
 
+  loginSound: Howl = new Howl({
+    src: "assets/sounds/Sound Health Soundscape_LogIn.mp3",
+    html5: true,
+  });
+
   preSessionGenreClassical: Howl = new Howl({
     src: "assets/sounds/genre soundscapes/classical.mp3",
     html5: true,
@@ -43,7 +48,9 @@ export class SoundsService {
     switch (genre) {
       case "Classical":
         if (
-          !this.preSessionGenreClassical.playing(this.preSessionGenreClassicalId)
+          !this.preSessionGenreClassical.playing(
+            this.preSessionGenreClassicalId
+          )
         ) {
           console.log(genre);
           this.preSessionGenreClassicalId = this.preSessionGenreClassical

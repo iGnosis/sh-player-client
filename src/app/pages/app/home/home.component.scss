@@ -36,6 +36,7 @@ $daily_card_bg: #B6E5C8;
         background-color: #718096;
     }
     .session-index {
+        //Todo: change to .start once other activities unlocked
         &:nth-child(2) {
             color: $success;
             background-color: #fff;
@@ -50,6 +51,7 @@ $daily_card_bg: #B6E5C8;
                 font-size: 20px;
             }
         }
+        //Todo: change to .locked once activities unlocked
         &:nth-child(3), &:nth-child(4) {
             color: #fff;
             background-color: #718096;
@@ -76,12 +78,12 @@ $daily_card_bg: #B6E5C8;
         transform: translateX(-50%);
         transition: left 0.5s;
         color: '#00BD3E';
-        top: 8px;
+        top: -35px;
     }
     .goal {
         left: 99%;
         transform: translateX(-50%);
-        top: 8px;
+        top: -35px;
     }
 }
 .lock {

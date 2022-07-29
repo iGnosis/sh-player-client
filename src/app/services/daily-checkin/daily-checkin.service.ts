@@ -15,7 +15,7 @@ export class DailyCheckinService {
   async dailyCheckin(type: string, value: string) {
     const user = this.userService.get()
     if (user && user.id) {
-      const response = await this.gqlService.client.request(GqlConstants.USER_DAILY_CHECKIN, {type, value});
+      const response = await this.gqlService.gqlRequest(GqlConstants.USER_DAILY_CHECKIN, { type, value });
       return response;
     } else {
       throw new Error('User not set');
@@ -25,7 +25,7 @@ export class DailyCheckinService {
   async getLastCheckin() {
     const user = this.userService.get()
     if (user && user.id) {
-      const response = await this.gqlService.client.request(GqlConstants.GET_LAST_CHECKIN);
+      const response = await this.gqlService.gqlRequest(GqlConstants.GET_LAST_CHECKIN);
       return response;
     } else {
       throw new Error('User not set');

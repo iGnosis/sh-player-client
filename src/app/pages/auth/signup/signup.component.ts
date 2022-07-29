@@ -2,7 +2,6 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { JwtService } from 'src/app/services/jwt.service';
 import { UserService } from 'src/app/services/user.service';
 
 interface InterestsDTO {
@@ -61,18 +60,13 @@ export class SignupComponent implements OnInit {
   };
   customTime: boolean = false;
   selectedTime!: string;
-  signUpLink = ''
-  loginLink = ''
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private route: ActivatedRoute,
-    private jwtService: JwtService,
     private authService: AuthService,
     private userService: UserService,
   ) {
-    this.signUpLink = this.authService.getSignupLink();
-    this.loginLink = this.authService.getLoginLink();
     router.events.subscribe(() => {
       let step = parseInt(this.route.snapshot.paramMap.get('step')!);
       let interest = parseInt(this.route.snapshot.paramMap.get('interest') || '');
@@ -82,7 +76,7 @@ export class SignupComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.code = this.userService.get().id || "";
     this.email = this.userService.get().email || "";
 
@@ -113,7 +107,7 @@ export class SignupComponent implements OnInit {
     }
     else if(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*_0-9])[A-Za-z\d@$!%*#?&]{6,}$/g.test(password)) {
       return "Fair"; // atleast 6 characters with atleast 1 number or special character
-    } 
+    }
     else {
       return "Weak";
     }
@@ -124,7 +118,7 @@ export class SignupComponent implements OnInit {
   }
 
   async setNickName() {
-    const res = await this.authService.setNickName({ 
+    const res = await this.authService.setNickName({
       nickname: this.nickname,
     });
     if(res.response && res.response.errors) {
@@ -158,17 +152,14 @@ export class SignupComponent implements OnInit {
   async nextSignupStep() {
     this.errors = [];
     if(this.signupStep === 3) {
-        const res = await this.authService.signup({ 
-            nickname: this.nickname, 
-          });
+      const res = await this.authService.signup({
+        nickname: this.nickname,
+      });
         if(res.response && res.response.errors) {
           this.errors = res.response.errors.map((err: any) => err.message)
-        }else {
-          this.userService.setPatient(res.signUpPatient.patient);
-          this.jwtService.setToken(res.signUpPatient.token);
+        } else {
           this.changeStep(this.signupStep+1);
         }
-
     }
     else if(this.signupStep === 4) {
       this.changeStep(this.signupStep+1, this.interestStep);
@@ -223,7 +214,7 @@ export class SignupComponent implements OnInit {
   selectActivity(i: number) {
     this.activities[i].selected = !this.activities[i].selected;
   }
-  
+
   selectTime(i: number) {
     if(i === 4) {
       this.toggleCustomTime();
