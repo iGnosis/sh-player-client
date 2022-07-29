@@ -14,6 +14,6 @@ export const environment: Environment = {
   auth0ClientId: 'WitNXSUpiq3POQRta8k6uSPO0h1sGuug',
   auth0Audience: 'https://services.stage.pointmotioncontrol.com/',
   auth0Scope: 'openid profile email offline_access',
-  auth0CbUrl: 'https://patient.stage.pointmotioncontrol.com/oauth/callback',
-  auth0LogoutUrl: 'https://patient.stage.pointmotioncontrol.com'
+  auth0CbUrl: 'https://app.pointmotion.us/oauth/callback',
+  auth0LogoutUrl: 'https://app.pointmotion.us'
 };

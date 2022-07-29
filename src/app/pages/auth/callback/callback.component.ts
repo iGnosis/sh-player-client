@@ -27,7 +27,9 @@ export class CallbackComponent implements OnInit {
     private dailyCheckinService: DailyCheckinService,
     private router: Router,
     private auth0Service: Auth0Service
-  ) {}
+  ) {
+    console.log('callback component:init')
+  }
 
   async ngOnInit() {
     await this.auth0Service.auth0Client.handleRedirectCallback();
@@ -53,6 +55,8 @@ export class CallbackComponent implements OnInit {
     }
 
     const accessTokenData = this.decodeJWT(accessToken);
+    console.log('accessTokenData:', accessTokenData);
+
     const userId = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
     const userEmail = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-email"];
 
@@ -60,6 +64,7 @@ export class CallbackComponent implements OnInit {
       email: userEmail,
       id: userId,
     });
+    console.log('user set successfully')
 
     const step = await this.userService.isOnboarded();
     if (step == -1) {
