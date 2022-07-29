@@ -37,8 +37,8 @@
                   [ngClass]="{'start': session.status === sessionType.Start,'locked': session.status === sessionType.Locked,'completed': session.status === sessionType.Completed }"
                   *ngFor="let session of sessions; let i = index">
                     <p class="m-auto font-bold text-lg">
-                      {{ i == 0 && session.status != sessionType.Completed ? i+1 : '' }}
-                      <i *ngIf="i !== 0 && session.status !== sessionType.Completed" class="fa fa-lock"></i>
+                      {{ i === 0 && session.status != sessionType.Completed ? i+1 : '' }}
+                      <i *ngIf="i !== 0" class="fa fa-lock"></i>
                       <i *ngIf="session.status === sessionType.Completed" class="fa fa-check"></i>
                     </p>
                     <p class="title position-absolute top-16 translate-middle-x start-1/2 text-nowrap font-bold text-md">{{ session.name }}</p>
