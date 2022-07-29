@@ -65,20 +65,4 @@ export class AuthService {
       return e;
     }
   }
-
-  getSignupLink() {
-    return environment.cognitoURL+
-            '/signup?client_id='+
-            environment.cognitoClientId+
-            '&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri='+
-            window.location.origin+'/oauth/callback'
-  }
-
-  getLoginLink() {
-    return environment.cognitoURL+
-            '/login?client_id='+
-            environment.cognitoClientId+
-            '&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri='+
-            window.location.origin+'/oauth/callback'
-  }
 }
