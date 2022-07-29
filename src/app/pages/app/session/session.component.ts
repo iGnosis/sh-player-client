@@ -1,9 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { AuthService } from "src/app/services/auth.service";
 import { Auth0Service } from "src/app/services/auth0/auth0.service";
 import { JwtService } from "src/app/services/jwt.service";
-import { UserService } from "src/app/services/user.service";
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -19,8 +17,6 @@ export class SessionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private jwtService: JwtService,
-    private userService: UserService,
-    private authService: AuthService,
     private auth0Service: Auth0Service
   ) {
     this.sessionId = this.route.snapshot.paramMap.get("id") as string;
@@ -37,8 +33,20 @@ export class SessionComponent implements OnInit {
           this.session.nativeElement.contentWindow?.postMessage(
             {
               type: 'token',
-              token: window.localStorage.getItem("token"),
+              token: await this.jwtService.getToken(),
               session: this.sessionId,
+            },
+            "*"
+          );
+        }
+        // sends a latest valid access_token.
+        else if (event.data.type === 'request-access-token') {
+          this.session.nativeElement.contentWindow?.postMessage(
+            {
+              type: 'token',
+              token: await this.auth0Service.auth0Client.getTokenSilently({
+                ignoreCache: true
+              }),
             },
             "*"
           );

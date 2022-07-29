@@ -2,7 +2,6 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { JwtService } from 'src/app/services/jwt.service';
 import { UserService } from 'src/app/services/user.service';
 
 interface InterestsDTO {
@@ -61,18 +60,13 @@ export class SignupComponent implements OnInit {
   };
   customTime: boolean = false;
   selectedTime!: string;
-  signUpLink = ''
-  loginLink = ''
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private jwtService: JwtService,
     private authService: AuthService,
     private userService: UserService,
   ) {
-    this.signUpLink = this.authService.getSignupLink();
-    this.loginLink = this.authService.getLoginLink();
     router.events.subscribe(() => {
       let step = parseInt(this.route.snapshot.paramMap.get('step')!);
       let interest = parseInt(this.route.snapshot.paramMap.get('interest') || '');

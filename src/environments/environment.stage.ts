@@ -10,6 +10,10 @@ export const environment: Environment = {
   gqlEndpoint: 'https://api.stage.pointmotioncontrol.com/v1/graphql',
   servicesEndpoint: 'https://services.stage.pointmotioncontrol.com',
   activityEndpoint: 'https://session.stage.pointmotioncontrol.com',
-  cognitoURL: 'https://pointmotion-stage-sh-patient.auth.us-east-1.amazoncognito.com',
-  cognitoClientId: '4sk7ie58ca65cu7jn2rlgpgjoq'
+  auth0Domain: 'pointmotion-stage.us.auth0.com',
+  auth0ClientId: 'WitNXSUpiq3POQRta8k6uSPO0h1sGuug',
+  auth0Audience: 'https://services.stage.pointmotioncontrol.com/',
+  auth0Scope: 'openid profile email offline_access',
+  auth0CbUrl: 'https://patient.stage.pointmotioncontrol.com/oauth/callback',
+  auth0LogoutUrl: 'https://patient.stage.pointmotioncontrol.com'
 };
