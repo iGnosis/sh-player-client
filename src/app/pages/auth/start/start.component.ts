@@ -14,8 +14,7 @@ export class StartComponent implements OnInit {
 
   constructor(private auth0Service: Auth0Service) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   async signUp() {
     await this.auth0Service.auth0Client.loginWithRedirect({

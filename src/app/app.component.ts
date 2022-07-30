@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth0Service } from './services/auth0/auth0.service';
 import { JwtService } from './services/jwt.service';
 
 @Component({
@@ -20,6 +19,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     // printing accessToken for easier debugging.
+    await this.jwtService.refreshTokenAtInterval()
     console.log('accessToken:', await this.jwtService.getToken())
 
     this.router.events.subscribe((val: any) => {
