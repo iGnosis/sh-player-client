@@ -141,8 +141,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async startNewSession() {
-    this.sessionId = (await this.sessionService.createNewSession()) as string;
-    this.router.navigate(["/app/session/", this.sessionId]);
+    // this.sessionId = (await this.sessionService.createNewSession()) as string;
+    this.router.navigate(["/app/session/", '']);
   }
 
   nth(d: number) {
