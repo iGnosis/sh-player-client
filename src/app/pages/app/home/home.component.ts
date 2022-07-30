@@ -12,6 +12,7 @@ import { UserService } from "src/app/services/user.service";
 import { AnimationOptions } from "ngx-lottie";
 import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
+
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -99,6 +100,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async initHome() {
+    // update accessToken if expired.
+    await this.jwtService.getToken();
     this.rewards = await this.rewardsService.getRewards();
 
     let todayMidnight = new Date();
