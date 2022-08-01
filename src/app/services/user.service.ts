@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Patient, PatientSignup } from '../types/pointmotion';
+import { Patient } from '../types/pointmotion';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
 
@@ -8,10 +8,8 @@ import { GraphqlService } from './graphql/graphql.service';
 })
 export class UserService {
   private user?: Patient
-  private patient?: PatientSignup
   constructor(private gqlService: GraphqlService) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
-    this.patient = JSON.parse(localStorage.getItem('patient') || '{}')
   }
 
   set(user?: Patient) {
@@ -22,11 +20,6 @@ export class UserService {
   get(): Patient {
     const user = this.user || JSON.parse(localStorage.getItem('user') || '{}')
     return user as Patient
-  }
-
-  getPatient(): PatientSignup {
-    const patient = this.patient || JSON.parse(localStorage.getItem('patient') || '{}')
-    return patient as PatientSignup
   }
 
   async isOnboarded() {
