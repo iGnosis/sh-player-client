@@ -72,18 +72,6 @@ export const GqlConstants = {
     }
   }
   `,
-  GET_DAILY_GOALS: `
-  query PatientDailyGoals($activityIds: [String!]!, $date: String!) {
-    patientDailyGoals(activityIds: $activityIds, date: $date) {
-      status
-      data {
-        activities {
-          id
-          isCompleted
-        }
-      }
-    }
-  }`,
   GET_PATIENT_REWARDS: `
   query GetPatientRewards {
     patient {
