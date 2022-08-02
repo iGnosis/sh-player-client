@@ -49,7 +49,7 @@ export type Environment = {
 
 export interface DailyGoalsApiDTO {
   /**
-   * Name of the game. eg. sit_stand_achieve
+   * Name of the game. eg. Sit Stand Achieve or Beat Boxer
    */
   name: string;
   /**
