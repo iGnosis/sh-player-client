@@ -169,6 +169,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     firstDayOfMonth.setHours(0,0,0,0);
     lastDayOfMonth.setHours(24,0,0,0);
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.userService.updateTimezone(userTimezone);
 
     const response =
       await this.goalsService.getMonthlyGoals(

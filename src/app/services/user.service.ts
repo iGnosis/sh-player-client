@@ -64,4 +64,12 @@ export class UserService {
     }
   }
 
+  async updateTimezone(timezone: string) {
+    const user = this.get();
+    if (!user || !user.id) {
+      throw new Error('User not set');
+    }
+    this.gqlService.gqlRequest(GqlConstants.UPDATE_TIMEZONE, { id: user.id, timezone })
+  }
+
 }

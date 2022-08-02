@@ -180,5 +180,10 @@ export const GqlConstants = {
     freeRewardAccessed {
       status
     }
+  }`,
+  UPDATE_TIMEZONE: `mutation UpdateTimezone($id: uuid!, $timezone: String) {
+    update_patient_by_pk(_set: {timezone: $timezone}, pk_columns: { id: $id }) {
+      id
+    }
   }`
 };
