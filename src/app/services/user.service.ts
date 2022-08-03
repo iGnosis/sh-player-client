@@ -72,4 +72,8 @@ export class UserService {
     this.gqlService.gqlRequest(GqlConstants.UPDATE_TIMEZONE, { id: user.id, timezone })
   }
 
+  async appAccessed() {
+    console.log('app accessed event sent');
+    this.gqlService.gqlRequest(GqlConstants.APP_ACCESSED);
+  }
 }

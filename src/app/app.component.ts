@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtService } from './services/jwt.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +15,16 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private userService: UserService
   ) {}
 
   async ngOnInit() {
+    this.userService.appAccessed();
+
     // printing accessToken for easier debugging.
-    await this.jwtService.refreshTokenAtInterval()
-    console.log('accessToken:', await this.jwtService.getToken())
+    await this.jwtService.refreshTokenAtInterval();
+    console.log('accessToken:', await this.jwtService.getToken());
 
     this.router.events.subscribe((val: any) => {
       if(val.urlAfterRedirects && val.urlAfterRedirects === '/public/start') {
