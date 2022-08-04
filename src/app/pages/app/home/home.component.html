@@ -23,7 +23,7 @@
                 <div class="col-5 col-lg-6 text-primary display-6 text-nowrap">Daily Goals</div>
                 <div class="col-lg-6 d-flex align-items-center justify-content-center flex-end">
                   <div class="monthly-remainder">
-                    <p class="text-dark font-bold text-nowrap">{{activitiesCompletedToday}}/1 activities completed today</p>
+                    <p class="text-dark font-bold text-nowrap">{{activitiesCompletedToday}}/2 activities completed today</p>
                   </div>
                 </div>
               </div>
@@ -34,11 +34,11 @@
                   </div>
                   <div
                   class="session-index rounded-pill w-12 h-12 d-flex position-relative"
-                  [ngClass]="{'start': session.status === sessionType.Start,'locked': session.status === sessionType.Locked,'completed': session.status === sessionType.Completed }"
+                  [ngClass]="{'start': session.status === sessionType.Start,'locked': session.status === sessionType.Locked || i === 2,'completed': session.status === sessionType.Completed }"
                   *ngFor="let session of sessions; let i = index">
                     <p class="m-auto font-bold text-lg">
-                      {{ i === 0 && session.status != sessionType.Completed ? i+1 : '' }}
-                      <i *ngIf="i !== 0" class="fa fa-lock"></i>
+                      {{ i < 2 && session.status != sessionType.Completed ? i+1 : '' }}
+                      <i *ngIf="i === 2" class="fa fa-lock"></i>
                       <i *ngIf="session.status === sessionType.Completed" class="fa fa-check"></i>
                     </p>
                     <p class="title position-absolute top-16 translate-middle-x start-1/2 text-nowrap font-bold text-md">{{ session.name }}</p>

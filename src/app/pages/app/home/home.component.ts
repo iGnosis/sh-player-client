@@ -245,8 +245,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.nextSession = this.sessions[0];
     } else {
       this.dailyCompletionPercent = Math.min(idxOfCurrentSession, 2) *50;
-      // this.nextSession = this.sessions[idxOfCurrentSession];
-      this.nextSession = this.sessions[0];
+      this.nextSession = this.sessions[idxOfCurrentSession];
     }
   }
 

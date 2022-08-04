@@ -37,7 +37,7 @@ $daily_card_bg: #B6E5C8;
     }
     .session-index {
         //Todo: change to .start once other activities unlocked
-        &:nth-child(2) {
+        &.start {
             color: $success;
             background-color: #fff;
             border: 2px solid $success;
@@ -52,9 +52,10 @@ $daily_card_bg: #B6E5C8;
             }
         }
         //Todo: change to .locked once activities unlocked
-        &:nth-child(3), &:nth-child(4) {
+        &.locked, &:nth-child(4) {
             color: #fff;
             background-color: #718096;
+            border: none;
             .title {
                 color: #718096;
             }
