@@ -1,3 +1,10 @@
+declare global {
+  interface Window {
+    dataLayer: any;
+    gtag: any;
+  }
+}
+
 export interface Patient {
   id: string;
   email: string;
@@ -39,6 +46,7 @@ export type Environment = {
   gqlEndpoint: string;
   servicesEndpoint: string;
   activityEndpoint: string;
+  googleAnalyticsTrackingID: string;
   auth0Domain: string;
   auth0ClientId: string;
   auth0Audience: string;

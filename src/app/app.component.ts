@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GoogleAnalyticsService } from './services/google-analytics/google-analytics.service';
 import { JwtService } from './services/jwt.service';
 import { UserService } from './services/user.service';
 
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private jwtService: JwtService,
-    private userService: UserService
+    private userService: UserService,
+    private ga: GoogleAnalyticsService,
   ) {}
 
   async ngOnInit() {
