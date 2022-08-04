@@ -39,9 +39,10 @@ export class AuthService {
       const user = this.userService.get()
       const data = {
         nickname: details.nickname,
+        email: details.email,
         id: user.id
       }
-      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_NICKNAME, data);
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_DETAILS, data);
       return res;
     } catch(e) {
       return e;
