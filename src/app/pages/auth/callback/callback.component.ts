@@ -68,19 +68,19 @@ export class CallbackComponent implements OnInit {
     });
     console.log('user set successfully')
 
-    const step = await this.userService.isOnboarded();
-    if (step == -1) {
-      this.shScreen = true;
-      await this.waitForTimeout(6500);
+    this.shScreen = true;
+    await this.waitForTimeout(6500);
+    const isCheckedInToday = await this.isCheckedInToday();
+    if(!isCheckedInToday) {
+      this.router.navigate(["app", "checkin"]);
+      return;
+    }
 
-      if (await this.isCheckedInToday()) {
-        this.router.navigate(["app", "home"]);
-      } else {
-        this.router.navigate(["app", "checkin"]);
-      }
+    const step = await this.userService.isOnboarded();
+
+    if (step == -1) {
+      this.router.navigate(["app", "home"]);
     } else {
-      this.shScreen = true;
-      await this.waitForTimeout(6500);
       this.router.navigate(["app", "signup", step]);
     }
   }
