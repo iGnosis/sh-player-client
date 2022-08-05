@@ -32,7 +32,9 @@ export class UserService {
     const response = await this.gqlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, { user: user.id })
 
     if (response && response.patient_by_pk) {
-      if (!response.patient_by_pk.nickname) {
+      if (!response.patient_by_pk.email) {
+        return 2;
+      } else if (!response.patient_by_pk.nickname) {
         return 3;
       } else if (!response.patient_by_pk.preferredGenres) {
         return 4;

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { Howler } from 'howler';
 import { SoundsService } from 'src/app/services/sounds/sounds.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: "app-mood-checkin",
@@ -92,7 +93,8 @@ export class DailyCheckinComponent implements OnInit {
   constructor(
     private router: Router,
     private dailyCheckinService: DailyCheckinService,
-    private soundsService: SoundsService
+    private soundsService: SoundsService,
+    private userService: UserService
   ) {
     this.debouncedPlayMusic = this.debounce((genre: string) => {
       this.playMusic(genre);
@@ -112,9 +114,15 @@ export class DailyCheckinComponent implements OnInit {
     this.selectedGenre = choice;
     await this.dailyCheckinService.dailyCheckin("genre", choice.toLowerCase());
     setTimeout(() => (this.genreSlideOut = true), 500);
-    setTimeout(() => {
+    setTimeout(async () => {
       this.showGenreCard = false;
-      this.router.navigate(["/app/home"]);
+      const step = await this.userService.isOnboarded();
+  
+      if (step == -1) {
+        this.router.navigate(["app", "home"]);
+      } else {
+        this.router.navigate(["app", "signup", step]);
+      }
     }, 1200);
   }
 

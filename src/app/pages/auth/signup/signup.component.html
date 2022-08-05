@@ -47,7 +47,7 @@
     </div>
     <div class="confirm-email-container w-screen h-screen position-relative" *ngIf="signupStep > 0">
         <div class="go-back position-absolute top-10 start-12 cursor-pointer">
-            <p (click)="goBack()" *ngIf="signupStep >= 4" class="text-black text-xl"><i class="fa fa-angle-left"></i>&nbsp;<span>Go Back</span></p>
+            <p (click)="goBack()" *ngIf="signupStep >= 3" class="text-black text-xl"><i class="fa fa-angle-left"></i>&nbsp;<span>Go Back</span></p>
         </div>
         <img class="signup-bg" src="/assets/images/backgrounds/signup-bg.png" alt="signup background">
         <div class="row position-absolute w-full h-full">
@@ -55,17 +55,17 @@
                 <img [ngClass]="{'pb-16 w-48': signupStep!==4, 'position-absolute top-10 end-12' : signupStep===4 }" *ngIf="signupStep < 5" src="/assets/icons/sound_health_logo.png" alt="sound health">
                 <!-- <p class="text-sm align-self-start" *ngIf="signupStep < 4">Step {{signupStep}} out of 3</p> -->
                 <h2 class="step-heading pb-6 align-self-start">{{
-                    signupStep === 1 ? 'Confirm your email address' : 
-                    signupStep === 2 ? 'Create a password' : 
+                    signupStep === 1 ? 'Create a password' : 
+                    signupStep === 2 ? 'Please enter your email address' : 
                     signupStep === 3 ? 'What should we call you?' :
                     ''
                 }}</h2>
-                <div class="errors w-full align-self-start" *ngIf="errors.length > 0 || signupStep === 1">
+                <div class="errors w-full align-self-start" *ngIf="errors.length > 0 || signupStep === 2">
                     <div *ngFor="let err of errors" role="alert" class="alert bg-danger text-white my-2 text-sm">{{err}}</div>
                     <div *ngIf="!validateEmail()" role="alert" class="alert bg-danger text-white my-2 text-sm">Invalid Email Address</div>
                 </div>
-                <input *ngIf="signupStep === 1" placeholder="Email" type="email" name="email" [(ngModel)]="email" email="true" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
-                <div *ngIf="signupStep === 2" class="password-container position-relative w-full">
+                <input *ngIf="signupStep === 2" placeholder="Email" type="email" name="email" [(ngModel)]="email" email="true" id="email" class="w-full h-12 rounded mb-10 text-md px-3">
+                <div *ngIf="signupStep === 1" class="password-container position-relative w-full">
                     <input 
                         [ngClass]="{'border-danger': checkPasswordStrength(password) === 'Weak', 'border-warning': checkPasswordStrength(password) === 'Fair', 'border-success': checkPasswordStrength(password) === 'Good' || checkPasswordStrength(password) === 'Strong'}" 
                         [type]="showPassword ? 'text' : 'password'" placeholder="Password" name="password" [(ngModel)]="password" minlength="8" class="border form-control shadow-none w-full h-12 rounded mb-10 text-md px-3" id="password" autocomplete="current-password">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <!-- Password Strength Progress -->
-                <div *ngIf="signupStep === 2 && password" class="d-flex w-full flex-column">
+                <div *ngIf="signupStep === 1 && password" class="d-flex w-full flex-column">
                     <div class="d-flex align-items-center">
                         <div class="progress w-1/2 h-3">
                             <div 
@@ -102,7 +102,7 @@
                 </div>
                 <input *ngIf="signupStep === 3" placeholder="Nick Name" type="text" name="nickname" [(ngModel)]="nickname" id="nickname" class="w-full h-12 rounded mb-10 text-md px-3">
                 
-                <button *ngIf="signupStep === 3" class="btn w-full text-center bg-transparent p-0" (click)="setNickName()">
+                <button *ngIf="signupStep === 3" class="btn w-full text-center bg-transparent p-0" (click)="nextSignupStep()">
                     <p [ngClass]="{ 'w-full': signupStep < 4 }" class="continue-btn rounded-2 font-bold btn btn-primary">
                         {{signupStep === 3 ? 'Update Your Nick Name' : 'Continue' }}
                     </p>
@@ -123,7 +123,7 @@
 </div>
 <div *ngIf="signupStep === 5" class="interest-container overflow-x-hidden">
     <div class="go-back position-absolute top-10 start-12 cursor-pointer">
-        <p (click)="interestStep === 1 ? goBack() : goBackInterest()" *ngIf="signupStep >= 4" class="text-white text-xl"><i class="fa fa-angle-left"></i>&nbsp;<span>Go Back</span></p>
+        <p (click)="interestStep === 1 ? goBack() : goBackInterest()" *ngIf="signupStep >= 3" class="text-white text-xl"><i class="fa fa-angle-left"></i>&nbsp;<span>Go Back</span></p>
     </div>
     <img class="position-absolute top-10 end-12" src="/assets/icons/sound_health_light.svg" alt="sound health">
     <div class="confirm-email-container w-screen h-full min-h-screen position-relative" style="overflow-y:scroll; height: 100vh !important;">

@@ -18,7 +18,7 @@ interface InterestsDTO {
 export class SignupComponent implements OnInit {
   errors = [];
   code: string = "";
-  email: string = "";
+  email: string | null = null;
   password: string = "";
   nickname: string = "";
   showPassword: boolean = false;
@@ -78,7 +78,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     this.code = this.userService.get().id || "";
-    this.email = this.userService.get().email || "";
+    this.email = this.userService.get().email || null;
 
     const step = this.route.snapshot.paramMap.get('step')
     if (step) {
@@ -91,9 +91,8 @@ export class SignupComponent implements OnInit {
     }, 4000);
   }
   validateEmail() {
-    return this.email
-    .toLowerCase()
-    .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    return this.email?.toLowerCase()
+    .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) || this.email === null;
   }
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
@@ -154,12 +153,13 @@ export class SignupComponent implements OnInit {
     if(this.signupStep === 3) {
       const res = await this.authService.signup({
         nickname: this.nickname,
+        email: this.email!,
       });
-        if(res.response && res.response.errors) {
-          this.errors = res.response.errors.map((err: any) => err.message)
-        } else {
-          this.changeStep(this.signupStep+1);
-        }
+      if(res.response && res.response.errors) {
+        this.errors = res.response.errors.map((err: any) => err.message)
+      } else {
+        this.changeStep(this.signupStep+1);
+      }
     }
     else if(this.signupStep === 4) {
       this.changeStep(this.signupStep+1, this.interestStep);
