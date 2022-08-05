@@ -11,7 +11,7 @@ export const environment: Environment = {
   gqlEndpoint: 'https://api.stage.pointmotioncontrol.com/v1/graphql',
   servicesEndpoint: 'https://services.stage.pointmotioncontrol.com',
   activityEndpoint: 'https://session.stage.pointmotioncontrol.com',
-  auth0Domain: 'pointmotion-stage.us.auth0.com',
+  auth0Domain: 'dev--os8qz4a.us.auth0.com',
   auth0ClientId: 'WitNXSUpiq3POQRta8k6uSPO0h1sGuug',
   auth0Audience: 'https://app.pointmotion.us',
   auth0Scope: 'openid profile email offline_access',
