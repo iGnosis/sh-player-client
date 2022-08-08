@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { trigger, transition, animate, style, state } from "@angular/animations";
-import { AnimationOptions } from 'ngx-lottie';
-import { Router } from '@angular/router';
-import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
-import { Howler } from 'howler';
-import { SoundsService } from 'src/app/services/sounds/sounds.service';
-import { UserService } from 'src/app/services/user.service';
+import { AfterViewInit, Component, OnInit } from "@angular/core";
+import {
+  trigger,
+  transition,
+  animate,
+  style,
+  state,
+} from "@angular/animations";
+import { AnimationOptions } from "ngx-lottie";
+import { Router } from "@angular/router";
+import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checkin.service";
+import { Howler } from "howler";
+import { SoundsService } from "src/app/services/sounds/sounds.service";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-mood-checkin",
@@ -28,7 +34,7 @@ import { UserService } from 'src/app/services/user.service';
     ]),
   ],
 })
-export class DailyCheckinComponent implements OnInit {
+export class DailyCheckinComponent implements OnInit, AfterViewInit {
   options: AnimationOptions = {
     path: "/assets/images/animations/wave.json",
   };
@@ -100,11 +106,16 @@ export class DailyCheckinComponent implements OnInit {
       this.playMusic(genre);
     }, 300);
   }
+  ngAfterViewInit(): void {
+    this.soundsService.playFeelingsSelectionPromptSound();
+  }
 
   ngOnInit(): void {}
 
   async selectMood(choice: string) {
     this.selectedMood = choice;
+    this.soundsService.playFeelingsSelectionSound();
+    this.soundsService.stopFeelingsSelectionPromptSound();
     await this.dailyCheckinService.dailyCheckin("mood", choice.toLowerCase());
     setTimeout(() => (this.moodSlideOut = true), 500);
     setTimeout(() => (this.showGenreCard = true), 1200);
@@ -117,7 +128,7 @@ export class DailyCheckinComponent implements OnInit {
     setTimeout(async () => {
       this.showGenreCard = false;
       const step = await this.userService.isOnboarded();
-  
+
       if (step == -1) {
         this.router.navigate(["app", "home"]);
       } else {
