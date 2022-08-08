@@ -1,0 +1,17 @@
+<div class="sh-screen d-flex">
+  <img *ngIf="showPointMotionLogo" src="/assets/icons/point_motion_logo.jpg" alt="Point Motion"
+    class="point-motion-logo position-absolute top-16 start-16">
+
+  <div class="d-flex justify-content-center align-items-center sh-container">
+        <img @slideInForLogo *ngIf="showSoundHealthLogo" src="/assets/images/sound_health_logo@3x.png" alt="Sound Health"
+        class="sound-health-logo">
+        <img @slideInForSH *ngIf="showSoundHealth" src="/assets/images/sound_health.png" alt="Sound Health"
+        class="sound-health">
+  </div>
+  
+
+  <div *ngIf="showHomePageLink" class="position-absolute translate-middle bottom-32 start-1/2">
+    <button @slideUp (click)="redirectToHome()" class="homePage-btn btn btn-primary text-white">Go to
+      Homepage</button>
+  </div>
+</div>

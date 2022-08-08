@@ -1,0 +1,193 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$patient-provider-primary: mat.define-palette(mat.$indigo-palette);
+$patient-provider-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$patient-provider-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$patient-provider-theme: mat.define-light-theme((
+  color: (
+    primary: $patient-provider-primary,
+    accent: $patient-provider-accent,
+    warn: $patient-provider-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($patient-provider-theme);
+@import '/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import './app/am-components';
+/* You can add global styles to this file, and also import other style files */
+@import "@webpixels/css/core/functions";
+
+// Your theme's variables
+@import "./app/variables";
+
+// Webpixels' CSS
+@import "@webpixels/css/base";
+@import "@webpixels/css/forms";
+@import "@webpixels/css/components";
+@import "@webpixels/css/utilities";
+
+// $black: #000000;
+// $primary: #000066;
+// $white: #FFFFFF;
+$background-color_2: transparent;
+
+body {
+    font-family: Inter, 'Times New Roman', Times, serif;
+}
+
+.home-page-header {
+	height: 90vh;
+	display: flex;
+  background-repeat: no-repeat;
+  background-position: left 30% center;
+  background-size: cover;
+}
+.session-text {
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+	text-transform: uppercase;
+	color: $black;
+}
+
+.gradient-container {
+	width: 100%;
+	background: linear-gradient( 180deg, rgba(255, 255, 255, 0) 0.37%, rgba(255, 255, 255, 0.52) 20.24%, #FFFFFF 51.46%);
+}
+.start-session-btn {
+	padding: 8px 12px;
+	background: #000066;
+	border-radius: 4px;
+	color: $white;
+	width: 10em;
+	align-items: center !important;
+	justify-content: center;
+	display: flex;
+	margin: auto;
+}
+.session-heading{
+  color:$primary ;
+}
+.align-header-buttons p{
+  color:$primary ;
+}
+.align-header-buttons {
+	display: flex;
+}
+.footer-nav-items {
+	display: flex;
+	flex-direction: column;
+	p {
+		font-size: 9px;
+    color:$primary;
+	}
+}
+.fixed-container {
+	position: fixed;
+	bottom: 0;
+	background-color: $white;
+	z-index: 2;
+  box-shadow: 0px 0px 1px rgba(12, 26, 75, 0.1), 0px 4px 20px -2px rgba(50, 50, 71, 0.08);
+}
+.new-uploads-title {
+	font-weight: 800;
+	font-size: 22px;
+	line-height: 27px;
+	color: $black;
+}
+.new-uploads-alignment {
+	.card {
+		background-color: $background-color_2;
+		justify-content: flex-start;
+		background: linear-gradient( 180deg, rgba(0, 0, 0, 0) 1.79%, rgba(0, 0, 0, 0.45) 18.82%, #000000 100%);
+		width: 100%;
+	}
+	border-radius: 1em;
+	min-height: 22em;
+	display: flex;
+	align-items: end;
+	justify-content: flex-start;
+	width: 90%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	h3.h4 {
+		font-style: normal;
+		font-weight: 800;
+		font-size: 14px;
+		line-height: 16px;
+		color: $white;
+	}
+	p {
+		font-style: normal;
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 25px;
+		color: $white;
+	}
+}
+.owl-stage {
+	padding-bottom: 1em;
+}
+.owl-carousel.owl-theme.owl-loaded.owl-responsive {
+	display: flex;
+	flex-direction: column;
+}
+.owl-stage-outer {
+	order: 2;
+	margin-top: 1em;
+}
+.owl-theme {
+	.owl-nav {
+		order: 1;
+		text-align: right;
+		margin-top: -2em;
+		margin-bottom: 1.6em;
+	}
+}
+@media screen and (max-width: 630px) {
+	.new-uploads-alignment {
+		min-height: 14em !important;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		width: 100%;
+		.card-body {
+			padding: 0.2em;
+		}
+	}
+  a.btn.start-session-btn {
+    display: none;
+  }
+  .align-header-buttons {
+    justify-content: space-evenly;
+  }
+}
+@media screen and (min-width: 1200px) {
+	.fixed-container {
+		display: none;
+	}
+
+}

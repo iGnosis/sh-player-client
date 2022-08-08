@@ -1,0 +1,131 @@
+@import '../../../variables';
+
+.login-container {
+    font-size: 10px;
+    font-family: Inter;
+    .bg-danger {
+        background-color: rgb(235, 0, 0) !important;
+    }
+    .chat-bubble {
+        z-index: 2;
+    }
+    .carousel-container {
+        background-color: #F7FAFC;
+        img {
+            z-index: 1;
+        }
+        
+        .circle-bg-1, .circle-bg-2, .circle-bg-3 {
+            width: 75em;
+            height: 75em;
+            border-radius: 100%;
+        }
+        .circle-bg-1 {
+            &.slide1 {
+                background-color: #E2E8F0;
+                opacity: 0.33;
+            }
+        }
+        .circle-bg-2 {
+            width: 62em;
+            height: 62em;
+            &.slide1 {
+                background-color: #EDF2F7;
+                opacity: 0.66;
+            }
+        }
+        .circle-bg-3 {
+            width: 42em;
+            height: 42em;
+            &.slide1 {
+                background-color: #FFFFFF;
+                opacity: 0.8;
+            }
+        }
+        .caption {
+            font-size: 1.6rem;
+            color: $primary;
+        }
+        .img-bg-overlay {
+            width: 50em;
+            height: 35em;
+            > img {
+                opacity: 1;
+                animation: fade 0.3s ease-in;
+            }
+            @keyframes fade {
+              0% { opacity: 0 }
+            }
+            
+        }
+        .indicators {
+            > div {
+                cursor: pointer;
+                background-color: $border-light;
+                &.active {
+                    background-color: #2F51AE;
+                }
+            }
+        }
+    }
+
+    .signup-card-container {
+        h1 {
+            color: $primary;
+        }
+        .login-btn {
+            > p {
+                background-color: $primary;
+                border: none;
+            }
+        }
+        .signup-container {
+            font-size: 1.6em;
+            a {
+                color: #2f51ae;
+            }
+        }
+    }
+    .confirm-email-container {
+        font-size: 10px;
+        .signup-bg {
+            right: 0;
+            top: 0;
+            z-index: 0;
+        }
+        > .row {
+            z-index: 1;
+            .step-heading {
+                color: $primary;
+            }
+            input {
+                background-color: #EDF2F7;
+            }
+            .password-container {
+                .eye-icon {
+                    font-size: 1.6em;
+                    color: #494949;
+                    background-color: #EDF2F7;
+                }
+            }
+            .continue-btn {
+                background-color: $primary;
+                border: none;
+            }
+            .completion-confirmation {
+                > p {
+                    font-size: 1.4em;
+                    color: #2D3748;
+                    a {
+                        color: #2F51AE;
+                    }
+                }
+            }
+            .all-set {
+                * {
+                    color: $primary;
+                }
+            }
+        }
+    }
+}

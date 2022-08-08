@@ -1,0 +1,71 @@
+<nav *ngIf="!hideNavbar" class="navbar navbar-expand-lg navbar-light bg-white p-0">
+    <div class="container-fluid">
+        <!-- Navbar toggle -->
+        <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="/assets/icons/sound_health_logo.jpg" class="h-8" alt="...">
+        </a>
+        <!-- Avatar -->
+        <!-- <div class="dropdown order order-lg-3 ms-lg-4">
+            <a class="d-block" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="avatar avatar-sm bg-warning rounded-circle text-white">
+                    <img alt="..." src="https://images.unsplash.com/photo-1579463148228-138296ac3b98?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80">
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+                <div class="dropdown-header">
+                    <h6 class="text-overflow m-0">Welcome!</h6>
+                </div>
+                <a href="#!" class="dropdown-item">
+                    <i class="ni ni-single-02"></i>
+                    <span>My profile</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                    <i class="ni ni-settings-gear-65"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                    <i class="ni ni-calendar-grid-58"></i>
+                    <span>Activity</span>
+                </a>
+                <a href="#!" class="dropdown-item">
+                    <i class="ni ni-support-16"></i>
+                    <span>Support</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#!" class="dropdown-item">
+                    <i class="ni ni-user-run"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div> -->
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <!-- Nav -->
+            <div class="nav-left navbar-nav ms-10">
+                <div class="h-full" [class.active]="activeTab === 'home'">
+                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'home'" routerLink="/app/home" aria-current="page">Home</a>
+                </div>
+                <div class="h-full" [class.active]="activeTab === 'rewards'">
+                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'rewards'" routerLink="/app/rewards"
+                        aria-current="page">Rewards</a>
+                </div>
+                <!-- <div class="h-full" [class.active]="activeTab === 'goals'">
+                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'goals'" routerLink="/app/goals">Goals</a>
+                </div> -->
+                <div class="h-full" [class.active]="activeTab === 'help'">
+                    <a class="nav-item nav-link px-7 py-1 my-3" (click)="activeTab = 'help'" routerLink="/app/help">Help</a>
+                </div>
+            </div>
+            <!-- Right navigation -->
+            <div class="nav-right navbar-nav align-items-lg-center d-none d-lg-flex ms-lg-auto">
+                <p (click)="logout()" class="nav-link nav-link-icon px-3 position-relative cursor-pointer font-bold">
+                    Sign Out&nbsp;<img class="w-5 h-5 ms-1" src="assets/icons/logout.jpg" alt="logout">
+                </p>
+            </div>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,36 @@
+.sh-screen {
+  z-index: 200;
+  width: 100vw;
+  height: 100vh;
+
+  .sh-container {
+    width: 50vw;
+    margin-left: auto;
+    margin-right: auto;
+    @media screen and (max-width: 576px) {
+      width: 90vw;
+    }
+    @media screen and (max-width: 768px) {
+      width: 75vw;
+    }
+    @media screen and (max-width: 992px) {
+      width: 65vw;
+    }
+  }
+}
+.sound-health-logo {
+  width: 39%;
+  height: auto;
+}
+.sound-health {
+  width: 61%;
+  height: auto;
+  padding-left: 20px;
+}
+
+.homePage-btn {
+  width: 600px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 24px;
+}

@@ -1,0 +1,22 @@
+@import '../../variables';
+
+.reward-modal {
+    display: block;
+    .modal-dialog {
+      max-width: 450px;
+    }
+    .card-details {
+      border: 1px dashed $border-light;
+      border-left: 0px; 
+      border-right: 0px;
+    }
+    .copy-coupon-code {
+      background: $border-light;
+    }
+    a {
+      color: #B6E5C8;
+    }
+    .expires-in {
+      border-top: 1px dashed $border-light;
+    }
+  }

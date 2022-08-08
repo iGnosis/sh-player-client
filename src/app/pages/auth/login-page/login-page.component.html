@@ -1,0 +1,72 @@
+<div class="login-container">
+    <img src="/assets/icons/chat-bubble.svg" alt="chat bubble" class="chat-bubble position-fixed cursor-pointer end-4 bottom-4">
+    <div class="d-flex justify-content-center">
+        <div class="carousel-container overflow-x-hidden col-lg-6 position-relative">
+            <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
+            <!-- Carousel -->
+            <div class="carousel-images">
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto slide1"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-2 mx-auto slide1"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-3 mx-auto slide1"></div>
+                <div class="position-absolute top-1/2 start-1/2 translate-middle img-bg-overlay rounded-4">
+                    <img class="w-full h-full" src="/assets/images/carousel-img.png" alt="carousel thumbnail">
+                </div>
+                <p class="caption position-absolute bottom-0 start-1/2 text-center translate-middle">
+                    Your Home for<br><span class="font-bold">Music</span> and <span class="font-bold">Movement</span>
+                </p>
+            </div>
+        </div>
+        <div class="login-card-container col-10 col-md-9 col-lg-6 min-h-screen d-flex flex-column justify-content-center py-lg-16 px-lg-10 position-relative">
+            <div class="row">
+                <div class="col-lg-12 col-md-9 col-xl-10 col-xxl-8 mx-auto">
+                    <div class="card-bg rounded-md-4 p-5 p-md-10 p-xl-10">
+                        <div class="text-center mb-5 mb-md-10">
+                            <span class="d-inline-block d-lg-block h1 my-lg-8 me-3">👋</span>
+                            <h1 class="ls-tight font-bold h1">
+                                Welcome back!
+                            </h1>
+                        </div>
+                        <div class="errors" *ngIf="errors.length > 0">
+                            <div *ngFor="let err of errors" role="alert" class="alert bg-danger text-white m-5 text-sm">{{err}}</div>
+                        </div>
+                        <form>
+                            <div class="mb-8">
+                                <label class="form-label" for="email">E-mail or phone number</label>
+                                <input type="email" name="email" [(ngModel)]="email" class="form-control" id="email">
+                            </div>
+                            <div class="mb-8 password-container position-relative">
+                                <label class="form-label" for="password">Password</label>
+                                <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" minlength="8" class="form-control" id="password" autocomplete="current-password">
+                                <div (click)="toggleShowPassword()" class="eye-icon position-absolute end-4 top-10 cursor-pointer">
+                                    <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                                </div>
+                                <p class="mt-1 text-xs">Must be 8 characters at least</p>
+                            </div>
+                            <div class="remember-container mb-8 d-flex w-full justify-content-between align-items-center">
+                                <div class="form-check ps-0">
+                                    <input class="form-check-input mt-1 ms-0 me-1" type="checkbox" name="check_example" id="check_example">
+                                    <label class="form-check-label" for="check_example">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <a href="#">Forgot Password?</a>
+                            </div>
+                            <div class="login-btn">
+                                <p (click)="onSignIn()" class="btn btn-primary w-full rounded-2 font-bold py-4">
+                                    Sign in
+                                </p>
+
+                            </div>
+
+                            <!-- <div class="login-btn">
+                                <a class="btn btn-primary w-full rounded-2 font-bold py-4" [href]="signUpLink">Sign up</a>
+                                <a class="btn btn-primary w-full rounded-2 font-bold py-4" [href]="loginLink">Login</a>
+                            </div> -->
+                        </form>
+                    </div>
+                </div>
+                <p class="signup-container text-center text-black mt-12">Don’t have an account? <a [href]="">Register</a></p>
+            </div>
+        </div>
+    </div>
+</div>

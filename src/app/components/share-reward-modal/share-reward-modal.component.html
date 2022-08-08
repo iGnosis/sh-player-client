@@ -1,0 +1,27 @@
+<div class="modal reward-modal" id="modal_example" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content reward-card shadow-3 bg-primary">
+        <div class="modal-header border-bottom-0 py-0">
+          <i (click)="toggleModal()" class="fa fa-close text-white ms-auto mt-2 cursor-pointer text-xl"></i>
+        </div>
+        <div class=" modal-body text-center px-5 py-0">
+          <h1 class="text-white font-bolder pb-5">Congrats!</h1>
+          <div class="py-4 card-details">
+            <h3 class="card-title reward-card-text text-white font-bolder mx-1">{{currentReward.description}}</h3>
+            <img
+              src="assets/icons/exertools.png" alt="ExerTools"
+              class="h-32">
+          </div>
+          <button *ngIf="currentReward.couponCode" (click)="copyCodeToClipboard(currentReward.couponCode)" class="copy-coupon-code w-full rounded-2 text-primary text-lg font-bold py-1 my-5 position-relative">{{currentReward.couponCode}}<i aria-hidden="true" class="fa-regular fa-clone position-absolute top-1/2 translate-middle-y end-2"></i></button>
+          <h3 class="card-title reward-card-text text-white text-center">Copy code and use at checkout at<br/><a href="https://myptstore.biz" target="_blank" class="text-xl font-bolder">myptstore.biz</a></h3>
+          <h2 class="text-white font-bolder">OR</h2>
+          <a 
+          href="https://myptstore.biz" target="_blank"
+          (click)="toggleModal()" 
+          class="my-5 py-1 d-inline-block w-full text-primary text-lg font-bold rounded bg-white text-center">
+            <i class="fa fa-up-right-from-square"></i>&nbsp;&nbsp;Redeem Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>

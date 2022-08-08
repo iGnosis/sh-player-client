@@ -1,61 +1,45 @@
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import {
-  NbAuthComponent,
-  NbLoginComponent,
-  NbLogoutComponent,
-  NbRegisterComponent,
-  NbRequestPasswordComponent,
-  NbResetPasswordComponent,
-} from '@nebular/auth';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
+import { HomeComponent } from './pages/app/home/home.component';
+import { PublicGuard } from './guards/public-guard';
+import { PrivateGuard } from './guards/private-guard';
+import { SessionComponent } from "./pages/app/session/session.component";
+import { GoalsComponent } from './pages/app/goals/goals.component';
+import { SignupComponent } from './pages/auth/signup/signup.component';
+import { HelpComponent } from './pages/app/help/help.component';
+import { PrivateComponent } from './layouts/private/private.component';
+import { CallbackComponent } from './pages/auth/callback/callback.component';
+import { StartComponent } from './pages/auth/start/start.component';
+import { RewardsComponent } from './pages/app/rewards/rewards.component';
+import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
 
-export const routes: Routes = [
+const routes: Routes = [
+  { path: '', redirectTo: 'public/start', pathMatch: 'full' },
   {
-    path: 'pages',
-    loadChildren: () => import('./pages/pages.module')
-      .then(m => m.PagesModule),
+    path: 'public', canActivateChild: [PublicGuard], children: [
+      { path: 'start', component: StartComponent },
+      { path: 'login', component: LoginPageComponent, },
+    ]
   },
+  { path: 'oauth/callback', component: CallbackComponent},
+  { path: "app/session/:id", component: SessionComponent, canActivate: [PrivateGuard] },
   {
-    path: 'auth',
-    component: NbAuthComponent,
-    children: [
-      {
-        path: '',
-        component: NbLoginComponent,
-      },
-      {
-        path: 'login',
-        component: NbLoginComponent,
-      },
-      {
-        path: 'register',
-        component: NbRegisterComponent,
-      },
-      {
-        path: 'logout',
-        component: NbLogoutComponent,
-      },
-      {
-        path: 'request-password',
-        component: NbRequestPasswordComponent,
-      },
-      {
-        path: 'reset-password',
-        component: NbResetPasswordComponent,
-      },
-    ],
+    path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
+      { path: 'signup', component: SignupComponent, },
+      { path: 'signup/:step', component: SignupComponent, },
+      { path: 'signup/:step/:interest', component: SignupComponent, },
+      { path: 'checkin', component: DailyCheckinComponent, },
+      { path: 'home', component: HomeComponent, },
+      { path: 'rewards', component: RewardsComponent },
+      { path: 'goals', component: GoalsComponent, },
+      { path: 'help', component: HelpComponent, },
+    ]
   },
-  { path: '', redirectTo: 'auth', pathMatch: 'full' },
-  { path: '**', redirectTo: 'auth' },
 ];
 
-const config: ExtraOptions = {
-  useHash: false,
-};
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes, config)],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
