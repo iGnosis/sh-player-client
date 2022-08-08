@@ -19,7 +19,7 @@ export interface LoginRequestDTO {
   password: string,
 }
 
-export interface SignupRequestDTO {
+export interface SetPatientDetailsRequestDTO {
   email?: string,
   // password: string,
   nickname: string,

@@ -4,7 +4,7 @@ import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
-import { LoginRequestDTO, SignupRequestDTO } from '../types/pointmotion';
+import { LoginRequestDTO, SetPatientDetailsRequestDTO } from '../types/pointmotion';
 import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AuthService {
     return this.http.post(this.baseURL+'/auth/patient/login', details)
   }
 
-  async setNickName(details: SignupRequestDTO) {
+  async setNickName(details: SetPatientDetailsRequestDTO) {
     try {
       const user = this.userService.get()
       const data = {
@@ -34,7 +34,7 @@ export class AuthService {
     }
   }
 
-  async signup(details: SignupRequestDTO) {
+  async setPatientDetails(details: SetPatientDetailsRequestDTO) {
     try {
       const user = this.userService.get()
       const data = {

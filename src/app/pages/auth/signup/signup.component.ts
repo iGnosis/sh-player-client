@@ -151,7 +151,7 @@ export class SignupComponent implements OnInit {
   async nextSignupStep() {
     this.errors = [];
     if(this.signupStep === 3) {
-      const res = await this.authService.signup({
+      const res = await this.authService.setPatientDetails({
         nickname: this.nickname,
         email: this.email!,
       });
