@@ -61,7 +61,7 @@ jobs:
           # Listing files
           ls -la
 
-          npm install
+          npm install --include dev
           npm run build -- -c "$ENVIRONMENT"
 
       - uses: jakejarvis/s3-sync-action@v0.5.1
