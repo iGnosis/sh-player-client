@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Patient, PatientSignup } from '../types/pointmotion';
+import { Patient } from '../types/pointmotion';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
 
@@ -8,10 +8,8 @@ import { GraphqlService } from './graphql/graphql.service';
 })
 export class UserService {
   private user?: Patient
-  private patient?: PatientSignup
   constructor(private gqlService: GraphqlService) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
-    this.patient = JSON.parse(localStorage.getItem('patient') || '{}')
   }
 
   set(user?: Patient) {
@@ -24,11 +22,6 @@ export class UserService {
     return user as Patient
   }
 
-  getPatient(): PatientSignup {
-    const patient = this.patient || JSON.parse(localStorage.getItem('patient') || '{}')
-    return patient as PatientSignup
-  }
-
   async isOnboarded() {
     const user = this.get()
 
@@ -39,7 +32,9 @@ export class UserService {
     const response = await this.gqlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, { user: user.id })
 
     if (response && response.patient_by_pk) {
-      if (!response.patient_by_pk.nickname) {
+      if (!response.patient_by_pk.email) {
+        return 2;
+      } else if (!response.patient_by_pk.nickname) {
         return 3;
       } else if (!response.patient_by_pk.preferredGenres) {
         return 4;
@@ -71,4 +66,16 @@ export class UserService {
     }
   }
 
+  async updateTimezone(timezone: string) {
+    const user = this.get();
+    if (!user || !user.id) {
+      throw new Error('User not set');
+    }
+    this.gqlService.gqlRequest(GqlConstants.UPDATE_TIMEZONE, { id: user.id, timezone })
+  }
+
+  async appAccessed() {
+    console.log('app accessed event sent');
+    this.gqlService.gqlRequest(GqlConstants.APP_ACCESSED);
+  }
 }

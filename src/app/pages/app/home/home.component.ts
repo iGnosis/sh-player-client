@@ -12,6 +12,7 @@ import { UserService } from "src/app/services/user.service";
 import { AnimationOptions } from "ngx-lottie";
 import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
+
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -63,7 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   daysCompletedThisMonth = 0;
 
   activitiesCompletedToday = 0;
-  totalActivities = 3;
+  totalGames = 3;
 
   currentDate = {
     day: `${new Date().getDate()}${this.nth(new Date().getDate())}`,
@@ -99,6 +100,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async initHome() {
+    // update accessToken if expired.
+    await this.jwtService.getToken();
     this.rewards = await this.rewardsService.getRewards();
 
     let todayMidnight = new Date();
@@ -141,8 +144,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async startNewSession() {
-    this.sessionId = (await this.sessionService.createNewSession()) as string;
-    this.router.navigate(["/app/session/", this.sessionId]);
+    // this.sessionId = (await this.sessionService.createNewSession()) as string;
+    this.router.navigate(["/app/session/", '']);
   }
 
   nth(d: number) {
@@ -166,6 +169,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     firstDayOfMonth.setHours(0,0,0,0);
     lastDayOfMonth.setHours(24,0,0,0);
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.userService.updateTimezone(userTimezone);
 
     const response =
       await this.goalsService.getMonthlyGoals(
@@ -201,17 +205,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async getDailyGoals() {
-    const activitiesResponse = await this.careplanService.getCareplanActivities();
-    const activityList = activitiesResponse.careplan_activity;
+    const availableGames: {
+      game_name: string[];
+    } = await this.careplanService.getAvailableGames();
+    const games = availableGames.game_name;
+    this.totalGames = games.length;
 
-    this.totalActivities = activityList.length;
+    // const gameNames = games.map((game: any) => game.name);
 
-    const activities = activityList.map((item: any) => item.activityByActivity.id);
-    const today = new Date();
-    today.setHours(0,0,0,0);
-
-    const dailyGoalsRes = await this.goalsService.getDailyGoals(activities, today.toISOString());
-    let dailyGoalsActivities = dailyGoalsRes.patientDailyGoals.data.activities;
+    // hard-coding game names to preserve the order.
+    let dailyGoalsActivities = await this.goalsService.getDailyGoals([
+      'sit_stand_achieve',
+      'beat_boxer',
+      'sound_slicer'
+    ]);
 
     dailyGoalsActivities = dailyGoalsActivities.map((item: any, idx: number) => { //sets activity status
       let status = session.Start;
@@ -226,8 +233,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.sessions = activityList.map((item: any, idx: number) => {
-      return Object.assign({}, item.activityByActivity, dailyGoalsActivities[idx]) // merge arrays
+    this.sessions = games.map((item: string, idx: number) => {
+      return Object.assign({}, item, dailyGoalsActivities[idx]) // merge arrays
     })
 
     this.activitiesCompletedToday = dailyGoalsActivities.filter((activity: any) => activity.isCompleted).length;
@@ -238,10 +245,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.nextSession = this.sessions[0];
     } else {
       this.dailyCompletionPercent = Math.min(idxOfCurrentSession, 2) *50;
-      // this.nextSession = this.sessions[idxOfCurrentSession];
-      this.nextSession = this.sessions[0];
+      this.nextSession = this.sessions[idxOfCurrentSession];
     }
-
   }
 
   initMonthlyBar() {

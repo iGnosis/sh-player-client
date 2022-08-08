@@ -21,4 +21,11 @@ export class CareplanService {
     );
     return activities;
   }
+
+  async getAvailableGames() {
+    const games = await this.graphqlService.gqlRequest(
+      GqlConstants.GET_AVAILABLE_GAMES
+    );
+    return games;
+  }
 }

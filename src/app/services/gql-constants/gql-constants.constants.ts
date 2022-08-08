@@ -23,6 +23,24 @@ export const GqlConstants = {
       }
     }
   }`,
+  GET_AVAILABLE_GAMES: `query GetAvailableGames {
+    game_name {
+      name
+    }
+  }`,
+  GET_GAMES_DATA: `query GetGamesData($startDate: timestamptz = "", $endDate: timestamptz = "") {
+    game(where: {createdAt: {_gte: $startDate, _lte: $endDate}, endedAt: {_is_null: false}}, order_by: {createdAt: asc}) {
+      id
+      game
+      createdAt
+      endedAt
+      updatedAt
+      repsCompleted
+      totalDuration
+      analytics
+    }
+  }
+  `,
   GET_SESSIONS: `query GetSessions($offset: Int, $limit: Int, $patientId: uuid) {
       session_aggregate(where: {patient: {_eq: $patientId}, status: {_neq: trashed}}) {
         aggregate {
@@ -50,19 +68,6 @@ export const GqlConstants = {
       data {
         daysCompleted
         rewardsCountDown
-      }
-    }
-  }
-  `,
-  GET_DAILY_GOALS: `
-  query PatientDailyGoals($activityIds: [String!]!, $date: String!) {
-    patientDailyGoals(activityIds: $activityIds, date: $date) {
-      status
-      data {
-        activities {
-          id
-          isCompleted
-        }
       }
     }
   }
@@ -132,6 +137,14 @@ export const GqlConstants = {
   }
   `,
 
+  SET_PATIENT_DETAILS: `
+  mutation UpdateDetails($id: uuid!, $email: String, $nickname: String) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {email: $email, nickname: $nickname}) {
+      email
+      nickname
+    }
+  }`,
+
   SET_NICKNAME: `
   mutation UpdateNickName($id: uuid!, $nickname: String) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {nickname: $nickname}) {
@@ -173,6 +186,16 @@ export const GqlConstants = {
   }`,
   FREE_REWARD_ACCESSED: `mutation FreeRewardAccessed {
     freeRewardAccessed {
+      status
+    }
+  }`,
+  UPDATE_TIMEZONE: `mutation UpdateTimezone($id: uuid!, $timezone: String) {
+    update_patient_by_pk(_set: {timezone: $timezone}, pk_columns: { id: $id }) {
+      id
+    }
+  }`,
+  APP_ACCESSED: `mutation AppAccessed {
+    appAccessed {
       status
     }
   }`

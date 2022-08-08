@@ -44,8 +44,10 @@ export class CallbackComponent implements OnInit {
     const accessToken = await this.auth0Service.auth0Client.getTokenSilently()
     console.log('accessToken:', accessToken);
 
-    // fetches access_token & sends it to the token observers.
     await this.jwtService.getToken();
+
+    // set interval to refresh token whenever they're near expiry
+    await this.jwtService.refreshTokenAtInterval();
 
     if (!accessToken) {
       // Show an error message
@@ -55,7 +57,7 @@ export class CallbackComponent implements OnInit {
     }
 
     const accessTokenData = this.decodeJWT(accessToken);
-    console.log('accessTokenData:', accessTokenData);
+    // console.log('accessTokenData:', accessTokenData);
 
     const userId = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
     const userEmail = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-email"];
@@ -66,19 +68,19 @@ export class CallbackComponent implements OnInit {
     });
     console.log('user set successfully')
 
-    const step = await this.userService.isOnboarded();
-    if (step == -1) {
-      this.shScreen = true;
-      await this.waitForTimeout(6500);
+    this.shScreen = true;
+    await this.waitForTimeout(6500);
+    const isCheckedInToday = await this.isCheckedInToday();
+    if(!isCheckedInToday) {
+      this.router.navigate(["app", "checkin"]);
+      return;
+    }
 
-      if (await this.isCheckedInToday()) {
-        this.router.navigate(["app", "home"]);
-      } else {
-        this.router.navigate(["app", "checkin"]);
-      }
+    const step = await this.userService.isOnboarded();
+
+    if (step == -1) {
+      this.router.navigate(["app", "home"]);
     } else {
-      this.shScreen = true;
-      await this.waitForTimeout(6500);
       this.router.navigate(["app", "signup", step]);
     }
   }
