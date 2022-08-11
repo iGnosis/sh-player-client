@@ -156,7 +156,13 @@ export class SignupComponent implements OnInit {
         email: this.email!,
       });
       if(res.response && res.response.errors) {
-        this.errors = res.response.errors.map((err: any) => err.message)
+        this.errors = res.response.errors.map((err: any) => {
+          if(err.message.includes('Uniqueness violation')) {
+            return 'This email is already registered, please use a different email or contact us at support@pointmotion.us'
+          } else {
+            return err.message;
+          }
+        })
       } else {
         this.changeStep(this.signupStep+1);
       }

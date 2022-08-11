@@ -82,6 +82,7 @@ export class GraphqlService {
       return await this.client.request(query, variables);
     } catch (err) {
       console.log(err);
+      return err;
     }
   }
 }
