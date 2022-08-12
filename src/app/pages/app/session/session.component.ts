@@ -40,6 +40,9 @@ export class SessionComponent implements OnInit {
           );
         }
         // sends a latest valid access_token.
+        else if (event.data.type === 'end-game') {
+          this.router.navigate(['/app/home'])
+        }
         else if (event.data.type === 'request-access-token') {
           this.session.nativeElement.contentWindow?.postMessage(
             {
