@@ -22,11 +22,11 @@ export class AppComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.userService.appAccessed();
-
     // printing accessToken for easier debugging.
     await this.jwtService.refreshTokenAtInterval();
     console.log('accessToken:', await this.jwtService.getToken());
+
+    this.userService.appAccessed();
 
     this.router.events.subscribe((val: any) => {
       if(val.urlAfterRedirects && val.urlAfterRedirects === '/public/start') {
