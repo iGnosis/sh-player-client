@@ -240,8 +240,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.activitiesCompletedToday = dailyGoalsActivities.filter((activity: any) => activity.isCompleted).length;
 
     const idxOfCurrentSession = this.sessions.findIndex((item: any) => item.status === session.Start);
-    // Todo: remove the second condition when sound slicer is implemented.
-    if(idxOfCurrentSession === -1 || idxOfCurrentSession === this.sessions.length - 1) {
+    if (idxOfCurrentSession === -1) {
       this.dailyCompletionPercent = 100;
       this.nextSession = this.sessions[0];
     } else {
