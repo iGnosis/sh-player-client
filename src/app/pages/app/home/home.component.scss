@@ -36,7 +36,6 @@ $daily_card_bg: #B6E5C8;
         background-color: #718096;
     }
     .session-index {
-        //Todo: change to .start once other activities unlocked
         &.start {
             color: $success;
             background-color: #fff;
@@ -51,8 +50,7 @@ $daily_card_bg: #B6E5C8;
                 font-size: 20px;
             }
         }
-        //Todo: change to .locked once activities unlocked
-        &.locked, &:nth-child(4) {
+        &.locked {
             color: #fff;
             background-color: #718096;
             border: none;
@@ -184,7 +182,7 @@ $daily_card_bg: #B6E5C8;
 @media screen and (max-width: 1300px) {
     .display-6 {
         font-size: 2rem;
-    } 
+    }
     .monthly-remainder {
         font-size: 0.8rem;
     }

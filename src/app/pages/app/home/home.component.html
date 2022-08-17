@@ -34,7 +34,7 @@
                   </div>
                   <div
                   class="session-index rounded-pill w-12 h-12 d-flex position-relative"
-                  [ngClass]="{'start': session.status === sessionType.Start,'locked': session.status === sessionType.Locked || i === 2,'completed': session.status === sessionType.Completed }"
+                  [ngClass]="{'start': session.status === sessionType.Start,'locked': session.status === sessionType.Locked,'completed': session.status === sessionType.Completed }"
                   *ngFor="let session of sessions; let i = index">
                     <p class="m-auto font-bold text-lg">
                       {{ session.status != sessionType.Completed ? i+1 : '' }}
