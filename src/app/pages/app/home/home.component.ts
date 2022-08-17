@@ -217,7 +217,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     let dailyGoalsActivities = await this.goalsService.getDailyGoals([
       'sit_stand_achieve',
       'beat_boxer',
-      'sound_slicer'
+      'sound_explorer'
     ]);
 
     dailyGoalsActivities = dailyGoalsActivities.map((item: any, idx: number) => { //sets activity status
