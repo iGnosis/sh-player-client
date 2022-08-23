@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { Auth0Service } from 'src/app/services/auth0/auth0.service';
-import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
@@ -12,22 +11,16 @@ export class StartComponent implements OnInit {
   signUpLink = ''
   loginLink = ''
 
-  constructor(private auth0Service: Auth0Service) { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void { }
 
   async signUp() {
-    await this.auth0Service.auth0Client.loginWithRedirect({
-      redirect_uri: environment.auth0CbUrl,
-      screen_hint: 'signup'
-    });
+    this.router.navigate(['public/login'])
   }
 
   async login() {
-    await this.auth0Service.auth0Client.loginWithRedirect({
-      redirect_uri: environment.auth0CbUrl,
-      screen_hint: 'login'
-    });
+    this.router.navigate(['public/login'])
   }
 
   updateCarouselSlide(slide: number) {

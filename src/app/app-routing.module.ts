@@ -13,13 +13,14 @@ import { CallbackComponent } from './pages/auth/callback/callback.component';
 import { StartComponent } from './pages/auth/start/start.component';
 import { RewardsComponent } from './pages/app/rewards/rewards.component';
 import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
+import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'public/start', pathMatch: 'full' },
   {
     path: 'public', canActivateChild: [PublicGuard], children: [
       { path: 'start', component: StartComponent },
-      { path: 'login', component: LoginPageComponent, },
+      { path: 'login', component: SmsOtpLoginComponent, },
     ]
   },
   { path: 'oauth/callback', component: CallbackComponent},

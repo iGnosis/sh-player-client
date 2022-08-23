@@ -23,8 +23,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     // printing accessToken for easier debugging.
-    await this.jwtService.refreshTokenAtInterval();
-    console.log('accessToken:', await this.jwtService.getToken());
+    console.log('accessToken:', this.jwtService.getToken());
 
     this.userService.appAccessed();
 

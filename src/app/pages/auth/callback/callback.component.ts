@@ -8,6 +8,7 @@ import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
 import { environment } from "src/environments/environment";
 
+// TODO: This component is pointless now, remove it.
 @Component({
   selector: "app-callback",
   templateUrl: "./callback.component.html",
@@ -44,10 +45,7 @@ export class CallbackComponent implements OnInit {
     const accessToken = await this.auth0Service.auth0Client.getTokenSilently()
     console.log('accessToken:', accessToken);
 
-    await this.jwtService.getToken();
-
-    // set interval to refresh token whenever they're near expiry
-    await this.jwtService.refreshTokenAtInterval();
+    this.jwtService.getToken();
 
     if (!accessToken) {
       // Show an error message

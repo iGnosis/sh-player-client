@@ -7,7 +7,7 @@ declare global {
 
 export interface Patient {
   id: string;
-  email: string;
+  email?: string;
   careGiverEmail?: string;
   identifier?: string;
   phoneCountryCode?: string;

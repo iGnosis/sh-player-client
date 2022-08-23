@@ -123,20 +123,6 @@ export const GqlConstants = {
       id
     }
   }`,
-  SIGN_UP_PATIENT: `
-  mutation SignUpPatient($code: String = "", $email: String = "", $nickname: String = "", $password: String = "") {
-    signUpPatient(code: $code, email: $email, nickname: $nickname, password: $password) {
-      token
-      patient {
-        id
-        nickname
-        provider
-        activeCareplan
-      }
-    }
-  }
-  `,
-
   SET_PATIENT_DETAILS: `
   mutation UpdateDetails($id: uuid!, $email: String, $nickname: String) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {email: $email, nickname: $nickname}) {
@@ -197,6 +183,20 @@ export const GqlConstants = {
   APP_ACCESSED: `mutation AppAccessed {
     appAccessed {
       status
+    }
+  }`,
+  REQUEST_LOGIN_OTP: `mutation RequestLoginOtp($phoneCountryCode: String!, $phoneNumber: String!) {
+    requestLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber) {
+      data {
+        message
+      }
+    }
+  }`,
+  VERIFY_LOGIN_OTP: `mutation VerifyLoginOtp($phoneCountryCode: String!, $phoneNumber: String!, $otp: Int!) {
+    verifyLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber, otp: $otp) {
+      data {
+        token
+      }
     }
   }`
 };
