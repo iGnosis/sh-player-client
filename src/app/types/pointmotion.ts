@@ -47,12 +47,6 @@ export type Environment = {
   servicesEndpoint: string;
   activityEndpoint: string;
   googleAnalyticsTrackingID: string;
-  auth0Domain: string;
-  auth0ClientId: string;
-  auth0Audience: string;
-  auth0Scope: string;
-  auth0CbUrl: string;
-  auth0LogoutUrl: string;
 }
 
 export interface DailyGoalsApiDTO {
