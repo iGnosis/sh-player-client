@@ -16,9 +16,7 @@ export class NavBarComponent implements OnInit {
   constructor(
     private route:Router,
     private jwtService: JwtService,
-    private userService: UserService,
     private router: Router,
-    private auth0Service: Auth0Service
   ) {
     this.router.events.subscribe(() => {
       this.activeTab = this.route.url.split('/').slice(-1)[0];
@@ -27,14 +25,10 @@ export class NavBarComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   async logout() {
-    this.auth0Service.auth0Client.logout({
-      returnTo: environment.auth0LogoutUrl
-    });
+    this.jwtService.clearTokens();
     this.router.navigate(['/']);
   }
-
 }

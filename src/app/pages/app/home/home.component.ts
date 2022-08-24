@@ -100,8 +100,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async initHome() {
-    // update accessToken if expired.
-    await this.jwtService.getToken();
     this.rewards = await this.rewardsService.getRewards();
 
     let todayMidnight = new Date();

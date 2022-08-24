@@ -13,13 +13,6 @@ export class GraphqlService {
 
   constructor(private jwtService: JwtService) {
 
-    setTimeout(() => {
-      this.jwtService.getToken();
-      setInterval(() => {
-        this.jwtService.getToken();
-      }, 1000 * 60 * 15);
-    }, 0)
-
     const additionalHeaders: any = {
       'x-pointmotion-origin': window.location.origin,
       'x-pointmotion-user': 'patient',
@@ -61,7 +54,7 @@ export class GraphqlService {
 
     // make authenticated request.
     if (auth) {
-      const token = await this.jwtService.getToken();
+      const token = this.jwtService.getToken();
       this.client = new GraphQLClient(environment.gqlEndpoint, {
         headers: Object.assign({
           Authorization: "Bearer " + token,

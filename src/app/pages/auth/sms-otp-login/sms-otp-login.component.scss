@@ -1,0 +1,55 @@
+@import '../../../variables';
+
+.login-form {
+  width: 300px;
+  background-color: grey;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  border: $primary solid 0.01px;
+  overflow: hidden;
+
+  .formErrorMsg {
+    background-color: #ff3e00;
+    color: white;
+    text-align: center;
+  }
+
+}
+
+.pmc-logo {
+  background-color: #dddddd;
+  vertical-align: middle;
+  text-align: center;
+
+  img {
+    width: auto;
+    height: 58px;
+  }
+}
+
+.input-form {
+  background-color: #ffffff;
+  vertical-align: middle;
+  text-align: center;
+
+  .guide-text {
+    font-size: 12px;
+  }
+
+  a {
+    font-size: 14px;
+  }
+}
+
+.terms {
+  font-size: 12px;
+  text-align: center;
+  background-color: #dddddd;
+}
+
+.submit-btn {
+  background-color: $primary;
+}
