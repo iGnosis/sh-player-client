@@ -13,6 +13,12 @@
   border-radius: 10px;
   overflow: hidden;
 
+  .spinner {
+      color: $primary;
+      background-color: #ffff;
+      text-align: center;
+      height: 60px;
+    }
   .formErrorMsg {
     background-color: #ff3e00;
     color: white;

@@ -17,7 +17,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 export class SmsOtpLoginComponent {
   shScreen = false;
   isMusicEnded = false;
-  step = 0;
+  step = -1;
   selectedCountry = '+1 USA'; // set default to USA
   countryCode = '+1';  // set default to USA
   phoneNumber?: string;
@@ -46,6 +46,7 @@ export class SmsOtpLoginComponent {
         .then(fetchCountryPhoneResp => {
           this.countryCode = `+${fetchCountryPhoneResp.phone}`
           this.selectedCountry = `${this.countryCode} ${fetchCountryPhoneResp.name}`
+          this.step++;
         })
     })
   }
