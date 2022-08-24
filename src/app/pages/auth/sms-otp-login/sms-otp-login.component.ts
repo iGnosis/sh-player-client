@@ -16,6 +16,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 })
 export class SmsOtpLoginComponent {
   shScreen = false;
+  isMusicEnded = false;
   step = 0;
   selectedCountry = '+1 USA'; // set default to USA
   countryCode = '+1';  // set default to USA

@@ -1,4 +1,6 @@
-<div class="container">
+<app-sh-screen *ngIf="shScreen"></app-sh-screen>
+
+<div *ngIf="!shScreen" class="container">
   <div class="login-form">
     <div class="d-flex flex-column mb-3">
 
