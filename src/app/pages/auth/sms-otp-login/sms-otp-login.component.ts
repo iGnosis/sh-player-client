@@ -21,10 +21,14 @@ export class SmsOtpLoginComponent {
   selectedCountry = '+1 USA'; // set default to USA
   countryCode = '+1';  // set default to USA
   phoneNumber?: string;
-  fullPhoneNumber?: string;
   otpCode?: string;
   formErrorMsg?: string;
   countryCodesList?: { [key: number]: string };
+
+  // required to figure out which OTP API to call.
+  // The Resend OTP API is called if numbers haven't changed.
+  tempFullPhoneNumber?: string;
+  fullPhoneNumber?: string;
 
   constructor(
     private graphQlService: GraphqlService,
@@ -53,7 +57,7 @@ export class SmsOtpLoginComponent {
     if (this.step === 0) {
       this.countryCode = event.target.countryCode.value;
       if (this.countryCode.slice(0, 1) !== '+') {
-        this.countryCode = `+${this.countryCode}`
+        this.countryCode = `+${this.countryCode}`;
       }
       this.phoneNumber = event.target.phoneNumber.value;
       console.log('submit:countryCode:', this.countryCode);
@@ -63,21 +67,35 @@ export class SmsOtpLoginComponent {
       console.log(phoneObj);
 
       if (!phoneObj.isValid) {
-        this.formErrorMsg = 'Phone number is not valid';
-        this.resetErrorMsg();
+        this.showError('Phone number is not valid');
         return;
       }
 
-      // call API to send OTP
-      const resp = await this.graphQlService.gqlRequest(GqlConstants.REQUEST_LOGIN_OTP, {
-        phoneCountryCode: this.countryCode,
-        phoneNumber: this.phoneNumber
-      }, false)
+      this.fullPhoneNumber = phoneObj.phoneNumber;
 
-      if (!resp || !resp.requestLoginOtp || !resp.requestLoginOtp.data.message) {
-        this.formErrorMsg = 'Something went wrong while sending OTP.';
-        this.resetErrorMsg();
-        return;
+      let resp;
+      // call the Resend OTP API, since phone number did not change.
+      if (this.tempFullPhoneNumber === this.fullPhoneNumber) {
+        console.log('resend OTP API called');
+        resp = await this.graphQlService.gqlRequest(GqlConstants.RESEND_LOGIN_OTP, {
+          phoneCountryCode: this.countryCode,
+          phoneNumber: this.phoneNumber
+        }, false);
+        if (!resp || !resp.resendLoginOtp || !resp.resendLoginOtp.data.message) {
+          this.showError('Something went wrong while sending OTP.')
+          return;
+        }
+      }
+      // call Request Login OTP API, since the phone number changed.
+      else {
+        resp = await this.graphQlService.gqlRequest(GqlConstants.REQUEST_LOGIN_OTP, {
+          phoneCountryCode: this.countryCode,
+          phoneNumber: this.phoneNumber
+        }, false);
+        if (!resp || !resp.requestLoginOtp || !resp.requestLoginOtp.data.message) {
+          this.showError('Something went wrong while sending OTP.')
+          return;
+        }
       }
 
       // increment step
@@ -87,20 +105,18 @@ export class SmsOtpLoginComponent {
 
     // call API to validate the code
     else if (this.step === 1) {
-
-      console.log('submit:otpCode:', event.target.otpCode.value);
       this.otpCode = event.target.otpCode.value;
+      console.log('submit:otpCode:', this.otpCode);
 
       // you should get back JWT in success response.
       const resp = await this.graphQlService.gqlRequest(GqlConstants.VERIFY_LOGIN_OTP, {
         phoneCountryCode: this.countryCode,
         phoneNumber: this.phoneNumber,
         otp: parseInt(this.otpCode!)
-      }, false)
+      }, false);
 
       if (!resp || !resp.verifyLoginOtp || !resp.verifyLoginOtp.data.token) {
-        this.formErrorMsg = 'That is not the code.'
-        this.resetErrorMsg();
+        this.showError('That is not the code.')
         return;
       }
 
@@ -112,7 +128,7 @@ export class SmsOtpLoginComponent {
       this.userService.set({
         id: userId,
       });
-      console.log('user set successfully')
+      console.log('user set successfully');
 
       this.shScreen = true;
       await this.waitForTimeout(6500);
@@ -132,6 +148,8 @@ export class SmsOtpLoginComponent {
   }
 
   resetForm() {
+    this.tempFullPhoneNumber = this.fullPhoneNumber;
+
     this.step = 0;
     this.phoneNumber = '';
     this.fullPhoneNumber = '';
@@ -139,10 +157,11 @@ export class SmsOtpLoginComponent {
     this.formErrorMsg = '';
   }
 
-  resetErrorMsg(timeout?: number) {
+  showError(message: string, timeout: number = 5000) {
+    this.formErrorMsg = message;
     setTimeout(() => {
       this.formErrorMsg = '';
-    }, timeout || 5000);
+    }, timeout);
   }
 
   async waitForTimeout(timeout: number) {
