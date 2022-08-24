@@ -51,10 +51,13 @@ export class SmsOtpLoginComponent {
   async submit(event: any) {
     // call API to send an OTP
     if (this.step === 0) {
-      console.log('submit:countryCode:', event.target.countryCode.value);
-      console.log('submit:phoneNumber:', event.target.phoneNumber.value);
-      this.countryCode = `+${event.target.countryCode.value}`;
+      this.countryCode = event.target.countryCode.value;
+      if (this.countryCode.slice(0, 1) !== '+') {
+        this.countryCode = `+${this.countryCode}`
+      }
       this.phoneNumber = event.target.phoneNumber.value;
+      console.log('submit:countryCode:', this.countryCode);
+      console.log('submit:phoneNumber:', this.phoneNumber);
 
       let phoneObj = phone(`${this.countryCode}${this.phoneNumber}`);
       console.log(phoneObj);
