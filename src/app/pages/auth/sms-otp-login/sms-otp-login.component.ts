@@ -37,7 +37,7 @@ export class SmsOtpLoginComponent {
 
     // fetch user's country.
     this.userService.fetchCountry().subscribe(res => {
-      this.userService.fetchCountryPhone(res.slice(0, -1)) // remove the last character '\n'
+      this.userService.fetchCountryPhone(res.country) // remove the last character '\n'
         .then(fetchCountryPhoneResp => {
           this.countryCode = `+${fetchCountryPhoneResp.phone}`
           this.selectedCountry = `${this.countryCode} ${fetchCountryPhoneResp.name}`
