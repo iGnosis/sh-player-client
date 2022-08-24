@@ -3,6 +3,7 @@ import { Patient } from '../types/pointmotion';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +24,10 @@ export class UserService {
     return user as Patient
   }
 
-  fetchCountry() {
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.http.get(
-      'https://ipinfo.io/country?token=72e8087d68fd80',
-      {
-        headers,
-        responseType: 'text'
-      }
-    );
+  fetchCountry(): Observable<{
+    country: string;
+  }> {
+    return this.http.get<{ country: string }>('https://ipinfo.io/json?token=72e8087d68fd80');
   }
 
   async fetchCountryPhone(code: string): Promise<{
