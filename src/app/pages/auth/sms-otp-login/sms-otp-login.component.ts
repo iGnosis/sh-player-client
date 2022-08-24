@@ -68,7 +68,7 @@ export class SmsOtpLoginComponent {
       const resp = await this.graphQlService.gqlRequest(GqlConstants.REQUEST_LOGIN_OTP, {
         phoneCountryCode: this.countryCode,
         phoneNumber: this.phoneNumber
-      })
+      }, false)
 
       if (!resp || !resp.requestLoginOtp || !resp.requestLoginOtp.data.message) {
         this.formErrorMsg = 'Something went wrong while sending OTP.';
@@ -82,7 +82,8 @@ export class SmsOtpLoginComponent {
     }
 
     // call API to validate the code
-    if (this.step === 1) {
+    else if (this.step === 1) {
+
       console.log('submit:otpCode:', event.target.otpCode.value);
       this.otpCode = event.target.otpCode.value;
 
@@ -90,8 +91,8 @@ export class SmsOtpLoginComponent {
       const resp = await this.graphQlService.gqlRequest(GqlConstants.VERIFY_LOGIN_OTP, {
         phoneCountryCode: this.countryCode,
         phoneNumber: this.phoneNumber,
-        otp: this.otpCode
-      })
+        otp: parseInt(this.otpCode!)
+      }, false)
 
       if (!resp || !resp.verifyLoginOtp || !resp.verifyLoginOtp.data.token) {
         this.formErrorMsg = 'That is not the code.'
