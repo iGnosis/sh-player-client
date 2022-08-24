@@ -17,14 +17,10 @@
             <p><span class="guide-text">Enter your phone to sign in or create an account</span></p>
             <div class="col-sm mt-4">
               <select id="countryCode" class="form-select" required>
-                <option value="+1" selected>+1 USA</option>
-                <option value="+91">+91 India</option>
+                <option value="{{ countryCode }}" selected>{{ selectedCountry }}</option>
                 <option *ngFor="let country of countryCodesList | keyvalue" [value]="country.key">
                   {{ country.value }}
                 </option>
-                <!-- <option *ngFor="let title of titleArray" [value]="title.Value">
-                  {{title.Text}}
-                </option> -->
               </select>
             </div>
 

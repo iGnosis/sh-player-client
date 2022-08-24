@@ -17,7 +17,8 @@ import { JwtService } from 'src/app/services/jwt.service';
 export class SmsOtpLoginComponent {
   shScreen = false;
   step = 0;
-  countryCode?: string;
+  selectedCountry = '+1 USA'; // set default to USA
+  countryCode = '+1';  // set default to USA
   phoneNumber?: string;
   fullPhoneNumber?: string;
   otpCode?: string;
@@ -30,12 +31,21 @@ export class SmsOtpLoginComponent {
     private userService: UserService,
     private jwtService: JwtService,
     private dailyCheckinService: DailyCheckinService
-  ) { }
-
-  ngOnInit(): void {
+  ) {
     this.countryCodesList = countryCodes.customList('countryCallingCode', '+{countryCallingCode} {countryNameEn}');
     console.log('myCountryCodesObject:', this.countryCodesList);
+
+    // fetch user's country.
+    this.userService.fetchCountry().subscribe(res => {
+      this.userService.fetchCountryPhone(res.slice(0, -1)) // remove the last character '\n'
+        .then(fetchCountryPhoneResp => {
+          this.countryCode = `+${fetchCountryPhoneResp.phone}`
+          this.selectedCountry = `${this.countryCode} ${fetchCountryPhoneResp.name}`
+        })
+    })
   }
+
+  ngOnInit(): void { }
 
   async submit(event: any) {
     // call API to send an OTP

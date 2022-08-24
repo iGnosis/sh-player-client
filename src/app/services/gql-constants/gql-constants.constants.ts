@@ -198,5 +198,12 @@ export const GqlConstants = {
         token
       }
     }
+  }`,
+  FETCH_COUNTRY: `query GetCountryCallingCode($code: ID!) {
+    country(code: $code) {
+      phone
+      name
+      emoji
+    }
   }`
 };
