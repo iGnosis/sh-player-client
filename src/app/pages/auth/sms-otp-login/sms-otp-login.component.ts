@@ -53,7 +53,7 @@ export class SmsOtpLoginComponent {
     if (this.step === 0) {
       console.log('submit:countryCode:', event.target.countryCode.value);
       console.log('submit:phoneNumber:', event.target.phoneNumber.value);
-      this.countryCode = event.target.countryCode.value;
+      this.countryCode = `+${event.target.countryCode.value}`;
       this.phoneNumber = event.target.phoneNumber.value;
 
       let phoneObj = phone(`${this.countryCode}${this.phoneNumber}`);

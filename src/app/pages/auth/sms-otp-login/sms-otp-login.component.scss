@@ -1,14 +1,16 @@
 @import '../../../variables';
 
+.main {
+  height: 100vh;
+  background-image: radial-gradient(#44444d, #414149, #29292f);
+}
 .login-form {
   width: 300px;
-  background-color: grey;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
-  border: $primary solid 0.01px;
   overflow: hidden;
 
   .formErrorMsg {
@@ -26,7 +28,7 @@
 
   img {
     width: auto;
-    height: 58px;
+    height: 60px;
   }
 }
 
