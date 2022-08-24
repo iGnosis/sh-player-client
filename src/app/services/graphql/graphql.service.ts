@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { GraphQLClient } from "graphql-request";
 import { environment } from "src/environments/environment";
-import { Auth0Service } from "../auth0/auth0.service";
 import { JwtService } from "../jwt.service";
 
 @Injectable({

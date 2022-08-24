@@ -25,7 +25,6 @@ import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { UpdateHeadersInterceptor } from './interceptors/update-headers.interceptor';
 import { PrivateComponent } from './layouts/private/private.component';
-import { CallbackComponent } from './pages/auth/callback/callback.component';
 import { StartComponent } from './pages/auth/start/start.component';
 import { RewardsComponent } from './pages/app/rewards/rewards.component';
 import { LottieModule } from 'ngx-lottie';
@@ -52,7 +51,6 @@ import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.c
     SignupComponent,
     HelpComponent,
     PrivateComponent,
-    CallbackComponent,
     StartComponent,
     RewardsComponent,
     ShScreenComponent,

@@ -9,7 +9,6 @@ import { GoalsComponent } from './pages/app/goals/goals.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { PrivateComponent } from './layouts/private/private.component';
-import { CallbackComponent } from './pages/auth/callback/callback.component';
 import { StartComponent } from './pages/auth/start/start.component';
 import { RewardsComponent } from './pages/app/rewards/rewards.component';
 import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
@@ -23,7 +22,6 @@ const routes: Routes = [
       { path: 'login', component: SmsOtpLoginComponent, },
     ]
   },
-  { path: 'oauth/callback', component: CallbackComponent},
   { path: "app/session/:id", component: SessionComponent, canActivate: [PrivateGuard] },
   {
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
