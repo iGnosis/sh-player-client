@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { phone } from 'phone';
-import countryCodes from 'country-codes-list'
+// import countryCodes from 'country-codes-list'
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 import { GqlConstants } from "src/app/services/gql-constants/gql-constants.constants";
 import { Router } from '@angular/router';
@@ -17,13 +17,13 @@ import { JwtService } from 'src/app/services/jwt.service';
 export class SmsOtpLoginComponent {
   shScreen = false;
   isMusicEnded = false;
-  step = -1;
+  step = 0;
   selectedCountry = '+1 USA'; // set default to USA
   countryCode = '+1';  // set default to USA
   phoneNumber?: string;
   otpCode?: string;
   formErrorMsg?: string;
-  countryCodesList?: { [key: number]: string };
+  // countryCodesList?: { [key: number]: string };
 
   // required to figure out which OTP API to call.
   // The Resend OTP API is called if numbers haven't changed.
@@ -37,18 +37,17 @@ export class SmsOtpLoginComponent {
     private jwtService: JwtService,
     private dailyCheckinService: DailyCheckinService
   ) {
-    this.countryCodesList = countryCodes.customList('countryCallingCode', '+{countryCallingCode} {countryNameEn}');
-    console.log('myCountryCodesObject:', this.countryCodesList);
-
+    // this.countryCodesList = countryCodes.customList('countryCallingCode', '+{countryCallingCode} {countryNameEn}');
+    // console.log('myCountryCodesObject:', this.countryCodesList);
     // fetch user's country.
-    this.userService.fetchCountry().subscribe(res => {
-      this.userService.fetchCountryPhone(res.country)
-        .then(fetchCountryPhoneResp => {
-          this.countryCode = `+${fetchCountryPhoneResp.phone}`
-          this.selectedCountry = `${this.countryCode} ${fetchCountryPhoneResp.name}`
-          this.step++;
-        })
-    })
+    // this.userService.fetchCountry().subscribe(res => {
+    //   this.userService.fetchCountryPhone(res.country)
+    //     .then(fetchCountryPhoneResp => {
+    //       this.countryCode = `+${fetchCountryPhoneResp.phone}`
+    //       this.selectedCountry = `${this.countryCode} ${fetchCountryPhoneResp.name}`
+    //       this.step++;
+    //     })
+    // })
   }
 
   ngOnInit(): void { }
@@ -74,11 +73,10 @@ export class SmsOtpLoginComponent {
 
       this.fullPhoneNumber = phoneObj.phoneNumber;
 
-      let resp;
       // call the Resend OTP API, since phone number did not change.
       if (this.tempFullPhoneNumber === this.fullPhoneNumber) {
         console.log('resend OTP API called');
-        resp = await this.graphQlService.gqlRequest(GqlConstants.RESEND_LOGIN_OTP, {
+        const resp = await this.graphQlService.gqlRequest(GqlConstants.RESEND_LOGIN_OTP, {
           phoneCountryCode: this.countryCode,
           phoneNumber: this.phoneNumber
         }, false);
@@ -89,7 +87,7 @@ export class SmsOtpLoginComponent {
       }
       // call Request Login OTP API, since the phone number changed.
       else {
-        resp = await this.graphQlService.gqlRequest(GqlConstants.REQUEST_LOGIN_OTP, {
+        const resp = await this.graphQlService.gqlRequest(GqlConstants.REQUEST_LOGIN_OTP, {
           phoneCountryCode: this.countryCode,
           phoneNumber: this.phoneNumber
         }, false);
