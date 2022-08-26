@@ -100,8 +100,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async initHome() {
-    // update accessToken if expired.
-    await this.jwtService.getToken();
     this.rewards = await this.rewardsService.getRewards();
 
     let todayMidnight = new Date();
@@ -217,7 +215,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     let dailyGoalsActivities = await this.goalsService.getDailyGoals([
       'sit_stand_achieve',
       'beat_boxer',
-      'sound_slicer'
+      'sound_explorer'
     ]);
 
     dailyGoalsActivities = dailyGoalsActivities.map((item: any, idx: number) => { //sets activity status
@@ -240,8 +238,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.activitiesCompletedToday = dailyGoalsActivities.filter((activity: any) => activity.isCompleted).length;
 
     const idxOfCurrentSession = this.sessions.findIndex((item: any) => item.status === session.Start);
-    // Todo: remove the second condition when sound slicer is implemented.
-    if(idxOfCurrentSession === -1 || idxOfCurrentSession === this.sessions.length - 1) {
+    if (idxOfCurrentSession === -1) {
       this.dailyCompletionPercent = 100;
       this.nextSession = this.sessions[0];
     } else {

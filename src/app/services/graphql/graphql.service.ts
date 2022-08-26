@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { GraphQLClient } from "graphql-request";
 import { environment } from "src/environments/environment";
-import { Auth0Service } from "../auth0/auth0.service";
 import { JwtService } from "../jwt.service";
 
 @Injectable({
@@ -12,13 +11,6 @@ export class GraphqlService {
   public publicClient: GraphQLClient
 
   constructor(private jwtService: JwtService) {
-
-    setTimeout(() => {
-      this.jwtService.getToken();
-      setInterval(() => {
-        this.jwtService.getToken();
-      }, 1000 * 60 * 15);
-    }, 0)
 
     const additionalHeaders: any = {
       'x-pointmotion-origin': window.location.origin,
@@ -61,7 +53,7 @@ export class GraphqlService {
 
     // make authenticated request.
     if (auth) {
-      const token = await this.jwtService.getToken();
+      const token = this.jwtService.getToken();
       this.client = new GraphQLClient(environment.gqlEndpoint, {
         headers: Object.assign({
           Authorization: "Bearer " + token,

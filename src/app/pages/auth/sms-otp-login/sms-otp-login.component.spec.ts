@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CallbackComponent } from './callback.component';
+import { SmsOtpLoginComponent } from './sms-otp-login.component';
 
-describe('CallbackComponent', () => {
-  let component: CallbackComponent;
-  let fixture: ComponentFixture<CallbackComponent>;
+describe('SmsOtpLoginComponent', () => {
+  let component: SmsOtpLoginComponent;
+  let fixture: ComponentFixture<SmsOtpLoginComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CallbackComponent ]
+      declarations: [ SmsOtpLoginComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CallbackComponent);
+    fixture = TestBed.createComponent(SmsOtpLoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

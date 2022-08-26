@@ -6,7 +6,6 @@ import {
   style,
   keyframes,
 } from "@angular/animations";
-import { CallbackComponent } from "src/app/pages/auth/callback/callback.component";
 import { Router } from "@angular/router";
 import { SoundsService } from "src/app/services/sounds/sounds.service";
 

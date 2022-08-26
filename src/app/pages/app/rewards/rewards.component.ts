@@ -18,8 +18,6 @@ export class RewardsComponent implements OnInit {
   constructor(private rewardsService: RewardsService, private jwtService: JwtService) { }
 
   async ngOnInit() {
-    // update accessToken if expired.
-    await this.jwtService.getToken();
     this.rewards = await this.rewardsService.getRewards();
     this.rewardsUnlocked = this.rewards.filter((val) => val.isUnlocked === true).length;
   }
