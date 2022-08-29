@@ -31,7 +31,7 @@ export class JwtService {
     const diffInSecs = nowUnixEpochInSecs - decodedToken.exp;
 
     // token stays valid for 24hrs.
-    if (diffInSecs > 24 * 60 * 60) {
+    if (diffInSecs >= 0) {
       return false;
     }
 
