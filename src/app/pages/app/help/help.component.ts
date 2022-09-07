@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { HelpService } from 'src/app/services/help/help.service';
 import { RewardsDTO } from 'src/app/types/pointmotion';
 
@@ -18,7 +19,7 @@ export class HelpComponent implements OnInit {
     description: "5% off on all therapy equipment from EXERTOOLS",
     couponCode: "PTMONU",
   }
-  constructor(private helpService: HelpService) { }
+  constructor(private helpService: HelpService, private googleAnalyticsService: GoogleAnalyticsService) { }
 
   ngOnInit(): void {
   }
@@ -34,5 +35,10 @@ export class HelpComponent implements OnInit {
   toggleRewardModal() {
     this.showRewardModal = !this.showRewardModal;
     this.helpService.freeRewardAccessed();
+    if (this.showRewardModal) {
+      this.googleAnalyticsService.sendEvent('access_reward', {
+        tier: this.currentReward.tier,
+      });
+    }
   }
 }
