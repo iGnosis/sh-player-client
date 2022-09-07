@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { SessionService } from "src/app/services/session/session.service";
 import { Patient } from "src/app/types/pointmotion";
@@ -12,6 +12,8 @@ import { UserService } from "src/app/services/user.service";
 import { AnimationOptions } from "ngx-lottie";
 import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
+import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
+import { filter, pairwise, take } from "rxjs";
 
 @Component({
   selector: "app-home",
@@ -83,6 +85,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     path: '/assets/images/animations/wave.json'
   };
 
+  isVisitingAfterSession = false;
+
   constructor(
     private careplanService: CareplanService,
     private sessionService: SessionService,
@@ -91,8 +95,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private router: Router,
     private jwtService: JwtService,
     private userService: UserService,
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {
     this.user = this.userService.get();
+    this.router.events
+      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))
+      .subscribe((events: RoutesRecognized[]) => {
+        this.isVisitingAfterSession = events[0].urlAfterRedirects === '/app/session/';
+        console.log('analytics event sent: ', this.isVisitingAfterSession);
+        if (this.isVisitingAfterSession) {
+          this.googleAnalyticsService.sendEvent('end_game');
+          this.googleAnalyticsService.sendEvent('monthly_goals', {
+            completionPercent: this.monthlyCompletionPercent
+          });
+          this.googleAnalyticsService.sendEvent('daily_goals', {
+            activities: this.sessions,
+          });
+        }
+      });
   }
 
   async ngOnInit(): Promise<void> {
@@ -118,6 +138,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   async displayRewardCard(reward: RewardsDTO) {
     await this.rewardsService.markRewardAsViewed(reward.tier);
+    this.googleAnalyticsService.sendEvent('unlock_achievement', {
+      tier: reward.tier,
+    });
     this.currentReward = reward;
   }
 
@@ -143,6 +166,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   async startNewSession() {
     // this.sessionId = (await this.sessionService.createNewSession()) as string;
+    this.googleAnalyticsService.sendEvent('start_game');
     this.router.navigate(["/app/session/", '']);
   }
 

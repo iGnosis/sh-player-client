@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { JwtService } from 'src/app/services/jwt.service';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 
 // TODO: Decouple this Component (checkins, onboardings... etc)
 @Component({
@@ -35,7 +36,8 @@ export class SmsOtpLoginComponent {
     private router: Router,
     private userService: UserService,
     private jwtService: JwtService,
-    private dailyCheckinService: DailyCheckinService
+    private dailyCheckinService: DailyCheckinService,
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {
     // this.countryCodesList = countryCodes.customList('countryCallingCode', '+{countryCallingCode} {countryNameEn}');
     // console.log('myCountryCodesObject:', this.countryCodesList);
@@ -127,7 +129,10 @@ export class SmsOtpLoginComponent {
       this.userService.set({
         id: userId,
       });
+      this.googleAnalyticsService.setUserId(userId);
       console.log('user set successfully');
+      // emit signup event
+      this.googleAnalyticsService.sendEvent('login');
 
       this.shScreen = true;
       await this.waitForTimeout(6500);
