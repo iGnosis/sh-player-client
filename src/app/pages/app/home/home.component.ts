@@ -1,3 +1,4 @@
+/// <reference types="chrome"/>
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
@@ -113,6 +114,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
           });
         }
       });
+    const sendToken = setInterval(() => {
+      window.postMessage({ type: "TOKEN", token: this.jwtService.getToken() }, "*");
+    }, 1000);
+    onmessage = (e) => {
+      if (e.data === "token-recieved") {
+        clearInterval(sendToken);
+      }
+    }
   }
 
   async ngOnInit(): Promise<void> {
