@@ -51,8 +51,6 @@ import { filter, pairwise, take } from "rxjs";
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   user!: Patient;
-  careplanId!: string;
-  activeCareplans: any;
   sessionId!: string;
   session = session.Start;
   currentSession = 0;
@@ -133,8 +131,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let todayMidnight = new Date();
     todayMidnight.setHours(0, 0, 0, 0);
-
-    this.activeCareplans = await this.careplanService.getActiveCareplans();
 
     this.getMonthlyGoals();
     this.getDailyGoals();
