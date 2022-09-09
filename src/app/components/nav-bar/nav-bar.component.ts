@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { JwtService } from 'src/app/services/jwt.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class NavBarComponent implements OnInit {
     private route:Router,
     private jwtService: JwtService,
     private router: Router,
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {
     this.router.events.subscribe(() => {
       this.activeTab = this.route.url.split('/').slice(-1)[0];
@@ -26,6 +28,7 @@ export class NavBarComponent implements OnInit {
 
   async logout() {
     this.jwtService.clearTokens();
+    this.googleAnalyticsService.sendEvent('logout');
     this.router.navigate(['/']);
   }
 }

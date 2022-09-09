@@ -7,22 +7,6 @@ export const GqlConstants = {
       careplan
     }
   }`,
-  GET_ACTIVE_PLANS: `query GetCareplan {
-    careplan {
-      id
-      name
-      difficultyLevel
-      estimatedDuration
-    }
-  }`,
-  GET_CAREPLAN_DETAILS: `query GetCareplanActivities {
-    careplan_activity {
-      activityByActivity {
-        id
-        name
-      }
-    }
-  }`,
   GET_AVAILABLE_GAMES: `query GetAvailableGames {
     game_name {
       name

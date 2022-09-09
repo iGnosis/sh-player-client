@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class FeedbackModalComponent implements OnInit {
   feedbackId: string = "";
   currentRecommendationScore: number = 0;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private googleAnalyticsService: GoogleAnalyticsService) { }
 
   ngOnInit(): void {
   }
@@ -23,6 +24,9 @@ export class FeedbackModalComponent implements OnInit {
       this.submitProductFeedback();
     } else {
       this.feedbackModal = !this.feedbackModal;
+    }
+    if (this.feedbackModal) {
+      this.googleAnalyticsService.sendEvent('open_feedback_modal');
     }
   }
   setCurrentRating(i: number) {
@@ -35,6 +39,9 @@ export class FeedbackModalComponent implements OnInit {
   }
   async submitFeedback() {
     this.feedbackId = await this.userService.sendUserFeedback(this.currentRating, this.description);
+    this.googleAnalyticsService.sendEvent('submit_product_feedback', {
+      rating: this.currentRating,
+    });
     this.toggleFeedbackModal();
     this.clearFeedbackForm();
     this.toggleRecommendationScoreModal();
@@ -42,6 +49,9 @@ export class FeedbackModalComponent implements OnInit {
   submitProductFeedback() {
     if(this.currentRecommendationScore > 0) {
       this.userService.sendRecommendationScore(this.feedbackId, this.currentRecommendationScore);
+      this.googleAnalyticsService.sendEvent('submit_recommendation_feedback', {
+        recommendation_score: this.currentRecommendationScore,
+      });
     }
     this.toggleRecommendationScoreModal();
     this.clearFeedbackForm();

@@ -2,6 +2,7 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { UserService } from 'src/app/services/user.service';
 
 interface InterestsDTO {
@@ -66,6 +67,7 @@ export class SignupComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private userService: UserService,
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {
     router.events.subscribe(() => {
       let step = parseInt(this.route.snapshot.paramMap.get('step')!);
@@ -164,6 +166,7 @@ export class SignupComponent implements OnInit {
           }
         })
       } else {
+        this.googleAnalyticsService.sendEvent('sign_up');
         this.changeStep(this.signupStep+1);
       }
     }
@@ -175,6 +178,7 @@ export class SignupComponent implements OnInit {
     }
   }
   goToHome() {
+    if (this.signupStep === 4) this.googleAnalyticsService.sendEvent('skip_preferences');
     this.router.navigate(['/app/home']);
   }
 
@@ -191,6 +195,7 @@ export class SignupComponent implements OnInit {
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
+        this.googleAnalyticsService.sendEvent('set_preferred_genres', { genres });
         this.changeStep(this.signupStep, this.interestStep+1);
       }
     }
@@ -202,6 +207,7 @@ export class SignupComponent implements OnInit {
         }
       })
       const res = await this.authService.setPreferredActivities({ activities, id: this.userService.get().id})
+      this.googleAnalyticsService.sendEvent('set_preferred_activities', { activities });
       if(res.response && res.response.errors) {
         this.errors = res.response.errors.map((err: any) => err.message)
       }else {
