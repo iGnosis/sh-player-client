@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     let todayMidnight = new Date();
     todayMidnight.setHours(0, 0, 0, 0);
 
-    this.activeCareplans = await this.careplanService.getActiveCareplans();
+    // this.activeCareplans = await this.careplanService.getActiveCareplans();
 
     this.getMonthlyGoals();
     this.getDailyGoals();
