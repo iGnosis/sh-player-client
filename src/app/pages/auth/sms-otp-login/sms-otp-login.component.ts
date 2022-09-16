@@ -125,7 +125,10 @@ export class SmsOtpLoginComponent {
       this.jwtService.setToken(resp.verifyLoginOtp.data.token);
 
       const accessTokenData = this.decodeJwt(resp.verifyLoginOtp.data.token);
-      const userId = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
+      let userId;
+      if (accessTokenData && accessTokenData["https://hasura.io/jwt/claims"]) {
+        userId = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
+      }
       this.userService.set({
         id: userId,
       });
