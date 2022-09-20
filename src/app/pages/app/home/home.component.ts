@@ -157,18 +157,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.initMonthlyBar();
   }
 
-  nextSessionState() {
-    if (this.sessions[this.currentSession].status === session.Completed) {
-      this.currentSession++;
-    } else if (
-      this.sessions[this.currentSession].status === session.Locked
-    ) {
-      this.sessions[this.currentSession].status = session.Start;
-    } else {
-      this.sessions[this.currentSession].status++;
-    }
-  }
-
   async startNewSession() {
     // this.sessionId = (await this.sessionService.createNewSession()) as string;
     this.googleAnalyticsService.sendEvent('start_game');
