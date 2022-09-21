@@ -58,7 +58,10 @@ describe('SmsOtpLoginComponent', () => {
 
   it('should decode jwt if valid', () => {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRiNDRlMGY3LTNhYzUtNDllZi04NWM4LTYzYWIxNGQ4YWQ3NyIsImlhdCI6MTY2MzE0MzM0OCwiZXhwIjoxNjYzMjI5NzQ4LCJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsicGF0aWVudCIsInRoZXJhcGlzdCIsImFkbWluIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InBhdGllbnQiLCJ4LWhhc3VyYS11c2VyLWlkIjoiNGI0NGUwZjctM2FjNS00OWVmLTg1YzgtNjNhYjE0ZDhhZDc3IiwieC1oYXN1cmEtY2FyZXBsYW4taWQiOiI0MzE5MDIzYS1hMjRiLTRkMTktYWY4Mi1iZTkyZDE0ZjA5ZGUifX0.Ipb4g_Z45r2ukT5Xu0f1SchkpMYAHRx8eQHeLt78J_Q';
-    expect(component.decodeJwt(token).id).not.toEqual(undefined);
+    
+    const result = component.decodeJwt(token);
+
+    expect(result.id).not.toEqual(undefined);
   });
 
   it('should send login otp', fakeAsync(() => {
@@ -76,8 +79,10 @@ describe('SmsOtpLoginComponent', () => {
         }
       },
     })));
+
     component.submit(event);
     tick();
+
     expect(component.step).toBe(1);
   }));
 
@@ -117,13 +122,15 @@ describe('SmsOtpLoginComponent', () => {
         data: {}
       },
     })));
+
     component.submit(event);
     tick(7000);
+
     expect(component.step).toBe(0);
     flush();
   }));
 
-  it('should not send otp if phone number is invalid ', async () => {
+  it('should not send otp if phone number is invalid ', fakeAsync(() => {
     component.step = 0;
     let event = {
       target: {
@@ -138,9 +145,13 @@ describe('SmsOtpLoginComponent', () => {
         }
       },
     })));
-    await component.submit(event);
+
+    component.submit(event);
+    tick();
+
     expect(component.step).toBe(0);
-  });
+    flush();
+  }));
 
   it('should not send signup otp if request failed', fakeAsync(() => {
     component.step = 0;
@@ -154,7 +165,7 @@ describe('SmsOtpLoginComponent', () => {
     mockGraphqlService.gqlRequest.and.returnValue(new Promise((resolve, reject) => resolve({})));
 
     component.submit(event);
-    tick();
+    tick(7000);
 
     expect(component.step).toBe(0);
     flush();
@@ -186,9 +197,12 @@ describe('SmsOtpLoginComponent', () => {
         "x-hasura-user-id": 'abc',
       }
     })
+
     component.submit(event);
     tick(7000);
+
     expect(router.navigate).not.toHaveBeenCalledWith(["app", "checkin"]);
+    flush();
   }));
 
   it('should verify otp and go do checkin if not done already on that day', fakeAsync(() => {
@@ -215,9 +229,12 @@ describe('SmsOtpLoginComponent', () => {
         "x-hasura-user-id": 'abc',
       }
     })
+
     component.submit(event);
     tick(7000);
+
     expect(router.navigate).toHaveBeenCalledWith(["app", "checkin"]);
+    flush();
   }));
 
   it('should verify otp and finish signup if not completed', fakeAsync(() => {
@@ -247,9 +264,12 @@ describe('SmsOtpLoginComponent', () => {
         "x-hasura-user-id": 'abc',
       }
     })
+
     component.submit(event);
     tick(7000);
+
     expect(router.navigate).toHaveBeenCalledWith(["app", "signup", 3]);
+    flush();
   }));
 
   it('should verify otp and go to home if sign up completed', fakeAsync(() => {
@@ -279,15 +299,18 @@ describe('SmsOtpLoginComponent', () => {
         "x-hasura-user-id": 'abc',
       }
     })
+
     component.submit(event);
     tick(7000);
+
     expect(router.navigate).toHaveBeenCalledWith(["app", "home"]);
+    flush();
   }));
 
   it('should not verify otp if invalid', fakeAsync(() => {
     component.step = 1;
     spyOn(router, 'navigate').and.stub();
-    const spy = spyOn<SmsOtpLoginComponent, any>(component, 'decodeJwt');
+    spyOn<SmsOtpLoginComponent, any>(component, 'decodeJwt');
     let event = {
       target: {
         otpCode: { value: '234556' },
@@ -299,8 +322,11 @@ describe('SmsOtpLoginComponent', () => {
         { createdAt: new Date() },
       ]
     })));
+
     component.submit(event);
     tick(7000);
+
     expect(router.navigate).not.toHaveBeenCalled();
+    flush();
   }));
 });

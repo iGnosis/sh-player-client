@@ -48,17 +48,18 @@ export class GoogleAnalyticsService {
     }
   }
 
-  setUserId(user_id: string) {
+  setUserId(userId: string) {
     try {
       if (window.gtag) {
         window.gtag('config', environment.googleAnalyticsTrackingID, {
-          user_id,
+          user_id: userId,
         });
       }
     } catch (e) {
       console.log(e);
     }
   }
+  
   sendEvent(name: string, params?: any) {
     try {
       if (window.gtag) {
