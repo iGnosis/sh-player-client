@@ -6,11 +6,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from './home.component';
 import { GoalsService } from 'src/app/services/goals/goals.service';
 
-describe('HomeComponent', () => {
+fdescribe('HomeComponent', () => {
   let router: Router;
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let mockGoalsService = jasmine.createSpyObj('GoalsService', ['getMonthlyGoals']);
+  let mockGoalsService = jasmine.createSpyObj('GoalsService', ['getMonthlyGoals', 'getDailyGoals']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,6 +35,20 @@ describe('HomeComponent', () => {
             15
         ]
     })));
+    mockGoalsService.getDailyGoals.and.returnValue(new Promise((resolve) => resolve([
+      {
+          "name": "Sit Stand Achieve",
+          "isCompleted": false
+      },
+      {
+          "name": "Beat Boxer",
+          "isCompleted": false
+      },
+      {
+          "name": "Sound Explorer",
+          "isCompleted": false
+      }
+  ])));
   });
 
   it('should create', () => {
@@ -43,7 +57,9 @@ describe('HomeComponent', () => {
 
   it('should show reward card if unlocked', async () => {
     let rewardCard = fixture.debugElement.query(By.css('.reward-card'));
+
     expect(rewardCard).toBeFalsy();
+
     await component.displayRewardCard({
       tier: "bronze",
       isViewed: true,
@@ -55,6 +71,7 @@ describe('HomeComponent', () => {
     });
     fixture.detectChanges();
     rewardCard = fixture.debugElement.query(By.css('.reward-card'));
+
     expect(rewardCard).toBeTruthy();
   });
 
@@ -70,27 +87,48 @@ describe('HomeComponent', () => {
     });
     fixture.detectChanges();
     let rewardCard = fixture.debugElement.query(By.css('.reward-card'));
+
     expect(rewardCard).toBeTruthy();
+
     component.closeRewardCard();
+
     fixture.detectChanges();
     rewardCard = fixture.debugElement.query(By.css('.reward-card'));
+
     expect(rewardCard).toBeFalsy();
   });
 
-  it('should give nth by date', () => {
-    expect(component.nth(1)).toBe('st');
-    expect(component.nth(2)).toBe('nd');
-    expect(component.nth(3)).toBe('rd');
-    expect(component.nth(4)).toBe('th');
-    expect(component.nth(11)).toBe('th');
-    expect(component.nth(21)).toBe('st');
-    expect(component.nth(22)).toBe('nd');
-    expect(component.nth(23)).toBe('rd');
+  it('should give next session', () => {
+    component.sessions = [
+        {
+            "name": "Sit Stand Achieve",
+            "status": 0
+        },
+        {
+            "name": "Beat Boxer",
+            "status": 0
+        },
+        {
+            "name": "Sound Explorer",
+            "status": 0
+        }
+    ];
+    component.getNextSession();
+    expect(component.nextSession.name).toBe('Sit Stand Achieve');
+  });
+
+  it('should give background name', () => {
+    expect(component.getBackgroundName('')).toBe('');
+    expect(component.getBackgroundName('Sit Stand Achieve')).toBe('sit-stand-achieve');
+    expect(component.getBackgroundName('Beat Boxer')).toBe('beat-boxer');
+    expect(component.getBackgroundName('Sound Explorer')).toBe('sound-explorer');
   });
 
   it('should start a session', () => {
     spyOn(router, 'navigate').and.stub();
+
     component.startNewSession();
+    
     expect(router.navigate).toHaveBeenCalledWith(["/app/session/", '']);
   });
 });
