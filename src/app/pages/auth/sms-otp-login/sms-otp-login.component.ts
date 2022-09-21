@@ -55,6 +55,7 @@ export class SmsOtpLoginComponent {
   ngOnInit(): void { }
 
   async submit(event: any) {
+
     // call API to send an OTP
     if (this.step === 0) {
       this.countryCode = event.target.countryCode.value;
@@ -101,7 +102,11 @@ export class SmsOtpLoginComponent {
 
       // increment step
       this.formErrorMsg = '';
+
       this.step++;
+      if (this.step > 1) {
+        this.step = 1;
+      }
     }
 
     // call API to validate the code
@@ -145,11 +150,11 @@ export class SmsOtpLoginComponent {
         return;
       }
 
-      const step = await this.userService.isOnboarded();
-      if (step == -1) {
+      const onBoardedStep = await this.userService.isOnboarded();
+      if (onBoardedStep == -1) {
         this.router.navigate(["app", "home"]);
       } else {
-        this.router.navigate(["app", "signup", step]);
+        this.router.navigate(["app", "signup", onBoardedStep]);
       }
     }
   }
