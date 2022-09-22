@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { phone } from 'phone';
-// import countryCodes from 'country-codes-list'
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 import { GqlConstants } from "src/app/services/gql-constants/gql-constants.constants";
 import { Router } from '@angular/router';
@@ -24,7 +23,6 @@ export class SmsOtpLoginComponent {
   phoneNumber?: string;
   otpCode?: string;
   formErrorMsg?: string;
-  // countryCodesList?: { [key: number]: string };
 
   // required to figure out which OTP API to call.
   // The Resend OTP API is called if numbers haven't changed.
@@ -38,23 +36,12 @@ export class SmsOtpLoginComponent {
     private jwtService: JwtService,
     private dailyCheckinService: DailyCheckinService,
     private googleAnalyticsService: GoogleAnalyticsService
-  ) {
-    // this.countryCodesList = countryCodes.customList('countryCallingCode', '+{countryCallingCode} {countryNameEn}');
-    // console.log('myCountryCodesObject:', this.countryCodesList);
-    // fetch user's country.
-    // this.userService.fetchCountry().subscribe(res => {
-    //   this.userService.fetchCountryPhone(res.country)
-    //     .then(fetchCountryPhoneResp => {
-    //       this.countryCode = `+${fetchCountryPhoneResp.phone}`
-    //       this.selectedCountry = `${this.countryCode} ${fetchCountryPhoneResp.name}`
-    //       this.step++;
-    //     })
-    // })
-  }
+  ) { }
 
   ngOnInit(): void { }
 
   async submit(event: any) {
+
     // call API to send an OTP
     if (this.step === 0) {
       this.countryCode = event.target.countryCode.value;
@@ -101,7 +88,11 @@ export class SmsOtpLoginComponent {
 
       // increment step
       this.formErrorMsg = '';
+
       this.step++;
+      if (this.step > 1) {
+        this.step = 1;
+      }
     }
 
     // call API to validate the code
@@ -124,7 +115,7 @@ export class SmsOtpLoginComponent {
       // set user as well
       this.jwtService.setToken(resp.verifyLoginOtp.data.token);
 
-      const accessTokenData = this.decodeJwt(resp.verifyLoginOtp.data.token);
+      const accessTokenData = this.jwtService.decodeJwt(resp.verifyLoginOtp.data.token);
       let userId;
       if (accessTokenData && accessTokenData["https://hasura.io/jwt/claims"]) {
         userId = accessTokenData["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
@@ -139,24 +130,23 @@ export class SmsOtpLoginComponent {
 
       this.shScreen = true;
       await this.waitForTimeout(6500);
-      const isCheckedInToday = await this.isCheckedInToday();
+      const isCheckedInToday = await this.dailyCheckinService.isCheckedInToday();
       if (!isCheckedInToday) {
         this.router.navigate(["app", "checkin"]);
         return;
       }
 
-      const step = await this.userService.isOnboarded();
-      if (step == -1) {
+      const onBoardedStep = await this.userService.isOnboarded();
+      if (onBoardedStep == -1) {
         this.router.navigate(["app", "home"]);
       } else {
-        this.router.navigate(["app", "signup", step]);
+        this.router.navigate(["app", "signup", onBoardedStep]);
       }
     }
   }
 
   resetForm() {
     this.tempFullPhoneNumber = this.fullPhoneNumber;
-
     this.step = 0;
     this.phoneNumber = '';
     this.fullPhoneNumber = '';
@@ -177,22 +167,5 @@ export class SmsOtpLoginComponent {
         resolve({});
       }, timeout);
     });
-  }
-
-  async isCheckedInToday() {
-    const res = await this.dailyCheckinService.getLastCheckin();
-    if (!res.checkin[0]) return false;
-    const checkedInAt = new Date(res.checkin[0].createdAt);
-    const today = new Date();
-    return checkedInAt.setHours(0, 0, 0, 0) == today.setHours(0, 0, 0, 0);
-  }
-
-  decodeJwt(token: string | undefined) {
-    if (token) {
-      const parts = token.split(".");
-      if (parts.length === 3) {
-        return JSON.parse(atob(parts[1]));
-      }
-    }
   }
 }

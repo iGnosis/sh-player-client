@@ -31,4 +31,12 @@ export class DailyCheckinService {
       throw new Error('User not set');
     }
   }
+
+  async isCheckedInToday() {
+    const res = await this.getLastCheckin();
+    if (!res.checkin[0]) return false;
+    const checkedInAt = new Date(res.checkin[0].createdAt);
+    const today = new Date();
+    return checkedInAt.setHours(0, 0, 0, 0) == today.setHours(0, 0, 0, 0);
+  }
 }

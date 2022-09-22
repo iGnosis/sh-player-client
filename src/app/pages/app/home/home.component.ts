@@ -12,6 +12,7 @@ import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
 import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
 import { filter, pairwise, take } from "rxjs";
+import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checkin.service";
 
 @Component({
   selector: "app-home",
@@ -76,7 +77,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private jwtService: JwtService,
     private userService: UserService,
-    private googleAnalyticsService: GoogleAnalyticsService
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private dailyCheckinService: DailyCheckinService
   ) {
     this.user = this.userService.get();
     this.router.events
@@ -87,9 +89,15 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.initHome();
+    this.dailyCheckinService.isCheckedInToday().then(isCheckedInToday => {
+      console.log('isCheckedInToday:', isCheckedInToday);
+      if (!isCheckedInToday) {
+        this.router.navigate(["app", "checkin"]);
+      }
+    })
   }
 
-  recordGAEvents = (events: RoutesRecognized[]) =>  {
+  recordGAEvents = (events: RoutesRecognized[]) => {
     this.isVisitingAfterSession = events[0].urlAfterRedirects === '/app/session/';
     if (this.isVisitingAfterSession) {
       this.googleAnalyticsService.sendEvent('end_game');
@@ -120,7 +128,7 @@ export class HomeComponent implements OnInit {
     this.getDailyGoals();
 
     const unlockedRewards = this.rewards.filter((reward: RewardsDTO) => reward.isUnlocked && !reward.isViewed);
-    if(unlockedRewards.length) {
+    if (unlockedRewards.length) {
       this.displayRewardCard(unlockedRewards[0]);
     }
   }
@@ -146,8 +154,8 @@ export class HomeComponent implements OnInit {
     let firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
     let lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
 
-    firstDayOfMonth.setHours(0,0,0,0);
-    lastDayOfMonth.setHours(24,0,0,0);
+    firstDayOfMonth.setHours(0, 0, 0, 0);
+    lastDayOfMonth.setHours(24, 0, 0, 0);
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.userService.updateTimezone(userTimezone);
 
@@ -186,11 +194,11 @@ export class HomeComponent implements OnInit {
   mapActivitiesWithStatus(item: any, idx: number, arr: any[]) {
     let status = session.Start;
 
-    if(item.isCompleted) status = session.Completed;
+    if (item.isCompleted) status = session.Completed;
 
-    if(idx !== 0) {
-      if(item.isCompleted !== arr[idx-1].isCompleted) status = session.Start;
-      else if(!item.isCompleted) status = session.Locked;
+    if (idx !== 0) {
+      if (item.isCompleted !== arr[idx - 1].isCompleted) status = session.Start;
+      else if (!item.isCompleted) status = session.Locked;
     }
 
     return {
@@ -198,7 +206,7 @@ export class HomeComponent implements OnInit {
       status,
     }
   }
-  
+
   getNextSession() {
     const idxOfCurrentSession = this.sessions.findIndex((item: any) => item.status === session.Start);
     if (idxOfCurrentSession === -1) {

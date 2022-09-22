@@ -28,13 +28,11 @@ export class JwtService {
     } = jwtDecode(accessToken);
 
     const nowUnixEpochInSecs = new Date().getTime() / 1000;
-    const diffInSecs = nowUnixEpochInSecs - decodedToken.exp;
+    const isTokenExpired = nowUnixEpochInSecs >= decodedToken.exp
 
-    // token stays valid for 24hrs.
-    if (diffInSecs >= 0) {
+    if (isTokenExpired) {
       return false;
     }
-
     return true;
   }
 
@@ -78,5 +76,14 @@ export class JwtService {
   getToken() {
     const token = localStorage.getItem('accessToken');
     return token;
+  }
+
+  decodeJwt(token: string | undefined) {
+    if (token) {
+      const parts = token.split(".");
+      if (parts.length === 3) {
+        return JSON.parse(atob(parts[1]));
+      }
+    }
   }
 }

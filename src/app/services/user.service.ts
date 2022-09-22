@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Patient } from '../types/pointmotion';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,10 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
   private user?: Patient
-  constructor(private gqlService: GraphqlService, private http: HttpClient) {
+  constructor(
+    private gqlService: GraphqlService,
+    private http: HttpClient
+  ) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
   }
 
