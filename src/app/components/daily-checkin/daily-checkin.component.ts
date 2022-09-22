@@ -129,6 +129,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
       this.showGenreCard = false;
       const step = await this.userService.isOnboarded();
 
+      Howler.stop();
       if (step == -1) {
         this.router.navigate(["app", "home"]);
       } else {
