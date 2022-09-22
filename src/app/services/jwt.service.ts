@@ -77,4 +77,13 @@ export class JwtService {
     const token = localStorage.getItem('accessToken');
     return token;
   }
+
+  decodeJwt(token: string | undefined) {
+    if (token) {
+      const parts = token.split(".");
+      if (parts.length === 3) {
+        return JSON.parse(atob(parts[1]));
+      }
+    }
+  }
 }
