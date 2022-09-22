@@ -28,13 +28,11 @@ export class JwtService {
     } = jwtDecode(accessToken);
 
     const nowUnixEpochInSecs = new Date().getTime() / 1000;
-    const diffInSecs = nowUnixEpochInSecs - decodedToken.exp;
+    const isTokenExpired = nowUnixEpochInSecs >= decodedToken.exp
 
-    // token stays valid for 24hrs.
-    if (diffInSecs >= 0) {
+    if (isTokenExpired) {
       return false;
     }
-
     return true;
   }
 
