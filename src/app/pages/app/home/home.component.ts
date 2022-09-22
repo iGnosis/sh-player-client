@@ -89,9 +89,8 @@ export class HomeComponent implements OnInit {
     this.initHome();
   }
 
-  recordGAEvents(events: RoutesRecognized[]) {
+  recordGAEvents = (events: RoutesRecognized[]) =>  {
     this.isVisitingAfterSession = events[0].urlAfterRedirects === '/app/session/';
-
     if (this.isVisitingAfterSession) {
       this.googleAnalyticsService.sendEvent('end_game');
       this.googleAnalyticsService.sendEvent('monthly_goals', {
