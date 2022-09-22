@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  recordGAEvents = (events: RoutesRecognized[]) =>  {
+  recordGAEvents = (events: RoutesRecognized[]) => {
     this.isVisitingAfterSession = events[0].urlAfterRedirects === '/app/session/';
     if (this.isVisitingAfterSession) {
       this.googleAnalyticsService.sendEvent('end_game');
@@ -128,7 +128,7 @@ export class HomeComponent implements OnInit {
     this.getDailyGoals();
 
     const unlockedRewards = this.rewards.filter((reward: RewardsDTO) => reward.isUnlocked && !reward.isViewed);
-    if(unlockedRewards.length) {
+    if (unlockedRewards.length) {
       this.displayRewardCard(unlockedRewards[0]);
     }
   }
@@ -154,8 +154,8 @@ export class HomeComponent implements OnInit {
     let firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
     let lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
 
-    firstDayOfMonth.setHours(0,0,0,0);
-    lastDayOfMonth.setHours(24,0,0,0);
+    firstDayOfMonth.setHours(0, 0, 0, 0);
+    lastDayOfMonth.setHours(24, 0, 0, 0);
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.userService.updateTimezone(userTimezone);
 
@@ -194,11 +194,11 @@ export class HomeComponent implements OnInit {
   mapActivitiesWithStatus(item: any, idx: number, arr: any[]) {
     let status = session.Start;
 
-    if(item.isCompleted) status = session.Completed;
+    if (item.isCompleted) status = session.Completed;
 
-    if(idx !== 0) {
-      if(item.isCompleted !== arr[idx-1].isCompleted) status = session.Start;
-      else if(!item.isCompleted) status = session.Locked;
+    if (idx !== 0) {
+      if (item.isCompleted !== arr[idx - 1].isCompleted) status = session.Start;
+      else if (!item.isCompleted) status = session.Locked;
     }
 
     return {
