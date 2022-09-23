@@ -24,9 +24,7 @@ export class SessionComponent implements OnInit {
 
   ngOnInit(): void {
     window.addEventListener("message", async (event) => {
-
-      if(event && event.data && event.data.type ) {
-        console.log(event);
+      if (event && event.data && event.data.type) {
         if (event.data.type === 'activity-experience-ready') {
           this.session.nativeElement.contentWindow?.postMessage(
             {

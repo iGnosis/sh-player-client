@@ -29,15 +29,15 @@ export class GoogleAnalyticsService {
       script.innerHTML = `window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+
       gtag('config', '${environment.googleAnalyticsTrackingID}', {send_page_view: false});`;
       document.body.appendChild(script);
     }, 500);
   }
 
   trackPageView(event: NavigationEnd) {
-    console.log(event);
-    
+    console.log('trackPageView:', event);
+
     if (window.gtag) {
       window.gtag('event', 'page_view', {
         page_title: 'Patient Portal',
@@ -59,7 +59,7 @@ export class GoogleAnalyticsService {
       console.log(e);
     }
   }
-  
+
   sendEvent(name: string, params?: any) {
     try {
       if (window.gtag) {
