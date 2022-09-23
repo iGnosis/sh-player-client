@@ -43,8 +43,20 @@ export class SoundsService {
     loop: true,
   });
 
+  feelingsSelectionSoundId?: number;
+  feelingsSelectionSound: Howl = new Howl({
+    src: "assets/sounds/Sound Health Soundscape_Feeling Selection.mp3",
+    html5: true,
+    loop: false,
+  });
+  feelingsSelectionPromptSoundId?: number;
+  feelingsSelectionPromptSound: Howl = new Howl({
+    src: "assets/sounds/Sound Health Soundscape_Feelings Prompt.mp3",
+    html5: true,
+    loop: true,
+  });
+
   playGenreSound(genre: string) {
-    console.log("playing ", genre);
     switch (genre) {
       case "Classical":
         if (
@@ -92,6 +104,32 @@ export class SoundsService {
             .play();
         }
         break;
+    }
+  }
+
+  playFeelingsSelectionPromptSound() {
+    if (
+      !this.feelingsSelectionPromptSound.playing(
+        this.feelingsSelectionPromptSoundId
+      )
+    ) {
+      this.feelingsSelectionPromptSoundId =
+        this.feelingsSelectionPromptSound.play();
+    }
+  }
+  playFeelingsSelectionSound() {
+    if (!this.feelingsSelectionSound.playing(this.feelingsSelectionSoundId)) {
+      this.feelingsSelectionSoundId = this.feelingsSelectionSound.play();
+    }
+  }
+  stopFeelingsSelectionPromptSound() {
+    if (
+      this.feelingsSelectionPromptSound.playing(
+        this.feelingsSelectionPromptSoundId
+      )
+    ) {
+
+        this.feelingsSelectionPromptSound.stop();
     }
   }
 }

@@ -7,12 +7,12 @@
         <div class=" modal-body text-center px-5 py-0">
           <h1 class="text-white font-bolder pb-5">Congrats!</h1>
           <div class="py-4 card-details">
-            <h3 class="card-title reward-card-text text-white font-bolder mx-1">{{currentReward.description}}</h3>
+            <h3 class="card-title reward-card-text text-white font-bolder mx-1">{{currentReward && currentReward.description ? currentReward.description : ''}}</h3>
             <img
               src="assets/icons/exertools.png" alt="ExerTools"
               class="h-32">
           </div>
-          <button *ngIf="currentReward.couponCode" (click)="copyCodeToClipboard(currentReward.couponCode)" class="copy-coupon-code w-full rounded-2 text-primary text-lg font-bold py-1 my-5 position-relative">{{currentReward.couponCode}}<i aria-hidden="true" class="fa-regular fa-clone position-absolute top-1/2 translate-middle-y end-2"></i></button>
+          <button *ngIf="currentReward && currentReward.couponCode ? currentReward.couponCode : ''" (click)="copyCodeToClipboard(currentReward && currentReward.couponCode ?  currentReward.couponCode : '')" class="copy-coupon-code w-full rounded-2 text-primary text-lg font-bold py-1 my-5 position-relative">{{currentReward && currentReward.couponCode ? currentReward.couponCode : ''}}<i aria-hidden="true" class="fa-regular fa-clone position-absolute top-1/2 translate-middle-y end-2"></i></button>
           <h3 class="card-title reward-card-text text-white text-center">Copy code and use at checkout at<br/><a href="https://myptstore.biz" target="_blank" class="text-xl font-bolder">myptstore.biz</a></h3>
           <h2 class="text-white font-bolder">OR</h2>
           <a 

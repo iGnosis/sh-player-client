@@ -65,6 +65,8 @@ export class GoalsService {
     splitByUnderscores.forEach(str => {
       name += ' ' + str.charAt(0).toUpperCase() + str.slice(1);
     })
-    return name;
+
+    // remove extra trailing space.
+    return name.slice(1);
   }
 }

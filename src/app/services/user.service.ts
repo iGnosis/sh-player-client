@@ -2,13 +2,18 @@ import { Injectable } from '@angular/core';
 import { Patient } from '../types/pointmotion';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private user?: Patient
-  constructor(private gqlService: GraphqlService) {
+  constructor(
+    private gqlService: GraphqlService,
+    private http: HttpClient
+  ) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
   }
 
@@ -20,6 +25,23 @@ export class UserService {
   get(): Patient {
     const user = this.user || JSON.parse(localStorage.getItem('user') || '{}')
     return user as Patient
+  }
+
+  fetchCountry(): Observable<{
+    country: string;
+  }> {
+    return this.http.get<{ country: string }>('https://ipinfo.io/json?token=72e8087d68fd80');
+  }
+
+  async fetchCountryPhone(code: string): Promise<{
+    phone: number;
+    name: string;
+    emoji: string;
+  }> {
+    const resp = await this.gqlService.gqlRequest(GqlConstants.FETCH_COUNTRY, {
+      code
+    }, false)
+    return resp.country;
   }
 
   async isOnboarded() {

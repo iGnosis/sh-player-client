@@ -29,15 +29,15 @@ export class GoogleAnalyticsService {
       script.innerHTML = `window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+
       gtag('config', '${environment.googleAnalyticsTrackingID}', {send_page_view: false});`;
       document.body.appendChild(script);
     }, 500);
   }
 
   trackPageView(event: NavigationEnd) {
-    console.log(event);
-    
+    console.log('trackPageView:', event);
+
     if (window.gtag) {
       window.gtag('event', 'page_view', {
         page_title: 'Patient Portal',
@@ -45,6 +45,29 @@ export class GoogleAnalyticsService {
         page_path: event.url,
         send_to: environment.googleAnalyticsTrackingID,
       });
+    }
+  }
+
+  setUserId(userId: string) {
+    try {
+      if (window.gtag) {
+        window.gtag('config', environment.googleAnalyticsTrackingID, {
+          user_id: userId,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  sendEvent(name: string, params?: any) {
+    try {
+      if (window.gtag) {
+        if (params) window.gtag('event', name, {...params});
+        else window.gtag('event', name);
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 }

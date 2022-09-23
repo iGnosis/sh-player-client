@@ -28,7 +28,7 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/patient-provider'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
+        { type: 'lcov' },
         { type: 'text-summary' }
       ]
     },

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth0Service } from 'src/app/services/auth0/auth0.service';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { JwtService } from 'src/app/services/jwt.service';
-import { UserService } from 'src/app/services/user.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'nav-bar',
@@ -16,9 +14,8 @@ export class NavBarComponent implements OnInit {
   constructor(
     private route:Router,
     private jwtService: JwtService,
-    private userService: UserService,
     private router: Router,
-    private auth0Service: Auth0Service
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {
     this.router.events.subscribe(() => {
       this.activeTab = this.route.url.split('/').slice(-1)[0];
@@ -27,14 +24,11 @@ export class NavBarComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   async logout() {
-    this.auth0Service.auth0Client.logout({
-      returnTo: environment.auth0LogoutUrl
-    });
+    this.jwtService.clearTokens();
+    this.googleAnalyticsService.sendEvent('logout');
     this.router.navigate(['/']);
   }
-
 }

@@ -1,17 +1,18 @@
+/// <reference types="chrome"/>
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
-import { SessionService } from "src/app/services/session/session.service";
 import { Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/store/reducers/home.reducer";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
-import * as d3 from "d3";
 import { JwtService } from "src/app/services/jwt.service";
 import { UserService } from "src/app/services/user.service";
-import { AnimationOptions } from "ngx-lottie";
 import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
+import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
+import { filter, pairwise, take } from "rxjs";
+import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checkin.service";
 
 @Component({
   selector: "app-home",
@@ -46,80 +47,97 @@ import { RewardsService } from "src/app/services/rewards/rewards.service";
     ]),
   ],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
   user!: Patient;
-  careplanId!: string;
-  activeCareplans: any;
   sessionId!: string;
   session = session.Start;
-  currentSession = 0;
 
   monthlyCompletionPercent: number = 0;
   monthlyGoalPercent: number = 100;
-  monthRange = d3.range(0, 30.5, 1);
 
   rewards!: RewardsDTO[];
   rewardsRange: number[] = [];
   currentReward: RewardsDTO | null = null;
   daysCompletedThisMonth = 0;
 
-  activitiesCompletedToday = 0;
-  totalGames = 3;
-
   currentDate = {
-    day: `${new Date().getDate()}${this.nth(new Date().getDate())}`,
     month: new Date().toLocaleDateString("default", { month: "long" }),
     monthIndex: new Date().getMonth(),
     year: new Date().getFullYear(),
   };
-
-  dailyCompletionPercent: number = 0;
-  sessionType = session;
-
   sessions: any = [];
   nextSession: any = {};
 
-  options: AnimationOptions = {
-    path: '/assets/images/animations/wave.json'
-  };
+  isVisitingAfterSession = false;
 
   constructor(
     private careplanService: CareplanService,
-    private sessionService: SessionService,
     private goalsService: GoalsService,
     private rewardsService: RewardsService,
     private router: Router,
     private jwtService: JwtService,
     private userService: UserService,
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private dailyCheckinService: DailyCheckinService
   ) {
     this.user = this.userService.get();
+    this.router.events
+      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))
+      .subscribe(this.recordGAEvents);
+    this.sendTokenToExtension();
   }
 
   async ngOnInit(): Promise<void> {
     this.initHome();
+    this.dailyCheckinService.isCheckedInToday().then(isCheckedInToday => {
+      console.log('isCheckedInToday:', isCheckedInToday);
+      if (!isCheckedInToday) {
+        this.router.navigate(["app", "checkin"]);
+      }
+    })
+  }
+
+  recordGAEvents = (events: RoutesRecognized[]) => {
+    this.isVisitingAfterSession = events[0].urlAfterRedirects === '/app/session/';
+    if (this.isVisitingAfterSession) {
+      this.googleAnalyticsService.sendEvent('end_game');
+      this.googleAnalyticsService.sendEvent('monthly_goals', {
+        completionPercent: this.monthlyCompletionPercent
+      });
+      this.googleAnalyticsService.sendEvent('daily_goals', {
+        activities: this.sessions,
+      });
+    }
+  }
+
+  sendTokenToExtension() {
+    const sendOnInterval = setInterval(() => {
+      window.postMessage({ type: "TOKEN", token: this.jwtService.getToken() }, "*");
+    }, 1000);
+    onmessage = (e) => {
+      if (e.data === "token-recieved") {
+        clearInterval(sendOnInterval);
+      }
+    }
   }
 
   async initHome() {
-    // update accessToken if expired.
-    await this.jwtService.getToken();
     this.rewards = await this.rewardsService.getRewards();
-
-    let todayMidnight = new Date();
-    todayMidnight.setHours(0, 0, 0, 0);
-
-    this.activeCareplans = await this.careplanService.getActiveCareplans();
 
     this.getMonthlyGoals();
     this.getDailyGoals();
 
     const unlockedRewards = this.rewards.filter((reward: RewardsDTO) => reward.isUnlocked && !reward.isViewed);
-    if(unlockedRewards.length) {
+    if (unlockedRewards.length) {
       this.displayRewardCard(unlockedRewards[0]);
     }
   }
 
   async displayRewardCard(reward: RewardsDTO) {
     await this.rewardsService.markRewardAsViewed(reward.tier);
+    this.googleAnalyticsService.sendEvent('unlock_achievement', {
+      tier: reward.tier,
+    });
     this.currentReward = reward;
   }
 
@@ -127,47 +145,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.currentReward = null;
   }
 
-  ngAfterViewInit(): void {
-    this.initMonthlyBar();
-  }
-
-  nextSessionState() {
-    if (this.sessions[this.currentSession].status === session.Completed) {
-      this.currentSession++;
-    } else if (
-      this.sessions[this.currentSession].status === session.Locked
-    ) {
-      this.sessions[this.currentSession].status = session.Start;
-    } else {
-      this.sessions[this.currentSession].status++;
-    }
-  }
-
   async startNewSession() {
-    // this.sessionId = (await this.sessionService.createNewSession()) as string;
+    this.googleAnalyticsService.sendEvent('start_game');
     this.router.navigate(["/app/session/", '']);
-  }
-
-  nth(d: number) {
-    if (d > 3 && d < 21) return "th";
-    switch (d % 10) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
-    }
   }
 
   async getMonthlyGoals() {
     let firstDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex, 1);
     let lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
 
-    firstDayOfMonth.setHours(0,0,0,0);
-    lastDayOfMonth.setHours(24,0,0,0);
+    firstDayOfMonth.setHours(0, 0, 0, 0);
+    lastDayOfMonth.setHours(24, 0, 0, 0);
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.userService.updateTimezone(userTimezone);
 
@@ -179,29 +167,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       );
 
     this.daysCompletedThisMonth = response.daysCompleted || 0;
-    this.rewardsRange = response.rewardsCountDown;
 
     lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
     this.monthlyCompletionPercent = this.daysCompletedThisMonth / lastDayOfMonth.getDate() * 100;
-
-    this.monthlyGoalPercent = response.rewardsCountDown.find((day: number) => day > this.daysCompletedThisMonth);
-    this.monthlyGoalPercent = this.monthlyGoalPercent !== -1 ? (this.monthlyGoalPercent /  lastDayOfMonth.getDate() * 100) : 100;
-
-    this.monthRange = d3.range(0, lastDayOfMonth.getDate() + 0.5, 1);
-
-    this.initMonthlyBar();
-  }
-  monthlyDivision(value: number) {
-    const lastDayOfMonth = new Date(this.currentDate.year, this.currentDate.monthIndex + 1, 0);
-    if(value % 5 === 0 || value === lastDayOfMonth.getDate()) {
-      if(value === 30 && lastDayOfMonth.getDate() !== 30) {
-        return '\'';
-      } else {
-        return value;
-      }
-    } else {
-      return '\'';
-    }
   }
 
   async getDailyGoals() {
@@ -209,73 +177,46 @@ export class HomeComponent implements OnInit, AfterViewInit {
       game_name: string[];
     } = await this.careplanService.getAvailableGames();
     const games = availableGames.game_name;
-    this.totalGames = games.length;
-
-    // const gameNames = games.map((game: any) => game.name);
 
     // hard-coding game names to preserve the order.
     let dailyGoalsActivities = await this.goalsService.getDailyGoals([
       'sit_stand_achieve',
       'beat_boxer',
-      'sound_slicer'
+      'sound_explorer'
     ]);
 
-    dailyGoalsActivities = dailyGoalsActivities.map((item: any, idx: number) => { //sets activity status
-      let status = session.Start;
-      if(item.isCompleted) status = session.Completed;
-      if(idx !== 0) {
-        if(item.isCompleted !== dailyGoalsActivities[idx-1].isCompleted) status = session.Start;
-        else if(!item.isCompleted) status = session.Locked;
-      }
-      return {
-        ...item,
-        status,
-      }
-    });
+    let activitiesWithStatus = dailyGoalsActivities.map(this.mapActivitiesWithStatus);
 
-    this.sessions = games.map((item: string, idx: number) => {
-      return Object.assign({}, item, dailyGoalsActivities[idx]) // merge arrays
-    })
+    this.sessions = games.map((item: string, idx: number) => Object.assign({}, item, activitiesWithStatus[idx]));
+    this.getNextSession();
+  }
 
-    this.activitiesCompletedToday = dailyGoalsActivities.filter((activity: any) => activity.isCompleted).length;
+  mapActivitiesWithStatus(item: any, idx: number, arr: any[]) {
+    let status = session.Start;
 
+    if (item.isCompleted) status = session.Completed;
+
+    if (idx !== 0) {
+      if (item.isCompleted !== arr[idx - 1].isCompleted) status = session.Start;
+      else if (!item.isCompleted) status = session.Locked;
+    }
+
+    return {
+      ...item,
+      status,
+    }
+  }
+
+  getNextSession() {
     const idxOfCurrentSession = this.sessions.findIndex((item: any) => item.status === session.Start);
-    if(idxOfCurrentSession === -1) {
-      this.dailyCompletionPercent = 100;
+    if (idxOfCurrentSession === -1) {
       this.nextSession = this.sessions[0];
     } else {
-      this.dailyCompletionPercent = Math.min(idxOfCurrentSession, 2) *50;
       this.nextSession = this.sessions[idxOfCurrentSession];
     }
   }
 
-  initMonthlyBar() {
-    d3.select(".progress").select("svg").remove();
-    let svg = d3
-      .select(".progress")
-      .append("svg")
-      .attr("height", "100%")
-      .attr("width", "100%");
-    svg
-      .append("rect")
-      .attr("class", "bg-rect")
-      .attr("rx", 10)
-      .attr("ry", 10)
-      .attr("fill", "#CBD5E0")
-      .attr("height", "100%")
-      .attr("width", "100%");
-    let progress = svg
-      .append("rect")
-      .attr("class", "progress-rect")
-      .attr("fill", "#00BD3E")
-      .attr("height", "100%")
-      .attr("width", 0)
-      .attr("rx", 10)
-      .attr("ry", 10)
-      .attr("y", 0);
-    progress
-      .transition()
-      .duration(500)
-      .attr("width", this.monthlyCompletionPercent + "%");
+  getBackgroundName(name?: string) {
+    return (name || '').replace(/\s/g, "-").toLowerCase();
   }
 }

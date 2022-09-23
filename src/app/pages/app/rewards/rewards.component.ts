@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { JwtService } from 'src/app/services/jwt.service';
 import { RewardsService } from 'src/app/services/rewards/rewards.service';
 import { RewardsDTO } from 'src/app/types/pointmotion';
@@ -15,11 +16,9 @@ export class RewardsComponent implements OnInit {
   showRewardModal: boolean = false;
   currentReward!: RewardsDTO;
 
-  constructor(private rewardsService: RewardsService, private jwtService: JwtService) { }
+  constructor(private rewardsService: RewardsService, private googleAnalyticsService: GoogleAnalyticsService) { }
 
   async ngOnInit() {
-    // update accessToken if expired.
-    await this.jwtService.getToken();
     this.rewards = await this.rewardsService.getRewards();
     this.rewardsUnlocked = this.rewards.filter((val) => val.isUnlocked === true).length;
   }
@@ -29,6 +28,9 @@ export class RewardsComponent implements OnInit {
     this.currentReward = this.rewards.filter((val) => val.tier === rewardTier)[0];
     this.toggleRewardModal();
     this.rewardsService.markRewardAsAccessed(rewardTier);
+    this.googleAnalyticsService.sendEvent('access_reward', {
+      tier: this.currentReward.tier,
+    });
   }
 
   toggleRewardModal() {
