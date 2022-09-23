@@ -41,10 +41,10 @@ export class SessionComponent implements OnInit {
         }
       }
 
-      if(event && event.data && event.data.session && event.data.session.id) {
+      if (event && event.data && event.data.session && event.data.session.id) {
         this.router.navigate(['/app/home'])
       }
-      if(event && event.data && event.data.type === 'check-auth' && !event.data.token) {
+      if (event && event.data && event.data.type === 'check-auth' && !event.data.token) {
         this.jwtService.clearTokens();
       }
     }, false);
