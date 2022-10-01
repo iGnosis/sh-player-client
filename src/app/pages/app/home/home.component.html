@@ -1,9 +1,9 @@
 <div class="home-container container-fluid h-screen w-screen overflow-hidden" [style.background]="'no-repeat bottom center/cover url(/assets/images/backgrounds/home/overlay.png),linear-gradient(rgba(0, 0, 102, .2), rgba(0, 0, 102, .2)), no-repeat top center/cover url(/assets/images/backgrounds/home/' + getBackgroundName(nextSession.name) + '.png), #000066'">
   <div *ngIf="nextSession.name" class="position-relative d-flex">
-    <div class="mt-auto w-full">
+    <div class="mt-auto w-full mb-14 px-5">
       <h2 class="text-white">Next Activity</h2>
       <h1 class="display-2 text-white">{{nextSession.name}}</h1>
-      <div class="mb-10 mt-5">
+      <div class="mt-5">
         <button (click)="startNewSession()" class="btn btn-primary px-20 py-2 border-2 border-white rounded-3 position-relative"><h1 class="display-6 text-white">Start</h1></button>
       </div>
     </div>
