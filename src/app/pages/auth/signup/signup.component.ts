@@ -17,7 +17,7 @@ interface InterestsDTO {
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  errors = [];
+  errors: string[] = [];
   code: string = "";
   email: string | null = null;
   password: string = "";
@@ -152,7 +152,15 @@ export class SignupComponent implements OnInit {
 
   async nextSignupStep() {
     this.errors = [];
-    if(this.signupStep === 3) {
+    if (this.signupStep === 2) {
+      if (!this.email && !this.errors.length) {
+        this.errors.push('Please enter your email address');
+        return;
+      } else {
+        this.changeStep(this.signupStep+1);
+      }
+    }
+    else if(this.signupStep === 3) {
       const res = await this.authService.setPatientDetails({
         nickname: this.nickname,
         email: this.email!,

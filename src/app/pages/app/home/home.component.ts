@@ -147,7 +147,7 @@ export class HomeComponent implements OnInit {
 
   async startNewSession() {
     this.googleAnalyticsService.sendEvent('start_game');
-    this.router.navigate(["/app/session/", '']);
+    this.router.navigate(["/app/session/"]);
   }
 
   async getMonthlyGoals() {

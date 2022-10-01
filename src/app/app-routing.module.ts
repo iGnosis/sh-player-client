@@ -22,7 +22,7 @@ const routes: Routes = [
       { path: 'login', component: SmsOtpLoginComponent, },
     ]
   },
-  { path: "app/session/:id", component: SessionComponent, canActivate: [PrivateGuard] },
+  { path: "app/session", component: SessionComponent, canActivate: [PrivateGuard] },
   {
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
       { path: 'signup', component: SignupComponent, },
