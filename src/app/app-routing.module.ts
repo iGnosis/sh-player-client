@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
 import { HomeComponent } from './pages/app/home/home.component';
 import { PublicGuard } from './guards/public-guard';
 import { PrivateGuard } from './guards/private-guard';

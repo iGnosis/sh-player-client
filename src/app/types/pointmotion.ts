@@ -59,3 +59,5 @@ export interface DailyGoalsApiDTO {
    */
   isCompleted: boolean;
 }
+
+export enum session { Start, Continue, Completed, Locked }
