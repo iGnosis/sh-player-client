@@ -22,6 +22,7 @@ export class SmsOtpLoginComponent {
   countryCode = '+1';  // set default to USA
   phoneNumber?: string;
   otpCode?: string;
+  isEmailRegistered?: boolean;
   showResendOtpTimerText = false;
   resendOtpTimer = 59;
   formErrorMsg?: string;
@@ -75,6 +76,9 @@ export class SmsOtpLoginComponent {
           this.showError('Something went wrong while sending OTP.')
           return;
         }
+        if (resp.resendLoginOtp.data.isExistingUser) {
+          this.isEmailRegistered = true;
+        }
       }
       // call Request Login OTP API, since the phone number changed.
       else {
@@ -85,6 +89,9 @@ export class SmsOtpLoginComponent {
         if (!resp || !resp.requestLoginOtp || !resp.requestLoginOtp.data.message) {
           this.showError('Something went wrong while sending OTP.')
           return;
+        }
+        if (resp.requestLoginOtp.data.isExistingUser) {
+          this.isEmailRegistered = true;
         }
       }
 
@@ -163,6 +170,7 @@ export class SmsOtpLoginComponent {
     this.fullPhoneNumber = '';
     this.otpCode = '';
     this.formErrorMsg = '';
+    this.isEmailRegistered = false;
   }
 
   showError(message: string, timeout: number = 5000) {

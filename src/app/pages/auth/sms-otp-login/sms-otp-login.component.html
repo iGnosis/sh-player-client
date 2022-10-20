@@ -55,7 +55,11 @@
 
         <div *ngIf="step === 1">
           <div class="p-2 input-form">
-            <p><span class="guide-text">An SMS with the One-Time-Password (OTP) has been sent to {{ fullPhoneNumber }}.</span></p>
+            <p>
+              <span *ngIf="!isEmailRegistered" class="guide-text">An SMS with the One-Time-Password (OTP) has been sent to {{ fullPhoneNumber }}.</span>
+              <span *ngIf="isEmailRegistered" class="guide-text">An SMS with the One-Time-Password (OTP) has been sent to {{
+                fullPhoneNumber }} and to your registered email.</span>
+            </p>
             <div class="col-sm mt-4 mb-4">
               <label class="visually-hidden" for="otpCode">your code</label>
               <div class="input-group">

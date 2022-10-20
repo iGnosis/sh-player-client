@@ -173,6 +173,7 @@ export const GqlConstants = {
     requestLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber) {
       data {
         message
+        isExistingUser
       }
     }
   }`,
@@ -180,6 +181,7 @@ export const GqlConstants = {
     resendLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber) {
       data {
         message
+        isExistingUser
       }
     }
   }`,
