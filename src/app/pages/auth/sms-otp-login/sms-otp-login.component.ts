@@ -22,6 +22,8 @@ export class SmsOtpLoginComponent {
   countryCode = '+1';  // set default to USA
   phoneNumber?: string;
   otpCode?: string;
+  showResendOtpTimerText = false;
+  resendOtpTimer = 59;
   formErrorMsg?: string;
 
   // required to figure out which OTP API to call.
@@ -88,8 +90,17 @@ export class SmsOtpLoginComponent {
 
       // increment step
       this.formErrorMsg = '';
-
       this.step++;
+      this.showResendOtpTimerText = true;
+      this.resendOtpTimer = 60;
+      const timerInt = setInterval(() => {
+        this.resendOtpTimer--;
+        if (this.resendOtpTimer === 0){
+          clearInterval(timerInt);
+          this.showResendOtpTimerText = false;
+        }
+      }, 1000)
+
       if (this.step > 1) {
         this.step = 1;
       }

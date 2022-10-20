@@ -63,7 +63,8 @@
                 <input type="text" class="form-control" id="otpCode" placeholder="Your code">
               </div>
             </div>
-            <a role="button" (click)="resetForm()">Did not get the One-Time-Password (OTP)?</a>
+            <a *ngIf="showResendOtpTimerText">Resend OTP in {{ resendOtpTimer }} seconds</a>
+            <a *ngIf="!showResendOtpTimerText" role="button" (click)="resetForm()">Click here to resend OTP</a>
           </div>
           <div class="p-2 submit-btn">
             <button type="submit" class="btn btn-primary btn-lg col-12 btn-block w-100">SUBMIT &gt;</button>
