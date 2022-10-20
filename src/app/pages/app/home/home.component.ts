@@ -182,7 +182,8 @@ export class HomeComponent implements OnInit {
     let dailyGoalsActivities = await this.goalsService.getDailyGoals([
       'sit_stand_achieve',
       'beat_boxer',
-      'sound_explorer'
+      'sound_explorer',
+      'moving_tones',
     ]);
 
     let activitiesWithStatus = dailyGoalsActivities.map(this.mapActivitiesWithStatus);
