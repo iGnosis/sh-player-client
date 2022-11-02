@@ -7,4 +7,5 @@ export const environment: Environment = {
   gqlEndpoint: 'http://localhost:8080/v1/graphql',
   servicesEndpoint: 'http://localhost:9000',
   activityEndpoint: 'http://localhost:4201/',
+  providerEndpoint: 'http://localhost:4200/',
 };

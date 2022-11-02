@@ -46,6 +46,7 @@ export type Environment = {
   gqlEndpoint: string;
   servicesEndpoint: string;
   activityEndpoint: string;
+  providerEndpoint: string;
   googleAnalyticsTrackingID: string;
 }
 

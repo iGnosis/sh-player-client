@@ -22,12 +22,11 @@ export class AppComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // printing accessToken for easier debugging.
     if (!this.jwtService.isAuthenticated()) {
-      console.log('token expired.')
-      this.router.navigate(['/']);
+      console.log('token not found or it is expired.');
     }
     else {
+      // printing accessToken for easier debugging.
       console.log('accessToken:', this.jwtService.getToken());
       this.userService.appAccessed();
       this.router.events.subscribe((val: any) => {
