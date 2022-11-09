@@ -8,6 +8,7 @@
     "build:prod": "npm run build -- --configuration production --aot",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:chromeheadless": "ng test --watch=false --browsers=ChromeHeadless",
     "prepare": "husky install"
   },
   "private": true,
