@@ -92,13 +92,16 @@ export class SignupComponent implements OnInit {
       else this.carouselSlide++;
     }, 4000);
   }
+
   validateEmail() {
     return this.email?.toLowerCase()
     .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) || this.email === null;
   }
+
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
+
   checkPasswordStrength(password: string) {
     if(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*_0-9])[A-Za-z\d@$!%*#?&]{16,}$/g.test(password)) {
       return "Strong"; // atleast 16 characters
@@ -185,6 +188,7 @@ export class SignupComponent implements OnInit {
       this.changeStep(this.signupStep+1);
     }
   }
+
   goToHome() {
     if (this.signupStep === 4) this.googleAnalyticsService.sendEvent('skip_preferences');
     this.router.navigate(['/app/home']);
@@ -228,9 +232,11 @@ export class SignupComponent implements OnInit {
       this.changeStep(this.signupStep, this.interestStep+1);
     }
   }
+
   selectInterest(i: number) {
     this.interests[i].selected = !this.interests[i].selected;
   }
+
   selectActivity(i: number) {
     this.activities[i].selected = !this.activities[i].selected;
   }
@@ -244,16 +250,19 @@ export class SignupComponent implements OnInit {
     this.reminderTimes[curr] = !this.reminderTimes[curr];
     this.selectedTime = curr;
   }
+
   toggleCustomTime() {
     this.selectedTime = '';
     this.customTime = !this.customTime;
   }
+
   addCustomTime() {
     if(this.selectedTime) {
       this.reminderTimes.custom.push(this.selectedTime);
     }
     this.toggleCustomTime();
   }
+
   getCustomTime() {
     if(this.reminderTimes.custom.length > 0) {
       let customTimes = this.reminderTimes.custom.map((time: any) => {
@@ -266,9 +275,11 @@ export class SignupComponent implements OnInit {
       return false;
     }
   }
+
   originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
     return 0;
   }
+
   showNext() {
     if(this.interestStep === 1) {
       return this.interests.filter((item: any) => item.selected).length > 2;

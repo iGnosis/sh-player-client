@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from './home.component';
 import { GoalsService } from 'src/app/services/goals/goals.service';
 
-fdescribe('HomeComponent', () => {
+describe('HomeComponent', () => {
   let router: Router;
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -126,9 +126,7 @@ fdescribe('HomeComponent', () => {
 
   it('should start a session', () => {
     spyOn(router, 'navigate').and.stub();
-
     component.startNewSession();
-    
-    expect(router.navigate).toHaveBeenCalledWith(["/app/session/", '']);
+    expect(router.navigate).toHaveBeenCalledWith(["/app/session/"]);
   });
 });
