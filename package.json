@@ -8,7 +8,7 @@
     "build:prod": "npm run build -- --configuration production --aot",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:chromeheadless": "ng test --watch=false --browsers=ChromeHeadless",
+    "test:chromeheadless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "prepare": "husky install"
   },
   "private": true,
@@ -28,6 +28,7 @@
     "@ngrx/store": "^13.2.0",
     "@types/howler": "^2.2.7",
     "bootstrap-icons": "^1.8.3",
+    "check-code-coverage": "^1.10.4",
     "country-codes-list": "^1.6.8",
     "d3": "^7.4.4",
     "graphql-request": "^4.2.0",
