@@ -31,6 +31,7 @@ export class SessionComponent implements OnInit {
               type: 'token',
               token: this.jwtService.getToken(),
               session: this.sessionId,
+              benchmarkId: this.route.snapshot.queryParamMap.get('benchmarkId'),
             },
             "*"
           );

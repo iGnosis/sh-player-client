@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './pages/app/home/home.component';
 import { PublicGuard } from './guards/public-guard';
 import { PrivateGuard } from './guards/private-guard';
@@ -13,13 +12,24 @@ import { StartComponent } from './pages/auth/start/start.component';
 import { RewardsComponent } from './pages/app/rewards/rewards.component';
 import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
 import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.component';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
+  {
+    path: 'therapist',
+    component: StartComponent,
+    resolve: {
+      url: 'externalUrlRedirectResolver'
+    },
+    data: {
+      externalUrl: environment.providerEndpoint
+    }
+  },
   { path: '', redirectTo: 'public/start', pathMatch: 'full' },
   {
     path: 'public', canActivateChild: [PublicGuard], children: [
       { path: 'start', component: StartComponent },
-      { path: 'login', component: SmsOtpLoginComponent, },
+      { path: 'login', component: SmsOtpLoginComponent }
     ]
   },
   { path: "app/session", component: SessionComponent, canActivate: [PrivateGuard] },
@@ -40,5 +50,13 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [
+    {
+      provide: 'externalUrlRedirectResolver',
+      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+        window.location.href = (route.data as any).externalUrl;
+      }
+    }
+  ]
 })
 export class AppRoutingModule {}

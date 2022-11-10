@@ -11,6 +11,7 @@ export const environment: Environment = {
   gqlEndpoint: 'https://api.dev.pointmotioncontrol.com/v1/graphql',
   servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',
   activityEndpoint: 'https://session.dev.pointmotioncontrol.com',
+  providerEndpoint: 'https://provider.dev.pointmotioncontrol.com/',
 };
 
 /*

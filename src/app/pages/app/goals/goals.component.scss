@@ -1,9 +1,13 @@
 @import '../../../variables';
-@import '../../../am-components';
+
+$active_day: #93D48D;
+$current_day: #F8D280;
+$inactive_day: #A0AEC0;
 
 $monthly_card_bg: #007F6E;
 $daily_card_bg: #B6E5C8;
 $calender_bg: #000033;
+
 .goals-container {
 
     // padding-top: 96px !important;

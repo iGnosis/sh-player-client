@@ -55,7 +55,8 @@ describe('SignupComponent', () => {
 
   it('should signup', async () => {
     component.signupStep = 2;
-    
+    component.email = 'john@example.com';
+
     const spy = spyOn(router, 'navigate').and.stub();
     await component.nextSignupStep();
     component.signupStep = 3;
@@ -155,7 +156,7 @@ describe('SignupComponent', () => {
     expect(component.showNext()).toBeFalsy();
 
     component.reminderTimes['Morning'] = true;
-    
+
     expect(component.showNext()).toBeTruthy();
   });
 });

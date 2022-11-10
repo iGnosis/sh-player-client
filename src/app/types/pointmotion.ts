@@ -46,6 +46,7 @@ export type Environment = {
   gqlEndpoint: string;
   servicesEndpoint: string;
   activityEndpoint: string;
+  providerEndpoint: string;
   googleAnalyticsTrackingID: string;
 }
 
@@ -59,3 +60,5 @@ export interface DailyGoalsApiDTO {
    */
   isCompleted: boolean;
 }
+
+export enum session { Start, Continue, Completed, Locked }
