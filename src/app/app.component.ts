@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GoogleAnalyticsService } from './services/google-analytics/google-analytics.service';
 import { JwtService } from './services/jwt.service';
+import { ThemeService } from './services/theme/theme.service';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -18,8 +18,13 @@ export class AppComponent implements OnInit {
     private router: Router,
     private jwtService: JwtService,
     private userService: UserService,
-    private ga: GoogleAnalyticsService,
-  ) {}
+    private themeService: ThemeService,
+  ) {
+    this.themeService.getOrganizationTheme().then(({ theme, font }) => {
+      this.themeService.setTheme(theme);
+      this.themeService.loadFont(font);
+    });}
+
 
   async ngOnInit() {
     if (!this.jwtService.isAuthenticated()) {
