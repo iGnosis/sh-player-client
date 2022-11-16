@@ -22,9 +22,27 @@ export class SessionComponent implements OnInit {
     private jwtService: JwtService,
     private googleAnalyticsService: GoogleAnalyticsService
   ) {
+    if (environment.name == 'dev' || environment.name == 'local') {
+      //@ts-ignore
+      window['private'] = this;
+    }
+
     this.sessionId = this.route.snapshot.paramMap.get("id") as string;
     console.log(this.sessionId);
     this.url = environment.activityEndpoint + "?session=" + this.sessionId;
+  }
+
+  setGame(idx?: number) { 
+    const games = ['sit_stand_achieve', 'beat_boxer', 'sound_explorer', 'moving_tones'];
+    idx = (idx || 1) - 1;
+    this.session.nativeElement.contentWindow?.postMessage(
+      {
+        type: 'set-game',
+        game: games[idx],
+      },
+      "*"
+    );
+    console.log(`%cStarting ${games[idx]}`, "color:green");
   }
 
   ngOnInit(): void {
