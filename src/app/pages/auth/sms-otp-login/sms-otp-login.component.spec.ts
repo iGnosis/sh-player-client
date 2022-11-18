@@ -3,6 +3,7 @@ import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 import { UserService } from 'src/app/services/user.service';
 import { SmsOtpLoginComponent } from './sms-otp-login.component';
@@ -13,6 +14,7 @@ describe('SmsOtpLoginComponent', () => {
   let fixture: ComponentFixture<SmsOtpLoginComponent>;
   let mockDailyCheckinService = jasmine.createSpyObj('DailyCheckinService', ['setPreferredGenres', 'setPreferredActivities', 'setPatientDetails', 'getLastCheckin']);
   let mockGraphqlService = jasmine.createSpyObj('GraphqlService', ['gqlRequest']);
+  let mockGAService = jasmine.createSpyObj('GoogleAnalyticsService', ['sendEvent']);
   let mockUserService = jasmine.createSpyObj('UserService', ['isOnboarded', 'set']);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,6 +24,7 @@ describe('SmsOtpLoginComponent', () => {
         { provide: DailyCheckinService, useValue: mockDailyCheckinService },
         { provide: GraphqlService, useValue: mockGraphqlService },
         { provide: UserService, useValue: mockUserService },
+        { provide: GoogleAnalyticsService, useValue: mockGAService },
       ],
     })
     .compileComponents();

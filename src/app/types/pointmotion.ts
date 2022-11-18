@@ -43,6 +43,7 @@ export interface RewardsDTO {
 export type Environment = {
   production: boolean;
   name: 'local' | 'dev' | 'stage' | 'prod';
+  organizationName: string;
   gqlEndpoint: string;
   servicesEndpoint: string;
   activityEndpoint: string;
