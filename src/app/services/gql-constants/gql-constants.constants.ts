@@ -198,5 +198,12 @@ export const GqlConstants = {
       name
       emoji
     }
-  }`
+  }`,
+  GET_ORGANIZATION_CONFIG: `
+    query OrganizationConfig($name: String = "") {
+      organization(where: {name: {_eq: $name}}) {
+        configuration
+      }
+    }
+  `,
 };

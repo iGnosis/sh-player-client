@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { JwtService } from './services/jwt.service';
 import { ThemeService } from './services/theme/theme.service';
 import { UserService } from './services/user.service';
@@ -20,10 +21,11 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
   ) {
-    this.themeService.getOrganizationTheme().then(({ theme, font }) => {
-      this.themeService.setTheme(theme);
-      this.themeService.loadFont(font);
-    });}
+    this.themeService.getOrganizationConfig(environment.organizationName).then((theme) => {
+      this.themeService.setColors(theme.colors);
+      this.themeService.loadFont(theme.font);
+    });
+  }
 
 
   async ngOnInit() {
