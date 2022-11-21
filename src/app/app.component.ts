@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { JwtService } from './services/jwt.service';
 import { ThemeService } from './services/theme/theme.service';
 import { UserService } from './services/user.service';
+import { Theme } from './types/pointmotion';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,15 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
   ) {
-    this.themeService.getOrganizationConfig(environment.organizationName).then((theme) => {
-      this.themeService.setColors(theme.colors);
-      this.themeService.loadFont(theme.font);
+    this.themeService.getOrganizationConfig(environment.organizationName).then((theme: Theme) => {
+      if (theme) {
+        if (theme.colors) {
+          this.themeService.setColors(theme.colors);
+        }
+        if (theme.font) {
+          this.themeService.loadFont(theme.font);
+        }
+      }
     });
   }
 
