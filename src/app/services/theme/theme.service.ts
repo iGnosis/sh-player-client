@@ -10,7 +10,7 @@ export class ThemeService {
 
   /**
    * Getting the organization configuration.
-   * 
+   *
    * @param {string} name
    * @returns {Promise<any>}
    */
@@ -48,7 +48,7 @@ export class ThemeService {
     family: string;
     url: string;
   }) {
-    if (!font) return; 
+    if (!font) return;
 
     const link = document.createElement('link');
     link.rel = 'stylesheet';

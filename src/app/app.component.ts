@@ -34,7 +34,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-
   async ngOnInit() {
     if (!this.jwtService.isAuthenticated()) {
       console.log('token not found or it is expired.');
