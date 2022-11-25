@@ -42,6 +42,7 @@ export class GraphqlService {
 
   async gqlRequest(query: string, variables: any = {}, auth: boolean = true, additionalHeaders: any = {}) {
     additionalHeaders['x-pointmotion-user-type'] = 'patient'
+    additionalHeaders['x-organization-name'] = environment.organizationName
 
 
     if (environment.name == 'local') {
