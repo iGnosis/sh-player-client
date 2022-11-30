@@ -22,16 +22,7 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
   ) {
-    this.themeService.getOrganizationConfig(environment.organizationName).then((theme: Theme) => {
-      if (theme) {
-        if (theme.colors) {
-          this.themeService.setColors(theme.colors);
-        }
-        if (theme.font) {
-          this.themeService.loadFont(theme.font);
-        }
-      }
-    });
+    this.themeService.setTheme();
   }
 
   async ngOnInit() {

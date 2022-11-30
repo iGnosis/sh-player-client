@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { GqlConstants } from '../gql-constants/gql-constants.constants';
 import { GraphqlService } from '../graphql/graphql.service';
 
@@ -6,6 +8,8 @@ import { GraphqlService } from '../graphql/graphql.service';
   providedIn: 'root'
 })
 export class ThemeService {
+  logoSubject = new BehaviorSubject<string>('');
+
   constructor(private graphqlService: GraphqlService) {}
 
   /**
@@ -17,8 +21,10 @@ export class ThemeService {
   async getOrganizationConfig(name: string): Promise<any> {
     try {
       const response = await this.graphqlService.gqlRequest(GqlConstants.GET_ORGANIZATION_CONFIG, { name });
-
-      return response.organization ? response.organization[0] : {};
+      return response.organization ? {
+        ...response.organization[0].configuration,
+        logoUrl: response.organization[0].logoUrl,
+      } : {};
     } catch (err) {
       console.log(err);
     }
@@ -39,12 +45,32 @@ export class ThemeService {
   }
 
   /**
+   * Setting the theme of the application.
+   * 
+   * @returns {Promise<void>}
+   */
+  async setTheme(): Promise<void> {
+    const theme = await this.getOrganizationConfig(environment.organizationName); 
+    if (theme) {
+      if (theme.colors) {
+        this.setColors(theme.colors);
+      }
+      if (theme.font) {
+        this.loadFont(theme.font);
+      }
+      if (theme.logoUrl) {
+        this.setLogoUrl(theme.logoUrl);
+      }
+    }
+  }
+
+  /**
    * Setting the typography of the entire application.
    *
    * @param {{ family: string url: string }} font
    * @returns {void}
    */
-  loadFont(font: {
+  private loadFont(font: {
     family: string;
     url: string;
   }) {
@@ -56,5 +82,9 @@ export class ThemeService {
     document.getElementsByTagName('head')[0].appendChild(link);
 
     document.documentElement.style.setProperty(`--font-family`, `'${font.family}', Inter, 'Times New Roman', Times, serif`);
+  }
+
+  private setLogoUrl(url: string) {
+    this.logoSubject.next(url);
   }
 }
