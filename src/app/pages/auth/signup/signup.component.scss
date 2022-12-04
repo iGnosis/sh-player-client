@@ -83,7 +83,7 @@
         .indicators {
             > div {
                 cursor: pointer;
-                background-color: $border-light;
+                background-color: $border-light_color;
                 &.active {
                     background-color: #2F51AE;
                 }
@@ -93,7 +93,7 @@
     .signup-card-container {
         .login-btn {
             > p {
-                background-color: $primary;
+                background-color: $primary_color;
                 border: none;
             }
         }
@@ -119,7 +119,7 @@
         > .row {
             z-index: 1;
             .step-heading {
-                color: $primary;
+                color: $primary_color;
             }
             input {
                 background-color: #EDF2F7;
@@ -132,7 +132,7 @@
                 }
             }
             .continue-btn {
-                background-color: $primary;
+                background-color: $primary_color;
                 border: none;
             }
             .completion-confirmation {
@@ -146,7 +146,7 @@
             }
             .all-set {
                 * {
-                    color: $primary;
+                    color: $primary_color;
                 }
             }
         }
@@ -186,11 +186,11 @@
         }
     }
     .btn-light {
-        color: $primary;
+        color: $primary_color;
     }
     .reminder-times {
         button.btn-light {
-            background-color: $border-light;
+            background-color: $border-light_color;
             border: none;
         }
         .bg-green {

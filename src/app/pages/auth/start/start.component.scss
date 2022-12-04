@@ -44,7 +44,7 @@
         }
         .caption {
             font-size: 1.6rem;
-            color: $primary;
+            color: $primary_color;
         }
         .img-bg-overlay {
             width: 50em;
@@ -61,7 +61,7 @@
         .indicators {
             > div {
                 cursor: pointer;
-                background-color: $border-light;
+                background-color: $border-light_color;
                 &.active {
                     background-color: #2F51AE;
                 }
@@ -71,18 +71,18 @@
 
     .signup-card-container {
         h1 {
-            color: $primary;
+            color: $primary_color;
         }
         .login-btn {
             > p {
-                background-color: $primary;
+                background-color: $primary_color;
                 border: none;
             }
         }
         .signup-container {
             font-size: 1.6em;
             a {
-                color: #2f51ae;
+                color: $primary_color;
             }
         }
     }
@@ -96,7 +96,7 @@
         > .row {
             z-index: 1;
             .step-heading {
-                color: $primary;
+                color: $primary_color;
             }
             input {
                 background-color: #EDF2F7;
@@ -109,7 +109,7 @@
                 }
             }
             .continue-btn {
-                background-color: $primary;
+                background-color: $primary_color;
                 border: none;
             }
             .completion-confirmation {
@@ -123,7 +123,7 @@
             }
             .all-set {
                 * {
-                    color: $primary;
+                    color: $primary_color;
                 }
             }
         }

@@ -38,6 +38,7 @@ export class SignupComponent implements OnInit {
     { title: "50's", img: '/assets/images/interests/interest-8.jpg', selected: false },
     { title: "60's", img: '/assets/images/interests/interest-9.jpg', selected: false },
     { title: "70's", img: '/assets/images/interests/interest-10.jpg', selected: false },
+    { title: "80's", img: '/assets/images/interests/interest-11.jpg', selected: false },
   ]
   activities: InterestsDTO[] = [
     { title: 'Singing', img: '/assets/images/activities/0.jpg', selected: false },
@@ -51,6 +52,7 @@ export class SignupComponent implements OnInit {
     { title: 'Artwork', img: '/assets/images/activities/8.jpg', selected: false },
     { title: 'Viewing Films', img: '/assets/images/activities/9.jpg', selected: false },
     { title: 'Reading', img: '/assets/images/activities/10.jpg', selected: false },
+    { title: 'Playing Games', img: '/assets/images/activities/11.jpg', selected: false },
   ];
   reminderTimes: any = {
     'Morning' : false,

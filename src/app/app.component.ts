@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GoogleAnalyticsService } from './services/google-analytics/google-analytics.service';
+import { environment } from 'src/environments/environment';
 import { JwtService } from './services/jwt.service';
+import { ThemeService } from './services/theme/theme.service';
 import { UserService } from './services/user.service';
+import { Theme } from './types/pointmotion';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +20,10 @@ export class AppComponent implements OnInit {
     private router: Router,
     private jwtService: JwtService,
     private userService: UserService,
-    private ga: GoogleAnalyticsService,
-  ) {}
+    private themeService: ThemeService,
+  ) {
+    this.themeService.setTheme();
+  }
 
   async ngOnInit() {
     if (!this.jwtService.isAuthenticated()) {

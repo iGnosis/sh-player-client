@@ -4,15 +4,26 @@ nav {
 }
 .nav-left {
     a, a.active {
-        color: $primary;
+        color: $primary_color;
         font-weight: 600;
     }
+    a:focus, a:hover {
+        span {
+            color: $primary_color;
+            filter: brightness(0.5);
+        }
+    }
     & > div.active {
-        border-bottom: 3px solid $primary;
+        border-bottom: 3px solid $primary_color;
+    }
+}
+.navbar-light .navbar-nav .nav-link {
+    &:hover, &:focus {
+        color: $primary_color;
     }
 }
 .nav-right {
     p {
-        color: $primary;
+        color: $primary_color;
     }
 }

@@ -11,23 +11,23 @@
     }
     .modal-content {
         width: 450px;
-        background-color: $primary;
+        background-color: $primary_color;
     }
     .ratings i{
-        color:$border-light;
+        color:$border-light_color;
         font-size: 2rem;
         &.rating-color{
             color:#FFC440;
         }
     }
     .rating-description {
-        border-bottom: 1px solid $border-light;
+        border-bottom: 1px solid $border-light_color;
     }
     textarea {
         background-color: #EDF2F7;
     }
     .send-feedback-btn {
-        color: $primary;
+        color: $primary_color;
     }
 }
 .modal.feedback-recieved-modal {
@@ -41,6 +41,6 @@
         border-bottom: 0px;
     }
     .checkmark {
-        background-color: $success;
+        background-color: $success_color;
     }
 }

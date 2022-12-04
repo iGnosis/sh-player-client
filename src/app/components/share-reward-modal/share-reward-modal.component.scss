@@ -6,17 +6,17 @@
       max-width: 450px;
     }
     .card-details {
-      border: 1px dashed $border-light;
+      border: 1px dashed $border-light_color;
       border-left: 0px; 
       border-right: 0px;
     }
     .copy-coupon-code {
-      background: $border-light;
+      background: $border-light_color;
     }
     a {
       color: #B6E5C8;
     }
     .expires-in {
-      border-top: 1px dashed $border-light;
+      border-top: 1px dashed $border-light_color;
     }
   }

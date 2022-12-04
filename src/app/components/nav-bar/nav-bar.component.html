@@ -6,7 +6,7 @@
         </button>
         <!-- Logo -->
         <a class="navbar-brand" href="#">
-            <img src="/assets/icons/sound_health_logo_alpha.png" class="h-10" alt="sound health">
+            <img [src]="logoUrl" class="h-10" alt="sound health">
         </a>
         <!-- Avatar -->
         <!-- <div class="dropdown order order-lg-3 ms-lg-4">
@@ -47,17 +47,17 @@
             <!-- Nav -->
             <div class="nav-left navbar-nav ms-10">
                 <div class="h-full" [class.active]="activeTab === 'home'">
-                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'home'" routerLink="/app/home" aria-current="page">Home</a>
+                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'home'" routerLink="/app/home" aria-current="page"><span>Home</span></a>
                 </div>
                 <div class="h-full" [class.active]="activeTab === 'rewards'">
                     <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'rewards'" routerLink="/app/rewards"
-                        aria-current="page">Rewards</a>
+                        aria-current="page"><span>Rewards</span></a>
                 </div>
                 <!-- <div class="h-full" [class.active]="activeTab === 'goals'">
                     <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'goals'" routerLink="/app/goals">Goals</a>
                 </div> -->
                 <div class="h-full" [class.active]="activeTab === 'help'">
-                    <a class="nav-item nav-link px-7 py-1 my-3" (click)="activeTab = 'help'" routerLink="/app/help">Help</a>
+                    <a class="nav-item nav-link px-7 py-1 my-3" (click)="activeTab = 'help'" routerLink="/app/help"><span>Help</span></a>
                 </div>
             </div>
             <!-- Right navigation -->
