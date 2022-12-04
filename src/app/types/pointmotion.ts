@@ -43,9 +43,11 @@ export interface RewardsDTO {
 export type Environment = {
   production: boolean;
   name: 'local' | 'dev' | 'stage' | 'prod';
+  organizationName: string;
   gqlEndpoint: string;
   servicesEndpoint: string;
   activityEndpoint: string;
+  providerEndpoint: string;
   googleAnalyticsTrackingID: string;
 }
 
@@ -58,4 +60,16 @@ export interface DailyGoalsApiDTO {
    * A boolean value that indicates whether a game has been completed or not.
    */
   isCompleted: boolean;
+}
+
+export enum session { Start, Continue, Completed, Locked }
+
+export interface Theme {
+  colors: {
+    [key: string]: any;
+  };
+  font: {
+    family: string;
+    url: string;
+  }
 }

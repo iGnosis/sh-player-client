@@ -13,8 +13,7 @@ export class GraphqlService {
   constructor(private jwtService: JwtService) {
 
     const additionalHeaders: any = {
-      'x-pointmotion-origin': window.location.origin,
-      'x-pointmotion-user': 'patient',
+      'x-pointmotion-user-type': 'patient',
     }
     if (environment.name == 'local') {
       additionalHeaders['x-pointmotion-debug'] = 'true'
@@ -42,9 +41,8 @@ export class GraphqlService {
   }
 
   async gqlRequest(query: string, variables: any = {}, auth: boolean = true, additionalHeaders: any = {}) {
-
-    additionalHeaders['x-pointmotion-origin'] = window.location.origin
-    additionalHeaders['x-pointmotion-user'] = 'patient'
+    additionalHeaders['x-pointmotion-user-type'] = 'patient'
+    additionalHeaders['x-organization-name'] = environment.organizationName
 
 
     if (environment.name == 'local') {

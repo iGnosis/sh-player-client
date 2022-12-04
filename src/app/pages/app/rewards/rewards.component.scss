@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 .rewards-container {
   height: calc(100vh - 3.6875rem);
 }
@@ -19,11 +21,11 @@
 }
 .reward-card {
   border-radius: 16px;
-  box-shadow: 0px 1px 2px #000066, 0px 0px 1px #000066;
+  box-shadow: 0px 1px 2px $primary_color, 0px 0px 1px $primary_color;
 }
 
 .reward-card-text {
-  color: #000066;
+  color: $primary_color;
 }
 
 .reward-card-img {
@@ -38,16 +40,16 @@
 
   button {
     border: none;
-    background: #718096;
+    background-color: #718096 !important;
   }
 }
 
 .fa-lock-open {
   font-size: 3em;
-  color: #00BD3E;
+  color: $success_color;
 }
 
 .fa-lock {
   font-size: 3em;
-  color: #718096;
+  color: #718096 !important;
 }

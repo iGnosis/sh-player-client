@@ -15,8 +15,7 @@ export class UpdateHeadersInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const headers: any = {
-      'x-pointmotion-user': 'patient',
-      'x-pointmotion-origin': window.location.origin
+      'x-pointmotion-user-type': 'patient',
     }
     if (environment.name == 'local') {
       headers['x-pointmotion-debug'] = 'true'

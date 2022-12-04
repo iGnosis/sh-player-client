@@ -17,7 +17,7 @@ interface InterestsDTO {
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  errors = [];
+  errors: string[] = [];
   code: string = "";
   email: string | null = null;
   password: string = "";
@@ -38,6 +38,7 @@ export class SignupComponent implements OnInit {
     { title: "50's", img: '/assets/images/interests/interest-8.jpg', selected: false },
     { title: "60's", img: '/assets/images/interests/interest-9.jpg', selected: false },
     { title: "70's", img: '/assets/images/interests/interest-10.jpg', selected: false },
+    { title: "80's", img: '/assets/images/interests/interest-11.jpg', selected: false },
   ]
   activities: InterestsDTO[] = [
     { title: 'Singing', img: '/assets/images/activities/0.jpg', selected: false },
@@ -51,6 +52,7 @@ export class SignupComponent implements OnInit {
     { title: 'Artwork', img: '/assets/images/activities/8.jpg', selected: false },
     { title: 'Viewing Films', img: '/assets/images/activities/9.jpg', selected: false },
     { title: 'Reading', img: '/assets/images/activities/10.jpg', selected: false },
+    { title: 'Playing Games', img: '/assets/images/activities/11.jpg', selected: false },
   ];
   reminderTimes: any = {
     'Morning' : false,
@@ -92,13 +94,16 @@ export class SignupComponent implements OnInit {
       else this.carouselSlide++;
     }, 4000);
   }
+
   validateEmail() {
     return this.email?.toLowerCase()
     .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) || this.email === null;
   }
+
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
+
   checkPasswordStrength(password: string) {
     if(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*_0-9])[A-Za-z\d@$!%*#?&]{16,}$/g.test(password)) {
       return "Strong"; // atleast 16 characters
@@ -152,7 +157,15 @@ export class SignupComponent implements OnInit {
 
   async nextSignupStep() {
     this.errors = [];
-    if(this.signupStep === 3) {
+    if (this.signupStep === 2) {
+      if (!this.email && !this.errors.length) {
+        this.errors.push('Please enter your email address');
+        return;
+      } else {
+        this.changeStep(this.signupStep+1);
+      }
+    }
+    else if(this.signupStep === 3) {
       const res = await this.authService.setPatientDetails({
         nickname: this.nickname,
         email: this.email!,
@@ -177,6 +190,7 @@ export class SignupComponent implements OnInit {
       this.changeStep(this.signupStep+1);
     }
   }
+
   goToHome() {
     if (this.signupStep === 4) this.googleAnalyticsService.sendEvent('skip_preferences');
     this.router.navigate(['/app/home']);
@@ -220,9 +234,11 @@ export class SignupComponent implements OnInit {
       this.changeStep(this.signupStep, this.interestStep+1);
     }
   }
+
   selectInterest(i: number) {
     this.interests[i].selected = !this.interests[i].selected;
   }
+
   selectActivity(i: number) {
     this.activities[i].selected = !this.activities[i].selected;
   }
@@ -236,16 +252,19 @@ export class SignupComponent implements OnInit {
     this.reminderTimes[curr] = !this.reminderTimes[curr];
     this.selectedTime = curr;
   }
+
   toggleCustomTime() {
     this.selectedTime = '';
     this.customTime = !this.customTime;
   }
+
   addCustomTime() {
     if(this.selectedTime) {
       this.reminderTimes.custom.push(this.selectedTime);
     }
     this.toggleCustomTime();
   }
+
   getCustomTime() {
     if(this.reminderTimes.custom.length > 0) {
       let customTimes = this.reminderTimes.custom.map((time: any) => {
@@ -258,9 +277,11 @@ export class SignupComponent implements OnInit {
       return false;
     }
   }
+
   originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
     return 0;
   }
+
   showNext() {
     if(this.interestStep === 1) {
       return this.interests.filter((item: any) => item.selected).length > 2;

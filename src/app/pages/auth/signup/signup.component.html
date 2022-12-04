@@ -2,7 +2,7 @@
     <!-- <img src="/assets/icons/chat-bubble.svg" alt="chat bubble" class="chat-bubble position-fixed cursor-pointer end-4 bottom-4"> -->
     <div class="d-flex justify-content-center" *ngIf="signupStep === 0">
         <div class="carousel-container overflow-hidden col-lg-6 position-relative">
-            <img class="position-absolute top-8 start-8" src="/assets/icons/sound_health_logo.png" alt="sound health">
+            <img class="position-absolute top-8 start-8 w-48" src="/assets/icons/sound_health_logo_alpha.png" alt="sound health">
             
             <div class="carousel-images">
                 <div class="position-absolute top-1/2 start-1/2 translate-middle circle-bg-1 mx-auto" [ngClass]="'slide'+carouselSlide"></div>
@@ -30,7 +30,7 @@
         <div class="signup-card-container col-10 col-md-9 col-lg-6 min-h-screen d-flex flex-column justify-content-center py-lg-16 px-lg-10 position-relative">
             <div class="row">
                 <div class="col-lg-12 col-md-9 col-xl-10 col-xxl-8 mx-auto d-flex flex-column justify-content-center align-items-center">
-                    <img class="pb-16 w-48" src="/assets/icons/sound_health_logo.png" alt="sound health">
+                    <img class="pb-16 w-48" src="/assets/icons/sound_health_logo_alpha.png" alt="sound health">
                     <h1 class="pb-12 display-6 text-nowrap">Welcome to Point Motion.</h1>
                     <div class="login-btn w-full text-center" (click)="nextSignupStep()">
                         <p class="btn btn-primary w-4/5 rounded-2 font-bold py-4">
@@ -52,7 +52,7 @@
         <img class="signup-bg" src="/assets/images/backgrounds/signup-bg.png" alt="signup background">
         <div class="row position-absolute w-full h-full">
             <div class="col-9 col-lg-7 col-xl-5 col-xxl-4 mx-auto px-xxl-5 d-flex flex-column justify-content-center align-items-center">
-                <img [ngClass]="{'pb-16 w-48': signupStep!==4, 'position-absolute top-10 end-12' : signupStep===4 }" *ngIf="signupStep < 5" src="/assets/icons/sound_health_logo.png" alt="sound health">
+                <img class="w-48" [ngClass]="{'pb-16': signupStep!==4, 'position-absolute top-10 end-12' : signupStep===4 }" *ngIf="signupStep < 5" src="/assets/icons/sound_health_logo_alpha.png" alt="sound health">
                 <!-- <p class="text-sm align-self-start" *ngIf="signupStep < 4">Step {{signupStep}} out of 3</p> -->
                 <h2 class="step-heading pb-6 align-self-start">{{
                     signupStep === 1 ? 'Create a password' : 
@@ -125,7 +125,7 @@
     <div class="go-back position-absolute top-10 start-12 cursor-pointer">
         <p (click)="interestStep === 1 ? goBack() : goBackInterest()" *ngIf="signupStep >= 3" class="text-white text-xl"><i class="fa fa-angle-left"></i>&nbsp;<span>Go Back</span></p>
     </div>
-    <img class="position-absolute top-10 end-12" src="/assets/icons/sound_health_light.svg" alt="sound health">
+    <img class="position-absolute top-10 end-12 w-48" src="/assets/icons/sound_health_reverse_alpha.png" alt="sound health">
     <div class="confirm-email-container w-screen h-full min-h-screen position-relative" style="overflow-y:scroll; height: 100vh !important;">
         <img class="interest-bg" src="/assets/images/backgrounds/interest-bg.png" alt="interests background">
         <div
@@ -146,13 +146,6 @@
                     </div>
                     <p class="text-lg font-bold pt-2">{{interest.title}}</p>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="position-relative">
-                        <div class="position-absolute w-full h-full rounded" style="background-color: rgba(172, 172, 172, 0.6);"></div>
-                        <img class="w-full h-full" src="/assets/images/more_for_you.png" alt="more for you">
-                    </div>
-                    <p class="text-lg font-bold pt-2">Explore All</p>
-                </div>
             </div>
             <div *ngIf="interestStep === 2" class="row col-12 col-xl-8 gx-md-12 gy-md-16">
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 cursor-pointer" *ngFor="let activity of activities; let i=index">
@@ -162,18 +155,11 @@
                     </div>
                     <p class="text-lg font-bold pt-2">{{activity.title}}</p>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="position-relative">
-                        <div class="position-absolute w-full h-full rounded" style="background-color: rgba(172, 172, 172, 0.6);"></div>
-                        <img class="w-full h-full" src="/assets/images/more_for_you.png" alt="more for you">
-                    </div>
-                    <p class="text-lg font-bold pt-2">Explore All</p>
-                </div>
             </div>
             <div *ngIf="interestStep === 3" class="w-full d-flex mt-12 align-items-center">
                 <div class="reminder-times row w-full w-lg-2/5 gy-10 mx-auto position-relative">
                     <input *ngIf="customTime" (keyup.enter)="addCustomTime()" [(ngModel)]="selectedTime" type="time" class="position-absolute bottom-0 start-0 w-full h-12 cursor-pointer rounded-2">
-                    <button *ngFor="let time of reminderTimes | keyvalue: originalOrder; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none" [ngClass]="{'bg-light' : (i !== 4 && !time.value) || (i === 4 && !getCustomTime()), 'bg-green text-white' : (i!== 4 && time.value) || (i === 4 && getCustomTime()) }">{{ i < 4 ? time.key : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
+                    <button *ngFor="let time of reminderTimes | keyvalue: originalOrder; let i=index" (click)="selectTime(i)" class="col-12 btn font-bold shadow-none text-primary" [ngClass]="{'bg-light' : (i !== 4 && !time.value) || (i === 4 && !getCustomTime()), 'bg-green text-white' : (i!== 4 && time.value) || (i === 4 && getCustomTime()) }">{{ i < 4 ? time.key : i === 4 && getCustomTime() ? getCustomTime() : 'Specify a time' }}</button>
                 </div>
             </div>
             <button style="z-index: 2;" [disabled]="!showNext()" (click)="nextInterestStep()" [ngClass]="{ 'position-fixed bottom-4 w-lg-1/3' : interestStep < 3, 'w-full w-lg-2/5': interestStep === 3 }" class="btn btn-light m-auto w-full w-lg-2/5 font-bold mt-10 mb-5">{{interestStep < 3 ? 'Next' : 'Finish'}}</button>

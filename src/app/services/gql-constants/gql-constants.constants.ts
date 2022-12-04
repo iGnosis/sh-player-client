@@ -169,10 +169,11 @@ export const GqlConstants = {
       status
     }
   }`,
-  REQUEST_LOGIN_OTP: `mutation RequestLoginOtp($phoneCountryCode: String!, $phoneNumber: String!) {
-    requestLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber) {
+  REQUEST_LOGIN_OTP: `mutation RequestLoginOtp($phoneCountryCode: String!, $phoneNumber: String!, $inviteCode: String = "") {
+    requestLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber, inviteCode: $inviteCode) {
       data {
         message
+        isExistingUser
       }
     }
   }`,
@@ -180,6 +181,7 @@ export const GqlConstants = {
     resendLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber) {
       data {
         message
+        isExistingUser
       }
     }
   }`,
@@ -196,5 +198,13 @@ export const GqlConstants = {
       name
       emoji
     }
-  }`
+  }`,
+  GET_ORGANIZATION_CONFIG: `
+    query OrganizationConfig($name: String = "") {
+      organization(where: {name: {_eq: $name}}) {
+        configuration
+        logoUrl
+      }
+    }
+  `,
 };

@@ -35,7 +35,6 @@ $patient-provider-theme: mat.define-light-theme((
 @import '/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
 @import '/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-@import './app/am-components';
 /* You can add global styles to this file, and also import other style files */
 @import "@webpixels/css/core/functions";
 
@@ -48,13 +47,14 @@ $patient-provider-theme: mat.define-light-theme((
 @import "@webpixels/css/components";
 @import "@webpixels/css/utilities";
 
+@import "./app/bootstrap-overrides";
 // $black: #000000;
 // $primary: #000066;
 // $white: #FFFFFF;
 $background-color_2: transparent;
 
 body {
-    font-family: Inter, 'Times New Roman', Times, serif;
+    font-family: $font-family;
 }
 
 .home-page-header {
@@ -89,10 +89,10 @@ body {
 	margin: auto;
 }
 .session-heading{
-  color:$primary ;
+  color:$primary_color ;
 }
 .align-header-buttons p{
-  color:$primary ;
+  color:$primary_color ;
 }
 .align-header-buttons {
 	display: flex;
@@ -102,7 +102,7 @@ body {
 	flex-direction: column;
 	p {
 		font-size: 9px;
-    color:$primary;
+    color:$primary_color;
 	}
 }
 .fixed-container {

@@ -3,6 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'src/app/services/auth.service';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 
 import { SignupComponent } from './signup.component';
 
@@ -20,6 +21,7 @@ describe('SignupComponent', () => {
   mockAuthService.setPreferredGenres.and.returnValue(new Promise((resolve, reject) => resolve({
     response: {},
   })));
+  let mockGAService = jasmine.createSpyObj('GoogleAnalyticsService', ['sendEvent']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,6 +29,7 @@ describe('SignupComponent', () => {
       declarations: [ SignupComponent ],
       providers: [
         { provide: AuthService, useValue: mockAuthService },
+        { provide: GoogleAnalyticsService, useValue: mockGAService },
       ],
     })
     .compileComponents();
@@ -55,7 +58,8 @@ describe('SignupComponent', () => {
 
   it('should signup', async () => {
     component.signupStep = 2;
-    
+    component.email = 'john@example.com';
+
     const spy = spyOn(router, 'navigate').and.stub();
     await component.nextSignupStep();
     component.signupStep = 3;
@@ -155,7 +159,7 @@ describe('SignupComponent', () => {
     expect(component.showNext()).toBeFalsy();
 
     component.reminderTimes['Morning'] = true;
-    
+
     expect(component.showNext()).toBeTruthy();
   });
 });
