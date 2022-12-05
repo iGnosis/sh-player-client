@@ -1,5 +1,7 @@
 import { Environment } from "src/app/types/pointmotion";
 
+// pure local env
+// all the endpoints are set to localhost servers
 export const environment: Environment = {
   production: false,
   name: 'local',
