@@ -40,6 +40,7 @@ import { BillingHistoryComponent } from './pages/app/billing-history/billing-his
 import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-payment-method.component';
 import { NgxStripeModule } from 'ngx-stripe';
 import { PrimaryModalComponent } from './components/modals/primary-modal/primary-modal.component';
+import { NotificationBarComponent } from './components/notification-bar/notification-bar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,6 +63,7 @@ import { PrimaryModalComponent } from './components/modals/primary-modal/primary
     BillingHistoryComponent,
     AddPaymentMethodComponent,
     PrimaryModalComponent,
+    NotificationBarComponent,
   ],
   imports: [
     BrowserModule,

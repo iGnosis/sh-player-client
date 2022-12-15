@@ -1,0 +1,29 @@
+<div 
+    *ngIf="show"
+    class="w-full h-14 position-relative"
+    [ngClass]="daysLeft === 1 ? 'bg-danger' : daysLeft <= 5 ? 'bg-warning' : 'bg-primary'"
+    style="z-index: 1;">
+    <!-- Last Day -->
+    <div *ngIf="daysLeft === 1" class="container-fluid d-flex h-full">
+        <div class="d-flex align-items-center m-auto">
+            <i class="fa fa-exclamation-triangle text-white"></i>
+            <p class="text-white m-0 ms-2 font-bold">Your free trial will end in 1 day.</p>
+        </div>
+    </div>
+    <!-- < 5 days warning -->
+    <div *ngIf="daysLeft <= 5 && daysLeft > 1" class="container-fluid d-flex h-full">
+        <div class="d-flex align-items-center m-auto">
+            <i class="fa fa-exclamation-triangle text-black"></i>
+            <p class="text-black m-0 ms-2 font-bold">Your free trial will end in {{daysLeft}} days.</p>
+            <button class="btn btn-sm btn-light ms-3" routerLink="/app/add-payment-method">Set Payment Method</button>
+        </div>
+        <button class="btn btn-transparent"><i class="text-black fa-solid fa-circle-xmark"></i></button>
+    </div>
+    <!-- Payment method updated -->
+    <div *ngIf="daysLeft > 5" class="container-fluid d-flex h-full">
+        <div class="d-flex align-items-center m-auto">
+            <p class="text-white m-0 ms-2 font-bold">You payment details have been updated.</p>
+        </div>
+        <button class="btn btn-transparent"><i class="text-white fa-solid fa-circle-xmark"></i></button>
+    </div>
+</div>
