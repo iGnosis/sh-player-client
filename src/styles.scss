@@ -47,6 +47,7 @@ $patient-provider-theme: mat.define-light-theme((
 @import "@webpixels/css/components";
 @import "@webpixels/css/utilities";
 
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "./app/bootstrap-overrides";
 // $black: #000000;
 // $primary: #000066;

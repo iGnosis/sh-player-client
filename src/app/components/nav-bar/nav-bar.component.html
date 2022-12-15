@@ -62,9 +62,29 @@
             </div>
             <!-- Right navigation -->
             <div class="nav-right navbar-nav align-items-lg-center d-none d-lg-flex ms-lg-auto">
-                <p (click)="logout()" class="nav-link nav-link-icon px-3 position-relative cursor-pointer font-bold">
+                <!-- https://ui-avatars.com/api/?name=John+Doe&background=random -->
+    
+                <div class="dropdown order order-lg-last ms-lg-4">
+                    <div class="d-block" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="avatar avatar-sm bg-warning rounded-circle text-white">
+                            <img alt="..." src="https://ui-avatars.com/api/?name=John+Doe&background=2F51AE&color=fff">
+                        </div>
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-end">
+                    <a routerLink="/app/account-details" class="dropdown-item">
+                        <i class="ni ni-single-02"></i>
+                        <span class="text-primary font-bold">Account Details</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <p (click)="logout()" class="dropdown-item">
+                        <i class="ni ni-user-run"></i>
+                        <span class="text-primary font-bold">Sign Out of Sound Health</span>
+                    </p>
+                    </div>
+                </div>
+                <!-- <p class="nav-link nav-link-icon px-3 position-relative cursor-pointer font-bold">
                     Sign Out&nbsp;<img class="w-5 h-5 ms-1" src="assets/icons/logout.jpg" alt="logout">
-                </p>
+                </p> -->
             </div>
         </div>
     </div>

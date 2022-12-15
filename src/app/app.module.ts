@@ -35,6 +35,10 @@ import { FeedbackModalComponent } from './components/modals/feedback-modal/feedb
 import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
 import { ShareRewardModalComponent } from './components/share-reward-modal/share-reward-modal.component';
 import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.component';
+import { AccountDetailsComponent } from './pages/app/account-details/account-details.component';
+import { BillingHistoryComponent } from './pages/app/billing-history/billing-history.component';
+import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-payment-method.component';
+import { NgxStripeModule } from 'ngx-stripe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +57,9 @@ import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.c
     DailyCheckinComponent,
     ShareRewardModalComponent,
     SmsOtpLoginComponent,
+    AccountDetailsComponent,
+    BillingHistoryComponent,
+    AddPaymentMethodComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +72,8 @@ import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.c
     MatDatepickerModule,
     MatNativeDateModule,
     LottieModule.forRoot({ player: playerFactory }),
-    StoreModule.forRoot({})
+    StoreModule.forRoot({}),
+    NgxStripeModule.forRoot('pk_test_51MEoBjSGuxLzcG8NAGDbYHCvgJmPRJytwQIKWzK8Jj7m0owXjbzxCjXmsx0OeH1otItIuohUNOmqeFLQiqgBVmR200zy8soZz8'),
   ],
   providers: [
     PrivateGuard,
