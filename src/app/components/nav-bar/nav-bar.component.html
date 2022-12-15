@@ -76,15 +76,13 @@
                         <span class="text-primary font-bold">Account Details</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <p (click)="logout()" class="dropdown-item">
+                    <p (click)="showLogoutModal = true" class="dropdown-item cursor-pointer">
                         <i class="ni ni-user-run"></i>
                         <span class="text-primary font-bold">Sign Out of Sound Health</span>
                     </p>
                     </div>
                 </div>
-                <!-- <p class="nav-link nav-link-icon px-3 position-relative cursor-pointer font-bold">
-                    Sign Out&nbsp;<img class="w-5 h-5 ms-1" src="assets/icons/logout.jpg" alt="logout">
-                </p> -->
+                <primary-modal [show]="showLogoutModal" [modalConfig]="logoutModalConfig"></primary-modal>
             </div>
         </div>
     </div>

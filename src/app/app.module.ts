@@ -39,6 +39,7 @@ import { AccountDetailsComponent } from './pages/app/account-details/account-det
 import { BillingHistoryComponent } from './pages/app/billing-history/billing-history.component';
 import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-payment-method.component';
 import { NgxStripeModule } from 'ngx-stripe';
+import { PrimaryModalComponent } from './components/modals/primary-modal/primary-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +61,7 @@ import { NgxStripeModule } from 'ngx-stripe';
     AccountDetailsComponent,
     BillingHistoryComponent,
     AddPaymentMethodComponent,
+    PrimaryModalComponent,
   ],
   imports: [
     BrowserModule,

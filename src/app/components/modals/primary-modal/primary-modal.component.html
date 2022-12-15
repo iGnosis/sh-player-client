@@ -1,0 +1,25 @@
+<div class="modal-backdrop fade" [class.show]="show" [style.display]="show ? 'block' : 'none'"></div>
+<div class="modal fade in" [class.show]="show" id="test-modal" tabindex="-1" aria-labelledby="test-modal" aria-hidden="true" [style.display]="show ? 'block' : 'none'">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow-4">
+        <div class="modal-body pb-0">
+          <div class="py-3 px-5">
+            <!-- Title -->
+            <h1 class="mb-4">
+                <span *ngIf="modalConfig.type === 'warning'">
+                    <i class="bi bi-exclamation-triangle-fill text-danger"></i>&nbsp;
+                </span>{{ modalConfig.title }}
+            </h1>
+            <!-- Text -->
+            <p class="text-black">
+                {{ modalConfig.body }}
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer pt-0">
+            <button *ngIf="modalConfig.closeButtonLabel" (click)="modalConfig.onClose && modalConfig.onClose()" type="button" class="btn btn-sm btn-outline-primary">{{ modalConfig.closeButtonLabel }}</button>
+            <button *ngIf="modalConfig.submitButtonLabel" (click)="modalConfig.onSubmit && modalConfig.onSubmit()" type="button" class="btn btn-sm btn-primary">{{ modalConfig.submitButtonLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </div>

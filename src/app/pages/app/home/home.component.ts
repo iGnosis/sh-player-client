@@ -2,7 +2,7 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
-import { Patient } from "src/app/types/pointmotion";
+import { ModalConfig, Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/types/pointmotion";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
@@ -69,6 +69,9 @@ export class HomeComponent implements OnInit {
 
   isVisitingAfterSession = false;
 
+  showPaymentModal: boolean = false;
+  paymentModalConfig: ModalConfig;
+
   constructor(
     private careplanService: CareplanService,
     private goalsService: GoalsService,
@@ -83,6 +86,21 @@ export class HomeComponent implements OnInit {
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))
       .subscribe(this.recordGAEvents);
     this.sendTokenToExtension();
+
+
+    this.paymentModalConfig = {
+      type: 'warning',
+      title: 'Payment Method Failed',
+      body: 'Your payment method was declined, please update your payment method to continue using our services. Your data is always safe with us.',
+      closeButtonLabel: 'Manage Account',
+      submitButtonLabel: 'Update Payment Method',
+      onClose: () => {
+        this.router.navigate(['/app/account-details']);
+      },
+      onSubmit: () => {
+        this.router.navigate(['/app/add-payment-method']);
+      },
+    };
   }
 
   async ngOnInit(): Promise<void> {
