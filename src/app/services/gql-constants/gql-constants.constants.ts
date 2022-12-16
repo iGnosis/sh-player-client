@@ -147,7 +147,11 @@ export const GqlConstants = {
       email
       preferredGenres
       nickname
-    }
+      phoneCountryCode
+      phoneNumber
+      lastName
+      firstName
+      }
   }`,
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
     faqAccessed {
@@ -227,8 +231,32 @@ export const GqlConstants = {
   CREATE_SUBSCRIPTION: `
     mutation CreateSubscription {
       createSubscription {
-        subscriptionId
+        subscription
       }
     }
     `,
+  GET_DEFAULT_PAYMENT_METHOD: `
+    query GetDefaultPaymentMethod {
+      getDefaultPaymentMethod {
+        data
+      }
+    }`,
+  GET_SUBSCRIPTION_STATUS: `
+    query GetSubscriptionStatus {
+      getSubscriptionStatus {
+        data
+      }
+    }`,
+  GET_SUBSCRIPTION_DETAILS: `
+    query GetSubscriptionDetails {
+      getSubscriptionDetails {
+        subscription
+      }
+    }`,
+  CANCEL_SUBSCRIPTION: `
+    mutation CancelSubscription {
+      cancelSubscription {
+        subscription
+      }
+    }`,
 };
