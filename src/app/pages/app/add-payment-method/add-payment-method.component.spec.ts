@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { StripeService } from 'ngx-stripe';
+import { NGX_STRIPE_VERSION } from 'ngx-stripe/lib/interfaces/ngx-stripe.interface';
 
 import { AddPaymentMethodComponent } from './add-payment-method.component';
 
@@ -8,9 +10,10 @@ describe('AddPaymentMethodComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddPaymentMethodComponent ]
+      declarations: [AddPaymentMethodComponent],
+      providers: [StripeService, { provide: NGX_STRIPE_VERSION }]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
