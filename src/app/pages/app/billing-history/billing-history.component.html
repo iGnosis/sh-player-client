@@ -15,24 +15,28 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td data-label="Job Title">
-                        <img alt="..." src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar avatar-sm rounded-circle me-2">
-                        <a class="text-heading font-semibold" href="#">
-                          Robert Fox
-                        </a>
+                    <tr *ngFor="let invoice of invoices">
+                      <td data-label="Date">
+                        <p class="text-heading font-semibold">
+                          {{ invoice.paymentDate * 1000 | date: 'MMM d, y' }}
+                        </p>
                       </td>
-                      <td data-label="Email">
-                        <span>Web Designer</span>
+                      <td data-label="Plan Details">
+                        <span>{{ 'Sound Health Membership' }}</span>
                       </td>
-                      <td data-label="Phone">
-                        <a class="text-current" href="mailto:robert.fox@example.com">robert.fox@example.com</a>
+                      <td data-label="Service Period">
+                        <span *ngIf="invoice.subscriptionPeriod">{{ 
+                          (invoice.subscriptionPeriod.start * 1000 | date: 'd MMM') +
+                          ' - ' +
+                          (invoice.subscriptionPeriod.end * 1000 | date: 'd MMM, y')
+                        }}</span>
                       </td>
-                      <td data-label="Lead Score">
-                        <a class="text-current" href="tel:202-555-0152">202-555-0152</a>
+                      <td data-label="Payment Method">
+                        <span *ngIf="invoice.cardDetails && invoice.cardDetails.brand"><i [class]="'fa-brands fa-cc-' + invoice.cardDetails.brand"></i>&nbsp;</span>
+                        <span *ngIf="invoice.cardDetails && invoice.cardDetails.last4">{{ '**** **** **** ' + invoice.cardDetails.last4 }}</span>
                       </td>
                       <td data-label="Company">
-                        <span class="badge bg-opacity-30 bg-success text-success">7/10</span>
+                        <span>{{ invoice.amountPaid > 0 ? '$' + invoice.amountPaid : 'Free' }}</span>
                       </td>
                     </tr>
                 </tbody>

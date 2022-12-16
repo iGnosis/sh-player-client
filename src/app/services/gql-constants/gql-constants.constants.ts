@@ -231,4 +231,23 @@ export const GqlConstants = {
       }
     }
     `,
+  GET_BILLING_HISTORY: `
+  mutation GetBillingHistory($startingAfter: String = "", $limit: Int = 10, $endingBefore: String = "") {
+    getBillingHistory(limit: $limit, startingAfter: $startingAfter, endingBefore: $endingBefore) {
+      hasMore
+      invoices {
+        amountPaid
+        cardDetails {
+          brand
+          last4
+        }
+        paymentDate
+        subscriptionPeriod {
+          end
+          start
+        }
+        url
+      }
+    }
+  }`,
 };
