@@ -207,4 +207,23 @@ export const GqlConstants = {
       }
     }
   `,
+  GET_PAYMENT_CLIENT_SECRET: `
+    mutation CreatePaymentSetupIntent  {
+      createPaymentSetupIntent {
+        clientSecret
+      }
+    }`,
+  SET_DEFAULT_PAYMENT_METHOD: `
+    mutation SetDefaultPaymentMethod($paymentMethodId: String!) {
+      setDefaultPaymentMethod(paymentMethodId: $paymentMethodId) {
+        data
+      }
+    }`,
+  CREATE_SUBSCRIPTION: `
+    mutation CreateSubscription {
+      createSubscription {
+        subscriptionId
+      }
+    }
+    `,
 };

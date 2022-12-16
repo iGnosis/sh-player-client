@@ -77,7 +77,7 @@ import { NotificationBarComponent } from './components/notification-bar/notifica
     MatNativeDateModule,
     LottieModule.forRoot({ player: playerFactory }),
     StoreModule.forRoot({}),
-    NgxStripeModule.forRoot('pk_test_51MEoBjSGuxLzcG8NAGDbYHCvgJmPRJytwQIKWzK8Jj7m0owXjbzxCjXmsx0OeH1otItIuohUNOmqeFLQiqgBVmR200zy8soZz8'),
+    NgxStripeModule.forRoot('pk_test_51MCGAoSJ1afwULmmMEUXSrTJaNu7ymt6qKPkqnktBSE71h77qyqHnbQeoYF9XC4YbmetgUAziIm8pb927AxLwukv006ZIttv9m'),
   ],
   providers: [
     PrivateGuard,
