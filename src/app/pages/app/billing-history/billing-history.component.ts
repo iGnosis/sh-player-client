@@ -39,4 +39,8 @@ export class BillingHistoryComponent implements OnInit {
     this.page--;
   }
 
+  openInvoice(invoiceUrl: string) {
+    window.location.href = invoiceUrl;
+  }
+
 }

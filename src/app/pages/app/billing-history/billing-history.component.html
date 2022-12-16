@@ -15,7 +15,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let invoice of invoices">
+                    <tr *ngFor="let invoice of invoices" class="cursor-pointer" (click)="openInvoice(invoice.url)">
                       <td data-label="Date">
                         <p class="text-heading font-semibold">
                           {{ invoice.paymentDate * 1000 | date: 'MMM d, y' }}
