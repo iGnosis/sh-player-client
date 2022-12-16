@@ -114,7 +114,12 @@ export const GqlConstants = {
       nickname
     }
   }`,
-
+  CREATE_CUSTOMER: `
+  mutation CreateCustomer {
+    createCustomer {
+      customerId
+    }
+  }`,
   SET_NICKNAME: `
   mutation UpdateNickName($id: uuid!, $nickname: String) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {nickname: $nickname}) {

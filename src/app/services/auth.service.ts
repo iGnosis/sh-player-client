@@ -34,6 +34,15 @@ export class AuthService {
     }
   }
 
+  private async createStripeCustomer() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.CREATE_CUSTOMER);
+      return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
   async setPatientDetails(details: SetPatientDetailsRequestDTO) {
     try {
       const user = this.userService.get()
@@ -43,6 +52,8 @@ export class AuthService {
         id: user.id
       }
       const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_DETAILS, data);
+
+      await this.createStripeCustomer();
       return res;
     } catch(e) {
       return e;
