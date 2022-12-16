@@ -250,4 +250,10 @@ export const GqlConstants = {
       }
     }
   }`,
+  GET_PAYMENT_METHOD_REQUIREMENT: `
+  query GetRequirePaymentDetails {
+    subscription_plans {
+      requirePaymentDetails
+    }
+  }`,
 };
