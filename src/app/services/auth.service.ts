@@ -34,6 +34,15 @@ export class AuthService {
     }
   }
 
+  async getPaymentMethodRequirement() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_PAYMENT_METHOD_REQUIREMENT);
+      return res.subscription_plans[0].requirePaymentDetails;
+    } catch(e) {
+      return e;
+    }
+  }
+
   private async createStripeCustomer() {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.CREATE_CUSTOMER);

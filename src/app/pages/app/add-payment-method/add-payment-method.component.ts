@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StripeElements } from '@stripe/stripe-js';
 import { StripeService } from 'ngx-stripe';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
@@ -12,10 +13,16 @@ import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 export class AddPaymentMethodComponent implements OnInit {
   elements!: StripeElements;
   clientSecret!: string;
+  isSignup: boolean = false;
+
   constructor(
     private gqlService: GraphqlService,
-    private stripeService: StripeService
-  ) {}
+    private stripeService: StripeService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.isSignup = Boolean(this.route.snapshot.paramMap.get('signup')) || false;
+  }
 
   async ngOnInit(): Promise<void> {
     if (!window.Stripe) return;
@@ -87,6 +94,13 @@ export class AddPaymentMethodComponent implements OnInit {
                 GqlConstants.CREATE_SUBSCRIPTION
               );
               console.log('subscription::created::successfully');
+
+              const continueSignup = this.isSignup === true;
+              if (continueSignup) {
+                this.router.navigate(['/app/signup/4']);
+              } else {
+                this.router.navigate(['/app/account-details']);
+              }
             } catch (err) {
               console.log('Error::', err);
             }

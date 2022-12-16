@@ -180,7 +180,13 @@ export class SignupComponent implements OnInit {
         })
       } else {
         this.googleAnalyticsService.sendEvent('sign_up');
-        this.changeStep(this.signupStep+1);
+
+        const requirePaymentDetails = await this.authService.getPaymentMethodRequirement();
+        if (requirePaymentDetails === true) {
+          this.router.navigate(['/app/add-payment-method', { signup: true }]);
+        } else {
+          this.changeStep(this.signupStep+1);
+        }
       }
     }
     else if(this.signupStep === 4) {
