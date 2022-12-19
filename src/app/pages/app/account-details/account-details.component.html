@@ -42,7 +42,7 @@
           </p>
           <div class="d-flex flex-column align-items-end">
             <button
-              *ngIf="!isSubscribed || !subscription"
+              *ngIf="(!isSubscribed || !subscription) && card"
               class="text-sm my-2 bg-transparent px-0"
               style="color: #2f51ae"
               (click)="subscribe()"
@@ -61,7 +61,7 @@
               class="text-sm"
               style="color: #2f51ae"
               routerLink="/app/add-payment-method"
-              >{{ card ? "Change Payment Method" : "Add Payment Method" }}</a
+              >{{ card ? "Update Payment Method" : "Add Payment Method" }}</a
             >
             <a
               class="text-sm mt-2"
