@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
@@ -38,6 +37,15 @@ export class AuthService {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.GET_PAYMENT_METHOD_REQUIREMENT);
       return res.subscription_plans[0].requirePaymentDetails;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async getSubscriptionStatus() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
+      return res.getSubscriptionStatus.data;
     } catch(e) {
       return e;
     }
