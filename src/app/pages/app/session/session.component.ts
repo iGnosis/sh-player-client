@@ -4,6 +4,8 @@ import { JwtService } from "src/app/services/jwt.service";
 import { environment } from "src/environments/environment";
 import { debounceTime, fromEvent, Subscription } from "rxjs";
 import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
+import { ModalConfig } from "src/app/types/pointmotion";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-session",
@@ -15,12 +17,16 @@ export class SessionComponent implements OnInit {
   sessionId = "";
   private resizeSubscription!: Subscription;
 
+  showPaymentModal: boolean = false;
+  paymentModalConfig: ModalConfig;
+
   @ViewChild("session") session!: ElementRef<HTMLIFrameElement>;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private jwtService: JwtService,
-    private googleAnalyticsService: GoogleAnalyticsService
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private authService: AuthService,
   ) {
     if (environment.name == 'dev' || environment.name == 'local') {
       //@ts-ignore
@@ -30,6 +36,31 @@ export class SessionComponent implements OnInit {
     this.sessionId = this.route.snapshot.paramMap.get("id") as string;
     console.log(this.sessionId);
     this.url = environment.activityEndpoint + "?session=" + this.sessionId;
+
+    this.paymentModalConfig = {
+      type: 'warning',
+      title: 'Payment Method Failed',
+      body: 'Your payment method was declined, please update your payment method to continue using our services. Your data is always safe with us.',
+      closeButtonLabel: 'Manage Account',
+      submitButtonLabel: 'Update Payment Method',
+      onClose: () => {
+        this.router.navigate(['/app/account-details']);
+      },
+      onSubmit: () => {
+        this.router.navigate(['/app/add-payment-method']);
+      },
+    };
+    this.showPaymentModalHandler();
+  }
+
+  async showPaymentModalHandler() {
+    const subscriptionStatus = await this.authService.getSubscriptionStatus();
+
+    if (["payment_pending", "trial_expired", "cancelled"].includes(subscriptionStatus)) {
+      this.showPaymentModal = true;
+    } else {
+      this.showPaymentModal = false;
+    }
   }
 
   setGame(idx?: number) { 

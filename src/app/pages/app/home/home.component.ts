@@ -69,9 +69,6 @@ export class HomeComponent implements OnInit {
 
   isVisitingAfterSession = false;
 
-  showPaymentModal: boolean = false;
-  paymentModalConfig: ModalConfig;
-
   constructor(
     private careplanService: CareplanService,
     private goalsService: GoalsService,
@@ -86,21 +83,6 @@ export class HomeComponent implements OnInit {
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))
       .subscribe(this.recordGAEvents);
     this.sendTokenToExtension();
-
-
-    this.paymentModalConfig = {
-      type: 'warning',
-      title: 'Payment Method Failed',
-      body: 'Your payment method was declined, please update your payment method to continue using our services. Your data is always safe with us.',
-      closeButtonLabel: 'Manage Account',
-      submitButtonLabel: 'Update Payment Method',
-      onClose: () => {
-        this.router.navigate(['/app/account-details']);
-      },
-      onSubmit: () => {
-        this.router.navigate(['/app/add-payment-method']);
-      },
-    };
   }
 
   async ngOnInit(): Promise<void> {

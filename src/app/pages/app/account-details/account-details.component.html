@@ -40,6 +40,9 @@
             <i class="bi bi-credit-card me-5"></i>**** **** ****
             {{ card.last4 }}
           </p>
+          <p class="text-black" *ngIf="!card">
+            <i class="bi bi-credit-card me-2"></i>Card details not found
+          </p>
           <div class="d-flex flex-column align-items-end">
             <button
               *ngIf="(!isSubscribed || !subscription) && card"
