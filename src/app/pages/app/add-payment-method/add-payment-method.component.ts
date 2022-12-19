@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StripeElements } from '@stripe/stripe-js';
 import { StripeService } from 'ngx-stripe';
+import { AuthService } from 'src/app/services/auth.service';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 
@@ -19,7 +20,8 @@ export class AddPaymentMethodComponent implements OnInit {
     private gqlService: GraphqlService,
     private stripeService: StripeService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {
     this.isSignup = Boolean(this.route.snapshot.paramMap.get('signup')) || false;
   }
@@ -78,34 +80,45 @@ export class AddPaymentMethodComponent implements OnInit {
         } else {
           // The payment has been processed!
           if (res.setupIntent?.status === 'succeeded') {
-            console.log('payment::method:', res.setupIntent.status);
-
             // setting the current paymentMethod as default paymentMethod for subscription.
-            const paymentMethodId = res.setupIntent.payment_method;
-            try {
-              await this.gqlService.client.request(
-                GqlConstants.SET_DEFAULT_PAYMENT_METHOD,
-                {
-                  paymentMethodId,
-                }
-              );
-
-              const subscribe = await this.gqlService.client.request(
-                GqlConstants.CREATE_SUBSCRIPTION
-              );
-              console.log('subscription::created::successfully');
-
-              const continueSignup = this.isSignup === true;
-              if (continueSignup) {
-                this.router.navigate(['/app/signup/4']);
-              } else {
-                this.router.navigate(['/app/account-details']);
-              }
-            } catch (err) {
-              console.log('Error::', err);
-            }
+            await this.setDefaultPaymentMethod(res);
+            await this.redirectByParam();
           }
         }
       });
+  }
+
+  async setDefaultPaymentMethod(result: any) {
+    const paymentMethodId = result.setupIntent.payment_method;
+    try {
+      await this.gqlService.client.request(
+        GqlConstants.SET_DEFAULT_PAYMENT_METHOD,
+        {
+          paymentMethodId,
+        }
+      );
+    } catch (err) {
+      console.log('Error::', err);
+    }
+  }
+
+  async redirectByParam() {
+    try {
+      await this.authService.getSubscriptionDetails();
+    } catch(err) {
+      await this.gqlService.client.request(
+        GqlConstants.CREATE_SUBSCRIPTION
+      );
+      console.log('subscription::created::successfully');
+    } finally {
+      const continueSignup = this.isSignup === true;
+      if (continueSignup) {
+        this.router.navigate(['/app/signup/4']);
+      } else {
+        this.router.navigate(['/app/home'], {
+          queryParams: { paymentAdded: true },
+        });
+      }
+    }
   }
 }

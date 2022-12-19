@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { ModalConfig } from 'src/app/types/pointmotion';
@@ -32,8 +31,10 @@ export class PrivateComponent implements OnInit {
         this.router.navigate(['/app/add-payment-method']);
       },
     };
-    router.events.subscribe(() => {
-      this.showPaymentModalHandler();
+    router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showPaymentModalHandler();
+      }
     });
   }
 

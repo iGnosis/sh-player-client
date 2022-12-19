@@ -51,6 +51,15 @@ export class AuthService {
     }
   }
 
+  async getSubscriptionDetails() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
+      return res.getSubscriptionDetails.subscription;
+    } catch(e) {
+      return e;
+    }
+  }
+
   private async createStripeCustomer() {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.CREATE_CUSTOMER);

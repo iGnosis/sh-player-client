@@ -17,13 +17,13 @@
             <p class="text-black m-0 ms-2 font-bold">Your free trial will end in {{daysLeft}} days.</p>
             <button class="btn btn-sm btn-light ms-3" routerLink="/app/add-payment-method">Set Payment Method</button>
         </div>
-        <button class="btn btn-transparent"><i class="text-black fa-solid fa-circle-xmark"></i></button>
+        <button (click)="hide()" class="btn btn-transparent"><i class="text-black fa-solid fa-circle-xmark"></i></button>
     </div>
     <!-- Payment method updated -->
     <div *ngIf="daysLeft > 5" class="container-fluid d-flex h-full">
         <div class="d-flex align-items-center m-auto">
             <p class="text-white m-0 ms-2 font-bold">You payment details have been updated.</p>
         </div>
-        <button class="btn btn-transparent"><i class="text-white fa-solid fa-circle-xmark"></i></button>
+        <button (click)="hide()" class="btn btn-transparent"><i class="text-white fa-solid fa-circle-xmark"></i></button>
     </div>
 </div>
