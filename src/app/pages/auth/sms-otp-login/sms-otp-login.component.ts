@@ -90,7 +90,9 @@ export class SmsOtpLoginComponent {
           phoneNumber: this.phoneNumber
         }, false);
         if (!resp || !resp.requestLoginOtp || !resp.requestLoginOtp.data.message) {
-          this.showError('Something went wrong while sending OTP.')
+          if (resp.message.toLowerCase().includes('unauthorized')) {
+            this.showError('Account does not exist. Please ask your provider to create an account for you.')
+          }
           return;
         }
         if (resp.requestLoginOtp.data.isExistingUser) {
