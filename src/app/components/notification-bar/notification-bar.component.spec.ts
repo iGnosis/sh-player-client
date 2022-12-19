@@ -1,4 +1,7 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { NotificationBarComponent } from './notification-bar.component';
 
@@ -8,7 +11,8 @@ describe('NotificationBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NotificationBarComponent ]
+      declarations: [ NotificationBarComponent ],
+      imports: [HttpClientTestingModule, RouterTestingModule],
     })
     .compileComponents();
   });
