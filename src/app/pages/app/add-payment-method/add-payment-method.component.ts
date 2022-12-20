@@ -104,12 +104,16 @@ export class AddPaymentMethodComponent implements OnInit {
 
   async createSubscriptionAndRedirect() {
     try {
-      await this.authService.getSubscriptionDetails();
+      const res = await this.authService.getSubscriptionDetails();
+      if (res?.data?.getSubscriptionDetails?.subscriptionId) {
+        return;
+      } else {
+        throw new Error('Subscription does not exist');
+      }
     } catch(err) {
       await this.gqlService.client.request(
         GqlConstants.CREATE_SUBSCRIPTION
       );
-      console.log('subscription::created::successfully');
     } finally {
       const continueSignup = this.isSignup === true;
       if (continueSignup) {
