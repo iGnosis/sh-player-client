@@ -82,7 +82,7 @@ export class AddPaymentMethodComponent implements OnInit {
           if (res.setupIntent?.status === 'succeeded') {
             // setting the current paymentMethod as default paymentMethod for subscription.
             await this.setDefaultPaymentMethod(res);
-            await this.redirectByParam();
+            await this.createSubscriptionAndRedirect();
           }
         }
       });
@@ -102,7 +102,7 @@ export class AddPaymentMethodComponent implements OnInit {
     }
   }
 
-  async redirectByParam() {
+  async createSubscriptionAndRedirect() {
     try {
       await this.authService.getSubscriptionDetails();
     } catch(err) {

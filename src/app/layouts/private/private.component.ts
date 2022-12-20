@@ -31,9 +31,10 @@ export class PrivateComponent implements OnInit {
         this.router.navigate(['/app/add-payment-method']);
       },
     };
-    router.events.subscribe((event) => {
+    router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
-        this.showPaymentModalHandler();
+        await this.fulfillPaymentDetailsRequirement();
+        await this.showPaymentModalHandler();
       }
     });
   }
@@ -44,6 +45,17 @@ export class PrivateComponent implements OnInit {
         this.router.navigate(["app", "checkin"]);
       }
     })
+  }
+
+  async fulfillPaymentDetailsRequirement() {
+    const subscriptionObj = await this.authService.getSubscriptionDetails();
+    const paymentMethodRequired = await this.authService.getPaymentMethodRequirement();
+    const paymentMethodExist = subscriptionObj && Object.keys(subscriptionObj).length !== 0;
+    
+    if (!paymentMethodExist && paymentMethodRequired) {
+      if (!this.router.url.includes('add-payment-method') && !this.router.url.includes('signup'))
+        this.router.navigate(['/app/add-payment-method', { signup: true }]);
+    }
   }
 
   async showPaymentModalHandler() {

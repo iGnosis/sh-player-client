@@ -56,7 +56,8 @@ export class AuthService {
       const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
       return res.getSubscriptionDetails.subscription;
     } catch(e) {
-      return e;
+      console.log(e);
+      return null;
     }
   }
 
