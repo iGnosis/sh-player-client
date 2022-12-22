@@ -53,8 +53,8 @@ export class SmsOtpLoginComponent {
       }
       this.phoneNumber = event.target.phoneNumber.value;
 
-      this.countryCode = this.countryCode ? this.countryCode.trim() : ''
-      this.phoneNumber = this.phoneNumber ? this.phoneNumber.trim() : ''
+      this.countryCode = this.countryCode ? this.countryCode.trim() : '';
+      this.phoneNumber = this.phoneNumber ? this.phoneNumber.trim() : '';
       console.log('submit:countryCode:', this.countryCode);
       console.log('submit:phoneNumber:', this.phoneNumber);
 
@@ -76,7 +76,7 @@ export class SmsOtpLoginComponent {
           phoneNumber: this.phoneNumber
         }, false);
         if (!resp || !resp.resendLoginOtp || !resp.resendLoginOtp.data.message) {
-          this.showError('Something went wrong while sending OTP.')
+          this.showError('Something went wrong while sending OTP.');
           return;
         }
         if (resp.resendLoginOtp.data.isExistingUser) {
@@ -91,9 +91,9 @@ export class SmsOtpLoginComponent {
         }, false);
         if (!resp || !resp.requestLoginOtp || !resp.requestLoginOtp.data.message) {
           if (resp.message && resp.message.toLowerCase().includes('unauthorized')) {
-            this.showError('Account does not exist. Please ask your provider to create an account for you.')
+            this.showError('Account does not exist. Please ask your provider to create an account for you.');
           } else {
-            this.showError('Something went wrong while sending OTP.')
+            this.showError('Something went wrong while sending OTP.');
           }
           return;
         }
@@ -109,11 +109,11 @@ export class SmsOtpLoginComponent {
       this.resendOtpTimer = 60;
       const timerInt = setInterval(() => {
         this.resendOtpTimer--;
-        if (this.resendOtpTimer === 0){
+        if (this.resendOtpTimer === 0) {
           clearInterval(timerInt);
           this.showResendOtpTimerText = false;
         }
-      }, 1000)
+      }, 1000);
 
       if (this.step > 1) {
         this.step = 1;
@@ -133,7 +133,7 @@ export class SmsOtpLoginComponent {
       }, false);
 
       if (!resp || !resp.verifyLoginOtp || !resp.verifyLoginOtp.data.token) {
-        this.showError('That is not the code.')
+        this.showError('That is not the code.');
         return;
       }
 
@@ -193,5 +193,21 @@ export class SmsOtpLoginComponent {
         resolve({});
       }, timeout);
     });
+  }
+
+  async resendOTP() {
+    const resp = await this.graphQlService.gqlRequest(GqlConstants.RESEND_LOGIN_OTP, {
+      phoneCountryCode: this.countryCode,
+      phoneNumber: this.phoneNumber
+    }, false);
+    this.showResendOtpTimerText = true;
+    this.resendOtpTimer = 60;
+    const timerInt = setInterval(() => {
+      this.resendOtpTimer--;
+      if (this.resendOtpTimer === 0) {
+        clearInterval(timerInt);
+        this.showResendOtpTimerText = false;
+      }
+    }, 1000);
   }
 }
