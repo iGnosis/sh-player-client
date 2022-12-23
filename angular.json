@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sh_patient_client": {
+    "sh-player-client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sh_patient_client",
+            "outputPath": "dist/sh-player-client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -186,19 +186,19 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sh_patient_client:build:production"
+              "browserTarget": "sh-player-client:build:production"
             },
             "staging": {
-              "browserTarget": "sh_patient_client:build:staging"
+              "browserTarget": "sh-player-client:build:staging"
             },
             "development": {
-              "browserTarget": "sh_patient_client:build:development"
+              "browserTarget": "sh-player-client:build:development"
             },
             "local": {
-              "browserTarget": "sh_patient_client:build:local"
+              "browserTarget": "sh-player-client:build:local"
             },
             "local-pure": {
-              "browserTarget": "sh_patient_client:build:local-pure"
+              "browserTarget": "sh-player-client:build:local-pure"
             }
           },
           "defaultConfiguration": "local"
@@ -206,7 +206,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sh_patient_client:build"
+            "browserTarget": "sh-player-client:build"
           }
         },
         "test": {
@@ -231,5 +231,5 @@
       }
     }
   },
-  "defaultProject": "sh_patient_client"
+  "defaultProject": "sh-player-client"
 }

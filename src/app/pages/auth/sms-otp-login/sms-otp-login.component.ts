@@ -32,6 +32,9 @@ export class SmsOtpLoginComponent {
   tempFullPhoneNumber?: string;
   fullPhoneNumber?: string;
 
+  throttledSubmit: (...args: any[]) => void;
+  throttledResend: (...args: any[]) => void;
+
   constructor(
     private graphQlService: GraphqlService,
     private router: Router,
@@ -39,7 +42,27 @@ export class SmsOtpLoginComponent {
     private jwtService: JwtService,
     private dailyCheckinService: DailyCheckinService,
     private googleAnalyticsService: GoogleAnalyticsService
-  ) { }
+  ) {
+    this.throttledSubmit = this.throttle((event: any) => {
+      this.submit(event);
+    }, 500);
+    this.throttledResend = this.throttle(() => {
+      this.resendOTP();
+    }, 1000);
+  }
+
+  throttle(fn: any, wait = 500) {
+    let isCalled = false;
+    return function (...args: any[]) {
+      if (!isCalled) {
+        fn(...args);
+        isCalled = true;
+        setTimeout(function () {
+          isCalled = false;
+        }, wait);
+      }
+    };
+  }
 
   ngOnInit(): void { }
 
