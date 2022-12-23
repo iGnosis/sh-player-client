@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { HomeComponent } from './pages/app/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -75,6 +76,7 @@ import { NotificationBarComponent } from './components/notification-bar/notifica
     FormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSnackBarModule,
     LottieModule.forRoot({ player: playerFactory }),
     StoreModule.forRoot({}),
     NgxStripeModule.forRoot('pk_test_51MCGAoSJ1afwULmmMEUXSrTJaNu7ymt6qKPkqnktBSE71h77qyqHnbQeoYF9XC4YbmetgUAziIm8pb927AxLwukv006ZIttv9m'),
