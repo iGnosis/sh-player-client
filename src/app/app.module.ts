@@ -42,6 +42,7 @@ import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-pa
 import { NgxStripeModule } from 'ngx-stripe';
 import { PrimaryModalComponent } from './components/modals/primary-modal/primary-modal.component';
 import { NotificationBarComponent } from './components/notification-bar/notification-bar.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,6 +66,7 @@ import { NotificationBarComponent } from './components/notification-bar/notifica
     AddPaymentMethodComponent,
     PrimaryModalComponent,
     NotificationBarComponent,
+    AvatarComponent,
   ],
   imports: [
     BrowserModule,
