@@ -174,7 +174,28 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/organizations/environment.pmc.ts"
+                  "with": "src/environments/organizations/environment.pointmotion.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "org/imnf": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2.5mb",
+                  "maximumError": "3mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10kb",
+                  "maximumError": "15kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/organizations/environment.imnf.ts"
                 }
               ],
               "outputHashing": "all"
