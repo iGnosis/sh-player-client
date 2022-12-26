@@ -11,6 +11,7 @@ import { ModalConfig } from 'src/app/types/pointmotion';
 })
 export class PrivateComponent implements OnInit {
   showPaymentModal: boolean = false;
+  showFeedbackButton: boolean = true;
   paymentModalConfig: ModalConfig;
 
   constructor(
@@ -33,6 +34,11 @@ export class PrivateComponent implements OnInit {
     };
     router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
+        if (event.url.includes('signup')) {
+          this.showFeedbackButton = false;
+        } else {
+          this.showFeedbackButton = true;
+        }
         await this.fulfillPaymentDetailsRequirement();
         await this.showPaymentModalHandler();
       }

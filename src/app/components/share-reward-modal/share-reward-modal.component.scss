@@ -20,3 +20,13 @@
       border-top: 1px dashed $border-light_color;
     }
   }
+  ::ng-deep {
+    .snackbar-primary {
+      .mat-simple-snack-bar-content {
+        color: #fff;
+      }
+      .mat-button-wrapper {
+        color: #2F51AE;
+      }
+    }
+  }

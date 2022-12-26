@@ -21,15 +21,22 @@
                         </div>
                     </div>
                     <p class="text-nowrap mt-4 text-white font-bold text-start">
-                        {{
-                            currentRating <= 2 ?
-                                'What were your biggest frustrations?' :
-                            currentRating <= 4 ?
-                                'What can we do better?' :
-                                'What did you like the most?'
-                        }} (optional)
+                        Description (optional)
                     </p>
-                    <textarea [(ngModel)]="description" class="rounded-2 w-full mt-2 p-2" name="feedback" id="feedback" rows="5" style="resize: none;"></textarea>
+                    <textarea 
+                    [(ngModel)]="description" 
+                    class="rounded-2 w-full mt-2 p-2" 
+                    name="feedback" 
+                    id="feedback" 
+                    rows="5" 
+                    style="resize: none;" 
+                    [placeholder]="
+                        currentRating <= 2 ?
+                            'What were your biggest frustrations?' :
+                        currentRating <= 4 ?
+                            'What can we do better?' :
+                            'What did you like the most?'
+                    "></textarea>
                     <button (click)="submitFeedback()" class="send-feedback-btn btn-light rounded-2 w-full h-12 text-md font-bolder mt-4">
                         Send Feedback
                     </button>
@@ -56,7 +63,12 @@
                 <!-- Rating -->
                 <div class="d-flex flex-column justify-content-between align-items-center">
                     <div class="w-full ratings d-flex justify-content-between px-12 my-3">
-                        <p *ngFor="let rating of [1,2,3,4,5]" (click)="setProductRating(rating)" [class.rating-color]="rating === currentRecommendationScore" class="rating text-black font-bolder text-xl rounded h-12 px-4 pt-1 cursor-pointer">{{ rating }}</p>
+                        <p 
+                        *ngFor="let rating of [1,2,3,4,5]" 
+                        (click)="setProductRating(rating)" 
+                        [ngClass]="{'bg-success text-white': rating === currentRecommendationScore}" 
+                        [class.text-black]="rating !== currentRecommendationScore"
+                        class="rating font-bolder text-xl rounded h-12 px-4 pt-1 cursor-pointer">{{ rating }}</p>
                     </div>
                     <div class="rating-description w-full d-flex justify-content-between ps-12 pe-6 text-xs text-white">
                         <p>Unlikely</p>
