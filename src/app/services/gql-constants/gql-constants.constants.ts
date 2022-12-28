@@ -141,7 +141,8 @@ export const GqlConstants = {
     }
   }
   `,
-  GET_PATIENT_DETAILS: `query PatientDetails($user:uuid!) {
+  GET_PATIENT_DETAILS: `
+  query PatientDetails($user:uuid!) {
     patient_by_pk(id:$user) {
       id
       email
@@ -151,6 +152,7 @@ export const GqlConstants = {
       phoneNumber
       lastName
       firstName
+      customerId
       }
   }`,
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {

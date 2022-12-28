@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { phone } from 'phone';
-import { GraphqlService } from 'src/app/services/graphql/graphql.service';
-import { GqlConstants } from "src/app/services/gql-constants/gql-constants.constants";
-import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
-import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
-import { JwtService } from 'src/app/services/jwt.service';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
+import {Component} from '@angular/core';
+import {phone} from 'phone';
+import {GraphqlService} from 'src/app/services/graphql/graphql.service';
+import {GqlConstants} from "src/app/services/gql-constants/gql-constants.constants";
+import {Router} from '@angular/router';
+import {UserService} from 'src/app/services/user.service';
+import {DailyCheckinService} from 'src/app/services/daily-checkin/daily-checkin.service';
+import {JwtService} from 'src/app/services/jwt.service';
+import {GoogleAnalyticsService} from 'src/app/services/google-analytics/google-analytics.service';
 
 // TODO: Decouple this Component (checkins, onboardings... etc)
 @Component({
@@ -175,6 +175,16 @@ export class SmsOtpLoginComponent {
       console.log('user set successfully');
       // emit signup event
       this.googleAnalyticsService.sendEvent('login');
+      const patientId = this.userService.get().id;
+
+      const userResp = await this.graphQlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, {
+        user: patientId,
+      }, true);
+      if (userResp && userResp.patient_by_pk) {
+        if (!userResp.patient_by_pk.customerId) {
+          const createCustomerResp = await this.graphQlService.gqlRequest(GqlConstants.CREATE_CUSTOMER, {}, true);
+        }
+      }
 
       this.shScreen = true;
       await this.waitForTimeout(6500);
