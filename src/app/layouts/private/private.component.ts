@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { ModalConfig } from 'src/app/types/pointmotion';
@@ -9,10 +10,11 @@ import { ModalConfig } from 'src/app/types/pointmotion';
   templateUrl: './private.component.html',
   styleUrls: ['./private.component.scss']
 })
-export class PrivateComponent implements OnInit {
+export class PrivateComponent implements OnInit, OnDestroy {
   showPaymentModal: boolean = false;
   showFeedbackButton: boolean = true;
   paymentModalConfig: ModalConfig;
+  routeSubscription: Subscription;
 
   constructor(
     private dailyCheckinService: DailyCheckinService,
@@ -32,7 +34,7 @@ export class PrivateComponent implements OnInit {
         this.router.navigate(['/app/add-payment-method']);
       },
     };
-    router.events.subscribe(async (event) => {
+    this.routeSubscription = router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
         if (event.url.includes('signup')) {
           this.showFeedbackButton = false;
@@ -51,6 +53,10 @@ export class PrivateComponent implements OnInit {
         this.router.navigate(["app", "checkin"]);
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 
   async fulfillPaymentDetailsRequirement() {
