@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 export class AuthService {
 
   baseURL: string = ''
-  constructor(private http: HttpClient, private graphqlService: GraphqlService, private userService: UserService) {
+  constructor(private gqlService: GraphqlService, private http: HttpClient, private graphqlService: GraphqlService, private userService: UserService) {
     this.baseURL = environment.servicesEndpoint
   }
 
@@ -82,6 +82,22 @@ export class AuthService {
 
       await this.createStripeCustomer();
       return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async getPatientDetails() {
+    try {
+      const patientId = this.userService.get().id;
+      const patient = await this.gqlService.gqlRequest(
+        GqlConstants.GET_PATIENT_DETAILS,
+        {
+          user: patientId,
+        },
+        true
+      );
+      return patient.patient_by_pk;
     } catch(e) {
       return e;
     }

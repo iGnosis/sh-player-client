@@ -153,7 +153,8 @@ export const GqlConstants = {
       lastName
       firstName
       customerId
-      }
+      createdAt
+    }
   }`,
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
     faqAccessed {
@@ -284,6 +285,12 @@ export const GqlConstants = {
   query GetRequirePaymentDetails {
     subscription_plans {
       requirePaymentDetails
+    }
+  }`,
+  GET_TRIAL_PERIOD: `
+  query GetRequirePaymentDetails {
+    subscription_plans {
+      trialPeriod
     }
   }`,
 };
