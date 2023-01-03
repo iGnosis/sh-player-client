@@ -22,7 +22,7 @@
           <p class="mt-5">
             Name:
             <span class="font-bold">{{
-              patientDetails.firstName + " " + patientDetails.lastName
+              patientDetails.firstName ? (patientDetails.firstName + " " + patientDetails.lastName) : patientDetails.nickname ? patientDetails.nickname : ''
             }}</span>
           </p>
           <p class="mt-5">

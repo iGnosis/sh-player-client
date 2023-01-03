@@ -23,6 +23,7 @@ export class AccountDetailsComponent implements OnInit {
     firstName: string;
     phoneCountryCode: string;
     phoneNumber: string;
+    nickname: string;
   };
 
   subscription!: any;
