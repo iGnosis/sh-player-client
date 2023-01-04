@@ -40,7 +40,7 @@ export class NotificationBarComponent {
       this.daysLeft = Math.floor((currentPeriodEnd.getTime() - today.getTime()) / (1000 * 3600 * 24));  
     }
 
-    if (status === 'trial_period' && this.daysLeft <= 5) {
+    if (status === 'trial_period' && this.daysLeft <= 5 && !subscriptionObj) {
       this.show = true;
     }
 

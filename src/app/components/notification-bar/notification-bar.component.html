@@ -1,7 +1,7 @@
 <div 
     *ngIf="show"
     class="w-full h-14 position-relative"
-    [ngClass]="daysLeft === 1 ? 'bg-danger' : daysLeft <= 5 ? 'bg-warning' : 'bg-primary'"
+    [ngClass]="daysLeft === 1 ? 'bg-danger' : daysLeft <= 5 && daysLeft > 1 ? 'bg-warning' : 'bg-white'"
     style="z-index: 1;">
     <!-- Last Day -->
     <div *ngIf="daysLeft === 1" class="container-fluid d-flex h-full">
@@ -22,8 +22,8 @@
     <!-- Payment method updated -->
     <div *ngIf="daysLeft > 5" class="container-fluid d-flex h-full">
         <div class="d-flex align-items-center m-auto">
-            <p class="text-white m-0 ms-2 font-bold">You payment details have been updated.</p>
+            <p class="text-primary m-0 ms-2 font-bold">You payment details have been updated.</p>
         </div>
-        <button (click)="hide()" class="btn btn-transparent"><i class="text-white fa-solid fa-circle-xmark"></i></button>
+        <button (click)="hide()" class="btn btn-transparent"><i class="text-primary fa-solid fa-circle-xmark"></i></button>
     </div>
 </div>
