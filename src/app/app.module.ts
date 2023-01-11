@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { HomeComponent } from './pages/app/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -35,6 +36,13 @@ import { FeedbackModalComponent } from './components/modals/feedback-modal/feedb
 import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
 import { ShareRewardModalComponent } from './components/share-reward-modal/share-reward-modal.component';
 import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.component';
+import { AccountDetailsComponent } from './pages/app/account-details/account-details.component';
+import { BillingHistoryComponent } from './pages/app/billing-history/billing-history.component';
+import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-payment-method.component';
+import { NgxStripeModule } from 'ngx-stripe';
+import { PrimaryModalComponent } from './components/modals/primary-modal/primary-modal.component';
+import { NotificationBarComponent } from './components/notification-bar/notification-bar.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +61,12 @@ import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.c
     DailyCheckinComponent,
     ShareRewardModalComponent,
     SmsOtpLoginComponent,
+    AccountDetailsComponent,
+    BillingHistoryComponent,
+    AddPaymentMethodComponent,
+    PrimaryModalComponent,
+    NotificationBarComponent,
+    AvatarComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,8 +78,10 @@ import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.c
     FormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSnackBarModule,
     LottieModule.forRoot({ player: playerFactory }),
-    StoreModule.forRoot({})
+    StoreModule.forRoot({}),
+    NgxStripeModule.forRoot('pk_test_51MCGAoSJ1afwULmmMEUXSrTJaNu7ymt6qKPkqnktBSE71h77qyqHnbQeoYF9XC4YbmetgUAziIm8pb927AxLwukv006ZIttv9m'),
   ],
   providers: [
     PrivateGuard,

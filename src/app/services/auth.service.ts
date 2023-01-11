@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
@@ -12,7 +11,7 @@ import { UserService } from './user.service';
 export class AuthService {
 
   baseURL: string = ''
-  constructor(private http: HttpClient, private graphqlService: GraphqlService, private userService: UserService) {
+  constructor(private gqlService: GraphqlService, private http: HttpClient, private graphqlService: GraphqlService, private userService: UserService) {
     this.baseURL = environment.servicesEndpoint
   }
 
@@ -34,6 +33,43 @@ export class AuthService {
     }
   }
 
+  async getPaymentMethodRequirement() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_PAYMENT_METHOD_REQUIREMENT);
+      return res.subscription_plans[0].requirePaymentDetails;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async getSubscriptionStatus() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
+      return res.getSubscriptionStatus.data;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async getSubscriptionDetails() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
+      return res.getSubscriptionDetails.subscription;
+    } catch(e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  private async createStripeCustomer() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.CREATE_CUSTOMER);
+      return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
   async setPatientDetails(details: SetPatientDetailsRequestDTO) {
     try {
       const user = this.userService.get()
@@ -43,7 +79,25 @@ export class AuthService {
         id: user.id
       }
       const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_DETAILS, data);
+
+      await this.createStripeCustomer();
       return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async getPatientDetails() {
+    try {
+      const patientId = this.userService.get().id;
+      const patient = await this.gqlService.gqlRequest(
+        GqlConstants.GET_PATIENT_DETAILS,
+        {
+          user: patientId,
+        },
+        true
+      );
+      return patient.patient_by_pk;
     } catch(e) {
       return e;
     }

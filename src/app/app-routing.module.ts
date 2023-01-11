@@ -13,6 +13,9 @@ import { RewardsComponent } from './pages/app/rewards/rewards.component';
 import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.component';
 import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.component';
 import { environment } from 'src/environments/environment';
+import { AccountDetailsComponent } from './pages/app/account-details/account-details.component';
+import { BillingHistoryComponent } from './pages/app/billing-history/billing-history.component';
+import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-payment-method.component';
 
 const routes: Routes = [
   {
@@ -43,6 +46,9 @@ const routes: Routes = [
       { path: 'rewards', component: RewardsComponent },
       { path: 'goals', component: GoalsComponent, },
       { path: 'help', component: HelpComponent, },
+      { path: 'account-details', component: AccountDetailsComponent, },
+      { path: 'billing-history', component: BillingHistoryComponent, },
+      { path: 'add-payment-method', component: AddPaymentMethodComponent, },
     ]
   },
 ];

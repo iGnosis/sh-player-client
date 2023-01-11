@@ -1,8 +1,19 @@
 .bg-primary {
     background-color: $primary_color !important;
 }
+.bg-success {
+    background-color: $success_color !important;
+}
 .btn-primary {
     background-color: $primary_color !important;
+}
+.btn-outline-primary {
+    color: $primary_color !important;
+    border-color: $primary_color !important;
+    &:hover {
+        background-color: $primary_color !important;
+        color: #fff !important;
+    }
 }
 .text-primary {
     color: $primary_color !important;

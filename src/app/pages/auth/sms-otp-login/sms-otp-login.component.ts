@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { phone } from 'phone';
-import { GraphqlService } from 'src/app/services/graphql/graphql.service';
-import { GqlConstants } from "src/app/services/gql-constants/gql-constants.constants";
-import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
-import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
-import { JwtService } from 'src/app/services/jwt.service';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
+import {Component} from '@angular/core';
+import {phone} from 'phone';
+import {GraphqlService} from 'src/app/services/graphql/graphql.service';
+import {GqlConstants} from "src/app/services/gql-constants/gql-constants.constants";
+import {Router} from '@angular/router';
+import {UserService} from 'src/app/services/user.service';
+import {DailyCheckinService} from 'src/app/services/daily-checkin/daily-checkin.service';
+import {JwtService} from 'src/app/services/jwt.service';
+import {GoogleAnalyticsService} from 'src/app/services/google-analytics/google-analytics.service';
 
 // TODO: Decouple this Component (checkins, onboardings... etc)
 @Component({
@@ -32,6 +32,9 @@ export class SmsOtpLoginComponent {
   tempFullPhoneNumber?: string;
   fullPhoneNumber?: string;
 
+  throttledSubmit: (...args: any[]) => void;
+  throttledResend: (...args: any[]) => void;
+
   constructor(
     private graphQlService: GraphqlService,
     private router: Router,
@@ -39,7 +42,27 @@ export class SmsOtpLoginComponent {
     private jwtService: JwtService,
     private dailyCheckinService: DailyCheckinService,
     private googleAnalyticsService: GoogleAnalyticsService
-  ) { }
+  ) {
+    this.throttledSubmit = this.throttle((event: any) => {
+      this.submit(event);
+    }, 500);
+    this.throttledResend = this.throttle(() => {
+      this.resendOTP();
+    }, 1000);
+  }
+
+  throttle(fn: any, wait = 500) {
+    let isCalled = false;
+    return function (...args: any[]) {
+      if (!isCalled) {
+        fn(...args);
+        isCalled = true;
+        setTimeout(function () {
+          isCalled = false;
+        }, wait);
+      }
+    };
+  }
 
   ngOnInit(): void { }
 
@@ -52,6 +75,9 @@ export class SmsOtpLoginComponent {
         this.countryCode = `+${this.countryCode}`;
       }
       this.phoneNumber = event.target.phoneNumber.value;
+
+      this.countryCode = this.countryCode ? this.countryCode.trim() : '';
+      this.phoneNumber = this.phoneNumber ? this.phoneNumber.trim() : '';
       console.log('submit:countryCode:', this.countryCode);
       console.log('submit:phoneNumber:', this.phoneNumber);
 
@@ -73,7 +99,7 @@ export class SmsOtpLoginComponent {
           phoneNumber: this.phoneNumber
         }, false);
         if (!resp || !resp.resendLoginOtp || !resp.resendLoginOtp.data.message) {
-          this.showError('Something went wrong while sending OTP.')
+          this.showError('Something went wrong while sending OTP.');
           return;
         }
         if (resp.resendLoginOtp.data.isExistingUser) {
@@ -87,7 +113,11 @@ export class SmsOtpLoginComponent {
           phoneNumber: this.phoneNumber
         }, false);
         if (!resp || !resp.requestLoginOtp || !resp.requestLoginOtp.data.message) {
-          this.showError('Something went wrong while sending OTP.')
+          if (resp.message && resp.message.toLowerCase().includes('unauthorized')) {
+            this.showError('Account does not exist. Please ask your provider to create an account for you.');
+          } else {
+            this.showError('Something went wrong while sending OTP.');
+          }
           return;
         }
         if (resp.requestLoginOtp.data.isExistingUser) {
@@ -102,11 +132,11 @@ export class SmsOtpLoginComponent {
       this.resendOtpTimer = 60;
       const timerInt = setInterval(() => {
         this.resendOtpTimer--;
-        if (this.resendOtpTimer === 0){
+        if (this.resendOtpTimer === 0) {
           clearInterval(timerInt);
           this.showResendOtpTimerText = false;
         }
-      }, 1000)
+      }, 1000);
 
       if (this.step > 1) {
         this.step = 1;
@@ -126,7 +156,7 @@ export class SmsOtpLoginComponent {
       }, false);
 
       if (!resp || !resp.verifyLoginOtp || !resp.verifyLoginOtp.data.token) {
-        this.showError('That is not the code.')
+        this.showError('That is not the code.');
         return;
       }
 
@@ -145,6 +175,16 @@ export class SmsOtpLoginComponent {
       console.log('user set successfully');
       // emit signup event
       this.googleAnalyticsService.sendEvent('login');
+      const patientId = this.userService.get().id;
+
+      const userResp = await this.graphQlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, {
+        user: patientId,
+      }, true);
+      if (userResp && userResp.patient_by_pk) {
+        if (!userResp.patient_by_pk.customerId) {
+          const createCustomerResp = await this.graphQlService.gqlRequest(GqlConstants.CREATE_CUSTOMER, {}, true);
+        }
+      }
 
       this.shScreen = true;
       await this.waitForTimeout(6500);
@@ -186,5 +226,21 @@ export class SmsOtpLoginComponent {
         resolve({});
       }, timeout);
     });
+  }
+
+  async resendOTP() {
+    const resp = await this.graphQlService.gqlRequest(GqlConstants.RESEND_LOGIN_OTP, {
+      phoneCountryCode: this.countryCode,
+      phoneNumber: this.phoneNumber
+    }, false);
+    this.showResendOtpTimerText = true;
+    this.resendOtpTimer = 60;
+    const timerInt = setInterval(() => {
+      this.resendOtpTimer--;
+      if (this.resendOtpTimer === 0) {
+        clearInterval(timerInt);
+        this.showResendOtpTimerText = false;
+      }
+    }, 1000);
   }
 }

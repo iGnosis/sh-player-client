@@ -1,0 +1,47 @@
+<div style="background-color: #FAFAFA;" class="h-screen">
+    <div class="row">&nbsp;</div>
+    <div class="container">
+        <div class="card bg-white p-8 shadow-3">
+            <h5 class="text-dark pb-5">Billing History</h5>
+            <div class="table-responsive">
+                <table class="table table-hover table-nowrap">
+                  <thead class="table-light">
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Plan Details</th>
+                      <th scope="col">Service Period</th>
+                      <th scope="col">Payment Method</th>
+                      <th scope="col">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let invoice of invoices" class="cursor-pointer" (click)="openInvoice(invoice.url)">
+                      <td data-label="Date">
+                        <p class="text-heading font-semibold">
+                          {{ invoice.paymentDate * 1000 | date: 'MMM d, y' }}
+                        </p>
+                      </td>
+                      <td data-label="Plan Details">
+                        <span>{{ 'Sound Health Membership' }}</span>
+                      </td>
+                      <td data-label="Service Period">
+                        <span *ngIf="invoice.subscriptionPeriod">{{ 
+                          (invoice.subscriptionPeriod.start * 1000 | date: 'd MMM') +
+                          ' - ' +
+                          (invoice.subscriptionPeriod.end * 1000 | date: 'd MMM, y')
+                        }}</span>
+                      </td>
+                      <td data-label="Payment Method">
+                        <span *ngIf="invoice.cardDetails && invoice.cardDetails.brand"><i [class]="'fa-brands fa-cc-' + invoice.cardDetails.brand"></i>&nbsp;</span>
+                        <span *ngIf="invoice.cardDetails && invoice.cardDetails.last4">{{ '**** **** **** ' + invoice.cardDetails.last4 }}</span>
+                      </td>
+                      <td data-label="Company">
+                        <span>{{ invoice.amountPaid > 0 ? '$' + invoice.amountPaid : 'Free' }}</span>
+                      </td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+</div>

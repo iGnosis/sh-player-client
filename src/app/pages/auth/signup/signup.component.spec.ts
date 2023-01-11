@@ -11,7 +11,7 @@ describe('SignupComponent', () => {
   let router: Router;
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
-  let mockAuthService = jasmine.createSpyObj('AuthService', ['setPreferredGenres', 'setPreferredActivities', 'setPatientDetails']);
+  let mockAuthService = jasmine.createSpyObj('AuthService', ['setPreferredGenres', 'setPreferredActivities', 'setPatientDetails', 'getPaymentMethodRequirement']);
   mockAuthService.setPatientDetails.and.returnValue(new Promise((resolve, reject) => resolve({
     response: {},
   })));
@@ -21,6 +21,7 @@ describe('SignupComponent', () => {
   mockAuthService.setPreferredGenres.and.returnValue(new Promise((resolve, reject) => resolve({
     response: {},
   })));
+  mockAuthService.getPaymentMethodRequirement.and.returnValue(new Promise((resolve, reject) => resolve(false)));
   let mockGAService = jasmine.createSpyObj('GoogleAnalyticsService', ['sendEvent']);
 
   beforeEach(async () => {

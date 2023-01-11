@@ -2,7 +2,7 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
-import { Patient } from "src/app/types/pointmotion";
+import { ModalConfig, Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/types/pointmotion";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";

@@ -9,12 +9,12 @@ nav {
     }
     a:focus, a:hover {
         span {
-            color: $primary_color;
-            filter: brightness(0.5);
+            color: #FFFFFF;
+            filter: brightness(0.7);
         }
     }
     & > div.active {
-        border-bottom: 3px solid $primary_color;
+        border-bottom: 3px solid #FFFFFF;
     }
 }
 .navbar-light .navbar-nav .nav-link {

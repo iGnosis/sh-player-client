@@ -1,4 +1,4 @@
-<nav *ngIf="!hideNavbar" class="navbar navbar-expand-lg navbar-light bg-white p-0">
+<nav *ngIf="!hideNavbar" class="navbar navbar-expand-lg navbar-light bg-primary p-0">
     <div class="container-fluid">
         <!-- Navbar toggle -->
         <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,24 +47,44 @@
             <!-- Nav -->
             <div class="nav-left navbar-nav ms-10">
                 <div class="h-full" [class.active]="activeTab === 'home'">
-                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'home'" routerLink="/app/home" aria-current="page"><span>Home</span></a>
+                    <a class="nav-item nav-link px-7 py-1 my-3 border-end text-white" (click)="activeTab = 'home'" routerLink="/app/home" aria-current="page"><span>Home</span></a>
                 </div>
                 <div class="h-full" [class.active]="activeTab === 'rewards'">
-                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'rewards'" routerLink="/app/rewards"
+                    <a class="nav-item nav-link px-7 py-1 my-3 border-end text-white" (click)="activeTab = 'rewards'" routerLink="/app/rewards"
                         aria-current="page"><span>Rewards</span></a>
                 </div>
                 <!-- <div class="h-full" [class.active]="activeTab === 'goals'">
                     <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'goals'" routerLink="/app/goals">Goals</a>
                 </div> -->
                 <div class="h-full" [class.active]="activeTab === 'help'">
-                    <a class="nav-item nav-link px-7 py-1 my-3" (click)="activeTab = 'help'" routerLink="/app/help"><span>Help</span></a>
+                    <a class="nav-item nav-link px-7 py-1 my-3 text-white" (click)="activeTab = 'help'" routerLink="/app/help"><span>Help</span></a>
                 </div>
             </div>
             <!-- Right navigation -->
             <div class="nav-right navbar-nav align-items-lg-center d-none d-lg-flex ms-lg-auto">
-                <p (click)="logout()" class="nav-link nav-link-icon px-3 position-relative cursor-pointer font-bold">
-                    Sign Out&nbsp;<img class="w-5 h-5 ms-1" src="assets/icons/logout.jpg" alt="logout">
-                </p>
+
+                <div class="dropdown order order-lg-last ms-lg-4">
+                    <div class="d-block" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <avatar
+                            [text]="username"
+                            bgColor="auto"
+                            [bgAuto]="true"
+                            size="sm"
+                        ></avatar>
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-end">
+                    <a routerLink="/app/account-details" class="dropdown-item">
+                        <i class="ni ni-single-02"></i>
+                        <span class="text-primary font-bold">Account Details</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <p (click)="showLogoutModal = true" class="dropdown-item cursor-pointer">
+                        <i class="ni ni-user-run"></i>
+                        <span class="text-primary font-bold">Sign Out of Sound Health</span>
+                    </p>
+                    </div>
+                </div>
+                <primary-modal [show]="showLogoutModal" [modalConfig]="logoutModalConfig"></primary-modal>
             </div>
         </div>
     </div>
