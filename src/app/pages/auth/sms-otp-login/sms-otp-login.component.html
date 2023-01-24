@@ -1,97 +1,76 @@
 <app-sh-screen *ngIf="shScreen"></app-sh-screen>
 
-<div *ngIf="!shScreen" class="main">
-  <div class="login-form">
-    <div *ngIf="formErrorMsg" class="formErrorMsg">
-      {{ formErrorMsg }}
-    </div>
+<div *ngIf="!shScreen" class="signup-container w-screen h-screen">
+  <!-- Nav bar -->
+  <nav class="bg-white h-14 shadow-2 d-flex justify-content-between align-items-center px-5">
+      <p class="text-black text-lg cursor-pointer" (click)="step == 0 ? goBack(): resetForm()">
+          <i class="fa-solid fa-arrow-left text-xl"></i>&nbsp;&nbsp;Go Back
+      </p>
+      <img class="h-10" src="assets/icons/sound_health_logo_alpha.png" alt="alpha logo">
+  </nav>
 
-
-    <div class="d-flex flex-column mb-3">
-      <!-- Show loading spinner -->
-      <div *ngIf="step === -1" class="spinner pt-4">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
+  <main class="w-full d-flex flex-column justify-content-center align-items-center overflow-auto py-10">
+    <!-- Enter Phone number -->
+    <form (ngSubmit)="throttledSubmit($event)" *ngIf="step === 0" class="rounded px-10 py-14 shadow-1 bg-card w-2/5 position-relative">
+      <p *ngIf="formErrorMsg" class="bg-danger h-6 position-absolute top-0 w-full start-0 text-center text-white rounded-top">{{ formErrorMsg }}</p>
+      <div class="w-full d-flex justify-content-center py-5">
+          <img src="assets/icons/signup/touch.png" alt="dial pad">
+      </div>
+      <h3 class="text-primary text-center pb-5">Enter your phone number</h3>
+      <div class="row px-4 g-3">
+        <div class="col-sm-4">
+          <label for="countryCode" class="form-label">Country Code</label>
+          <select id="countryCode" class="form-select" required>
+            <option value="{{ countryCode }}" selected>{{ selectedCountry }}</option>
+            <option value="+1">+1 Canada</option>
+            <option value="+91">+91 India</option>
+          </select>
+        </div>
+        <div class="col-sm-8">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input #phoneNumber type="text" class="form-control" id="phoneNumber" placeholder="Your phone number"
+            required>
         </div>
       </div>
 
-      <form (ngSubmit)="throttledSubmit($event)">
-        <div *ngIf="step === 0">
-
-          <div class="p-8 pmc-logo">
-            <img src="assets/icons/sound_health_logo_alpha.png" alt="logo">
-            <div class="mt-3 h3">Welcome to Sound Health</div>
-          </div>
-
-
-          <div class="p-2 input-form">
-            <div class="row px-4 g-3">
-              <div class="col-sm-4">
-                <label for="countryCode" class="form-label">Country Code</label>
-                <select id="countryCode" class="form-select" required>
-                  <option value="{{ countryCode }}" selected>{{ selectedCountry }}</option>
-                  <option value="+1">+1 Canada</option>
-                  <option value="+91">+91 India</option>
-                </select>
-              </div>
-              <div class="col-sm-8">
-                <label for="phoneNumber" class="form-label">Phone Number</label>
-                <input #phoneNumber type="text" class="form-control" id="phoneNumber" placeholder="Your phone number"
-                  required>
-              </div>
-            </div>
-
-            <div class="row my-4 px-4">
-              <div class="my-2">
-                <button type="submit" class="btn btn-primary submit-btn">Get One Time Password on
-                  Phone</button>
-              </div>
-              <div class="py-2 terms">
-                <p><span class="text-dark">By signing up, you agree to our <a target="_blank"
-                      href="https://www.pointmotion.us/index.php/end-user-license-agreement/">Terms and Conditions</a>
-                    and <a target="_blank" href="#">Privacy
-                      Policy.</a></span></p>
-              </div>
-            </div>
-          </div>
+      <div class="row my-4 px-4">
+        <div class="my-2">
+          <button type="submit" class="btn btn-primary submit-btn w-full">Get One Time Password on
+            Phone</button>
         </div>
-
-        <div *ngIf="step === 1">
-          <div class="input-form px-8 py-6">
-            <div class="row ">
-              <div class="col-sm-12">
-                <div class="d-flex justify-content-start">
-                  <span role="button" (click)="resetForm()" class="bi bi-chevron-left text-black custom-icon mx-2"><span
-                      class="go-back-btn mx-2">Go Back</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 mt-8">
-                <p *ngIf="!isEmailRegistered" class="h2 text-center">Enter the 6-digit code sent to {{fullPhoneNumber}}.
-                </p>
-                <p *ngIf="isEmailRegistered" class="h2 text-center">Enter the 6-digit code sent to {{fullPhoneNumber}}
-                  and to your registered email.
-                </p>
-              </div>
-              <div class="col-sm-12 mt-8">
-                <input type="text" class="form-control" id="otpCode" placeholder="Enter OTP">
-              </div>
-              <div *ngIf="showResendOtpTimerText" class="col-sm-12 text-center mt-8 text-dark">
-                Resend code in {{'00:'+resendOtpTimer}}
-              </div>
-              <div *ngIf="!showResendOtpTimerText" class="col-sm-12 text-center mt-8 text-dark">
-                <span class="p-0 m-0 text-primary clickable" (click)="throttledResend()">RESEND CODE</span>
-              </div>
-              <div class="col-sm-12 mt-6 py-1">
-                <button type="submit" class="btn btn-primary continue-btn">Continue</button>
-              </div>
-            </div>
-          </div>
+        <div class="py-2 terms">
+          <p><span class="text-dark text-sm">By signing up, you agree to our <a target="_blank"
+                href="https://www.pointmotion.us/index.php/end-user-license-agreement/">Terms and Conditions</a>
+              and <a target="_blank" href="#">Privacy
+                Policy.</a></span></p>
         </div>
-
-      </form>
-
-    </div>
-  </div>
+      </div>
+    </form>
+    <!-- Enter Otp -->
+    <form (ngSubmit)="throttledSubmit($event)" *ngIf="step === 1" class="rounded px-10 py-14 shadow-1 bg-card w-2/5 row position-relative">
+      <p *ngIf="formErrorMsg" class="bg-danger h-6 position-absolute top-0 w-full start-0 text-center text-white rounded-top">{{ formErrorMsg }}</p>
+      <div class="col-sm-12">
+        <div class="w-full d-flex justify-content-center py-5">
+            <img src="assets/icons/signup/otp.png" alt="otp">
+        </div>
+        <h3 *ngIf="!isEmailRegistered" class="text-primary text-center pb-5">Enter the 6-digit code sent to {{fullPhoneNumber}}.</h3>
+        <h3 *ngIf="isEmailRegistered" class="text-primary text-center pb-5">Enter the 6-digit code sent to {{fullPhoneNumber}}
+          and to your registered email.
+        </h3>
+      </div>
+      <div class="col-sm-12">
+        <label for="otpCode" class="form-label">One Time Password</label>
+        <input type="text" class="form-control" id="otpCode" placeholder="Enter OTP">
+      </div>
+      <div *ngIf="showResendOtpTimerText" class="col-sm-12 text-center mt-2 text-dark">
+        Resend code in {{'00:'+resendOtpTimer}}
+      </div>
+      <div *ngIf="!showResendOtpTimerText" class="col-sm-12 text-center mt-2 text-dark cursor-pointer">
+        <span class="p-0 m-0 text-primary clickable" (click)="throttledResend()">Resend Code</span>
+      </div>
+      <div class="col-sm-12 mt-6 py-1">
+        <button type="submit" class="btn btn-primary continue-btn w-full">{{isEmailRegistered ? 'Login' : 'Sign Up'}}</button>
+      </div>
+    </form>
+  </main>
 </div>

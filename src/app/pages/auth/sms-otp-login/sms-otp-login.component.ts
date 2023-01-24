@@ -203,6 +203,10 @@ export class SmsOtpLoginComponent {
     }
   }
 
+  goBack() {
+    this.router.navigate(["/public/start"]);
+  }
+
   resetForm() {
     this.tempFullPhoneNumber = this.fullPhoneNumber;
     this.step = 0;

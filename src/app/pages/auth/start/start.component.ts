@@ -19,10 +19,6 @@ export class StartComponent implements OnInit {
     this.router.navigate(['public/login'])
   }
 
-  async login() {
-    this.router.navigate(['public/login'])
-  }
-
   updateCarouselSlide(slide: number) {
     this.carouselSlide = slide;
   }
