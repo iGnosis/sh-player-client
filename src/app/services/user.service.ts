@@ -4,6 +4,7 @@ import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PaymentMethod } from '@stripe/stripe-js';
 
 @Injectable({
   providedIn: 'root'
@@ -51,20 +52,22 @@ export class UserService {
       throw new Error('User not set');
     }
 
-    const response = await this.gqlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, { user: user.id })
+    const response = await this.gqlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, { user: user.id });
+    const cardResp: { getDefaultPaymentMethod: { data: PaymentMethod } } = await this.gqlService.gqlRequest(GqlConstants.GET_DEFAULT_PAYMENT_METHOD);
+
 
     if (response && response.patient_by_pk) {
-      if (!response.patient_by_pk.email) {
-        return 2;
-      } else if (!response.patient_by_pk.nickname) {
-        return 3;
-      } else if (!response.patient_by_pk.preferredGenres) {
-        return 4;
+      if (!response.patient_by_pk.firstName || !response.patient_by_pk.lastName) {
+        return 'profile';
+      } else if (!response.patient_by_pk.email) {
+        return 'email';
+      } else if (!cardResp || !cardResp.getDefaultPaymentMethod || !cardResp.getDefaultPaymentMethod.data || !cardResp.getDefaultPaymentMethod.data.card) {
+        return 'payment';
       } else {
-        return -1; // -1 is a status for skipping the onboarding
+        return 'finish'; // skipping the onboarding
       }
     } else {
-      return 4; // Send the user to step 4 directly
+      return 'finish'; // skipping the onboarding
     }
   }
 

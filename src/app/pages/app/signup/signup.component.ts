@@ -1,0 +1,126 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+
+@Component({
+  selector: 'signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.scss']
+})
+export class SignupComponent implements OnInit {
+  steps = ['setup', 'profile', 'email', 'payment', 'finish'];
+  stepperSteps = this.steps.slice(1, this.steps.length - 1);
+  stepperIndex: number = 0;
+  incompleteStep: number = 0;
+
+  profileForm: FormGroup;
+  emailForm: FormGroup;
+
+  subscriptionFee: number = 30;
+  trialPeriod: number = 30;
+
+  error: string = '';
+
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private _formBuilder: FormBuilder,
+    private authService: AuthService,
+    private userService: UserService,
+  ) {
+    this.route.params.subscribe(params => {
+      this.error = '';
+      const step = params['step'];
+      if (step && this.steps.indexOf(step) > -1) {
+        this.stepperIndex = this.steps.indexOf(step);
+      } else {
+        this.router.navigate(['/app/signup', this.steps[0]]);
+      }
+    });
+
+    this.profileForm = this._formBuilder.group({
+      salutation: ['Mr'],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+    });
+
+    this.emailForm = this._formBuilder.group({
+      email: new FormControl('', [Validators.required, Validators.email])
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.getIncompleteSteps();
+    await this.getSubscriptionDetails();
+  }
+
+  async getIncompleteSteps() {
+    const step = await this.userService.isOnboarded();
+    this.incompleteStep = this.steps.indexOf(step);
+  }
+
+  async nextIncompleteStep() {
+    this.router.navigate(['/app/signup', this.steps[this.incompleteStep]]);
+  }
+
+  async getSubscriptionDetails() {
+    const res = await this.authService.getSubscriptionPlanDetails();
+    if (res) {
+      this.subscriptionFee = res.subscriptionFee;
+      this.trialPeriod = res.trialPeriod;
+    }
+  }
+
+  goBack() {
+    this.stepperIndex--;
+    this.router.navigate(['/app/signup', this.steps[this.stepperIndex]]);
+  }
+
+  nextStep(){
+    this.stepperIndex++;
+    this.router.navigate(['/app/signup', this.steps[this.stepperIndex]]);
+  }
+
+  async submitForm(step: 'profile' | 'email') {
+    if (step === 'profile') {
+      await this.saveProfile();
+    } else if (step === 'email') {
+      await this.saveEmail();
+    }
+  }
+
+  async saveProfile() {
+    const res = await this.authService.setPatientProfile({
+      namePrefix: this.profileForm.value.salutation,
+      firstName: this.profileForm.value.firstName,
+      lastName: this.profileForm.value.lastName,
+    });
+    if(res.response && res.response.errors) {
+      this.error = res.response.errors[0].message;
+    } else {
+      this.nextStep();
+    }
+  }
+
+  async saveEmail() {
+    const res = await this.authService.setPatientEmail(this.emailForm.value.email);
+    if(res.response && res.response.errors) {
+      this.error =
+        res.response.errors.map((err: any) => {
+        if(err.message.includes('Uniqueness violation')) {
+          return 'This email is already registered'
+        } else {
+          return err.message;
+        }
+      })[0];
+    } else {
+      this.nextStep();
+    }
+  }
+
+  addPaymentMethod() {
+    this.router.navigate(['/app/add-payment-method', { signup: true }]);
+  }
+}

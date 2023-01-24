@@ -117,7 +117,7 @@ export class AddPaymentMethodComponent implements OnInit {
     } finally {
       const continueSignup = this.isSignup === true;
       if (continueSignup) {
-        this.router.navigate(['/app/signup/4']);
+        this.router.navigate(['/app/signup/finish']);
       } else {
         this.router.navigate(['/app/home'], {
           queryParams: { paymentAdded: true },

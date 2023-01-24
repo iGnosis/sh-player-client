@@ -114,6 +114,18 @@ export const GqlConstants = {
       nickname
     }
   }`,
+  SET_PATIENT_PROFILE: `
+  mutation UpdatePatientProfile($id: uuid!, $firstName: String!, $lastName: String!, $namePrefix: String!) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {firstName: $firstName, lastName: $lastName, namePrefix: $namePrefix}) {
+      id
+    }
+  }`,
+  SET_PATIENT_EMAIL: `
+  mutation UpdatePatientEmail($id: uuid!, $email: String) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {email: $email}) {
+      email
+    }
+  }`,
   CREATE_CUSTOMER: `
   mutation CreateCustomer {
     createCustomer {
@@ -126,7 +138,6 @@ export const GqlConstants = {
       nickname
     }
   }`,
-
   SET_FAV_GENRE: `
   mutation SetFavGenre($id: uuid!, $genres: jsonb) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {preferredGenres: $genres}) {
@@ -290,6 +301,13 @@ export const GqlConstants = {
   GET_TRIAL_PERIOD: `
   query GetRequirePaymentDetails {
     subscription_plans {
+      trialPeriod
+    }
+  }`,
+  GET_SUBSCRIPTION_PLAN_DETAILS: `
+  query GetSubscriptionPlanDetails {
+    subscription_plans {
+      subscriptionFee
       trialPeriod
     }
   }`,

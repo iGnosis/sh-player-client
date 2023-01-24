@@ -8,18 +8,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatStepperModule} from '@angular/material/stepper';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { HomeComponent } from './pages/app/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SessionComponent } from './pages/app/session/session.component';
 import { SafePipe } from './pipes/safe/safe.pipe';
 import { StoreModule } from '@ngrx/store';
 import { PrivateGuard } from './guards/private-guard';
 import { PublicGuard } from './guards/public-guard';
 import { GoalsComponent } from './pages/app/goals/goals.component';
-import { SignupComponent } from './pages/auth/signup/signup.component';
+import { SignupComponent } from './pages/app/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { UpdateHeadersInterceptor } from './interceptors/update-headers.interceptor';
 import { PrivateComponent } from './layouts/private/private.component';
@@ -52,6 +53,7 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     SafePipe,
     GoalsComponent,
     SignupComponent,
+    SignupComponent,
     HelpComponent,
     PrivateComponent,
     StartComponent,
@@ -76,9 +78,11 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     CarouselModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
+    MatStepperModule,
     LottieModule.forRoot({ player: playerFactory }),
     StoreModule.forRoot({}),
     NgxStripeModule.forRoot('pk_test_51MCGAoSJ1afwULmmMEUXSrTJaNu7ymt6qKPkqnktBSE71h77qyqHnbQeoYF9XC4YbmetgUAziIm8pb927AxLwukv006ZIttv9m'),

@@ -1,0 +1,89 @@
+$green: #007F6E;
+
+.signup-container {
+    background-image: url(../../../../assets/images/backgrounds/signup-background.png);
+}
+main {
+    height: calc(100vh - 3.5rem);
+    ul {
+        list-style: none;
+    }
+}
+::ng-deep {
+    .bg-card {
+        background-color: #fafafa !important;
+    }
+    mat-stepper .mat-horizontal-stepper-header-container {
+        pointer-events: none;
+    }
+    .mat-step-header.cdk-program-focused {
+        background-color: transparent;
+    }
+    .mat-step-header.cdk-mouse-focused{
+        background-color: transparent;
+    }
+    .mat-step-header.cdk-focused{
+        background-color: transparent;
+    }
+    .mat-step-header .mat-step-label.mat-step-label-active {
+        color: #A0AEC0;
+        &.mat-step-label-selected {
+            color: $green;
+        }
+    }
+    .mat-step-header .mat-step-icon {
+        background-color: #A0AEC0;
+    }
+    .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+        background-color: $green;
+    }
+    .mat-step-icon.mat-step-icon-state-number:not(.mat-step-icon-state-edit):not(.mat-step-icon-selected) {
+        color: transparent;
+    }
+    .label-position-top .mat-step-header .mat-step-label{
+        position: relative;
+        top: -65px;
+    }
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header {
+        z-index: 1;
+    }
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before,
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::after {
+        width: 50% !important;
+        position: absolute !important;
+        z-index: -1;
+        border-top-width: 3px !important;
+        border-top: 3px solid #A0AEC0;
+    }
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before {
+        width: 50% !important;
+        position: absolute !important;
+        z-index: -1;
+    }
+    @mixin styleStepLine($index) {
+        .mat-horizontal-stepper-header {
+            &+.mat-stepper-horizontal-line:nth-child(#{$index}) {
+                height: 2px;
+                background-image: linear-gradient(to right, $green, $green);
+            }
+            &:nth-child(#{$index - 1})::after, &:nth-child(#{$index + 1})::before {
+                border-top: 3px solid $green;
+                border-top-width: 3px !important;
+            }
+        }
+    }
+    
+    .last-edited-step-1 {
+        @include styleStepLine(2);
+    }
+    
+    .last-edited-step-2 {
+        @include styleStepLine(2);
+        @include styleStepLine(4);
+    }
+    .stepper-steps {
+        & .mat-horizontal-stepper-header-container {
+            display: none;
+        }
+    }
+}
