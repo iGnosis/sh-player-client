@@ -15,15 +15,17 @@ export class AddPaymentMethodComponent implements OnInit {
   elements!: StripeElements;
   clientSecret!: string;
   isSignup: boolean = false;
+  promoCode!: string;
 
   constructor(
     private gqlService: GraphqlService,
     private stripeService: StripeService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
-    this.isSignup = Boolean(this.route.snapshot.paramMap.get('signup')) || false;
+    this.isSignup =
+      Boolean(this.route.snapshot.paramMap.get('signup')) || false;
   }
 
   async ngOnInit(): Promise<void> {
@@ -110,9 +112,34 @@ export class AddPaymentMethodComponent implements OnInit {
       } else {
         throw new Error('Subscription does not exist');
       }
-    } catch(err) {
+    } catch (err) {
+      await this.gqlService.client.request(GqlConstants.CREATE_SUBSCRIPTION);
+    } finally {
+      const continueSignup = this.isSignup === true;
+      if (continueSignup) {
+        this.router.navigate(['/app/signup/finish']);
+      } else {
+        this.router.navigate(['/app/home'], {
+          queryParams: { paymentAdded: true },
+        });
+      }
+    }
+  }
+
+  async subscribeWithPromoCodeAndRedirect() {
+    try {
+      const res = await this.authService.getSubscriptionDetails();
+      if (res?.data?.getSubscriptionDetails?.subscriptionId) {
+        return;
+      } else {
+        throw new Error('Subscription does not exist');
+      }
+    } catch (err) {
       await this.gqlService.client.request(
-        GqlConstants.CREATE_SUBSCRIPTION
+        GqlConstants.CREATE_SUBSCRIPTION_WITH_PROMOCODE,
+        {
+          promocode: this.promoCode,
+        }
       );
     } finally {
       const continueSignup = this.isSignup === true;
