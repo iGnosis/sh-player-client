@@ -312,4 +312,10 @@ export const GqlConstants = {
       requirePaymentDetails
     }
   }`,
+  CREATE_SUBSCRIPTION_WITH_PROMOCODE: `
+  mutation CreateSubscriptionWithPromoCode($promocode: String!) {
+  createSubscriptionWithPromocode(promocode: $promocode) {
+    subscription
+  }
+}`,
 };
