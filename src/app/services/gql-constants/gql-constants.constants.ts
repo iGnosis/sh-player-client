@@ -309,6 +309,7 @@ export const GqlConstants = {
     subscription_plans {
       subscriptionFee
       trialPeriod
+      requirePaymentDetails
     }
   }`,
 };

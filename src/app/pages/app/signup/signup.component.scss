@@ -1,4 +1,5 @@
 $green: #007F6E;
+$gray: #A0AEC0;
 
 .signup-container {
     background-image: url(../../../../assets/images/backgrounds/signup-background.png);
@@ -26,13 +27,13 @@ main {
         background-color: transparent;
     }
     .mat-step-header .mat-step-label.mat-step-label-active {
-        color: #A0AEC0;
+        color: $gray;
         &.mat-step-label-selected {
             color: $green;
         }
     }
     .mat-step-header .mat-step-icon {
-        background-color: #A0AEC0;
+        background-color: $gray;
     }
     .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
         background-color: $green;
@@ -53,17 +54,22 @@ main {
         position: absolute !important;
         z-index: -1;
         border-top-width: 3px !important;
-        border-top: 3px solid #A0AEC0;
+        border-top: 3px solid $gray;
     }
     .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before {
         width: 50% !important;
         position: absolute !important;
         z-index: -1;
     }
+    .mat-stepper-horizontal-line {
+        height: 3px !important;
+        background-color: $gray;
+        border-top-color: $gray;
+    }
     @mixin styleStepLine($index) {
         .mat-horizontal-stepper-header {
             &+.mat-stepper-horizontal-line:nth-child(#{$index}) {
-                height: 2px;
+                border-top-color: $green;
                 background-image: linear-gradient(to right, $green, $green);
             }
             &:nth-child(#{$index - 1})::after, &:nth-child(#{$index + 1})::before {

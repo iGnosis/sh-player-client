@@ -70,6 +70,10 @@ export class SignupComponent implements OnInit {
     if (res) {
       this.subscriptionFee = res.subscriptionFee;
       this.trialPeriod = res.trialPeriod;
+      if (!res.requirePaymentDetails) {
+        this.steps = this.steps.filter(step => step !== 'payment');
+        this.stepperSteps = this.steps.slice(1, this.steps.length - 1);
+      }
     }
   }
 
