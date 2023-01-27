@@ -44,6 +44,7 @@ import { NgxStripeModule } from 'ngx-stripe';
 import { PrimaryModalComponent } from './components/modals/primary-modal/primary-modal.component';
 import { NotificationBarComponent } from './components/notification-bar/notification-bar.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
+import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,7 +86,7 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     MatStepperModule,
     LottieModule.forRoot({ player: playerFactory }),
     StoreModule.forRoot({}),
-    NgxStripeModule.forRoot('pk_test_51MCGAoSJ1afwULmmMEUXSrTJaNu7ymt6qKPkqnktBSE71h77qyqHnbQeoYF9XC4YbmetgUAziIm8pb927AxLwukv006ZIttv9m'),
+    NgxStripeModule.forRoot(environment.stripePublishableKey),
   ],
   providers: [
     PrivateGuard,

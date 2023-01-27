@@ -11,4 +11,5 @@ export const environment: Environment = {
   servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',
   activityEndpoint: 'http://localhost:4201/',
   providerEndpoint: 'https://provider.dev.pointmotioncontrol.com/',
+  stripePublishableKey: 'pk_test_51MCGAoSJ1afwULmmMEUXSrTJaNu7ymt6qKPkqnktBSE71h77qyqHnbQeoYF9XC4YbmetgUAziIm8pb927AxLwukv006ZIttv9m',
 };
