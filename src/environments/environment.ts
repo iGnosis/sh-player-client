@@ -13,7 +13,7 @@ export const environment: Environment = {
   servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',
   activityEndpoint: 'https://session.dev.pointmotioncontrol.com',
   providerEndpoint: 'https://provider.dev.pointmotioncontrol.com/',
-  stripePublishableKey: 'pk_test_51MCGAoSJ1afwULmmMEUXSrTJaNu7ymt6qKPkqnktBSE71h77qyqHnbQeoYF9XC4YbmetgUAziIm8pb927AxLwukv006ZIttv9m',
+  stripePublishableKey: 'pk_test_51MSP9MKrHxGkv6aRSuMbHMDH0kNYYhWlYyFgtYNhw9S3UxARQ8WjABwWZdRXuJtMAuSl9st9RzInVuPzyFfclYLR00UCyYpwfK',
 };
 
 /*
