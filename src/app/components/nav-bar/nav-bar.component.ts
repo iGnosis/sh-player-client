@@ -16,7 +16,7 @@ import { ModalConfig } from 'src/app/types/pointmotion';
 export class NavBarComponent implements OnInit {
   activeTab!: string;
   hideNavbar: boolean = false;
-  logoUrl = "/assets/icons/sh_logo_light.png";
+  logoUrl = "/assets/icons/logo-white.png";
 
   showLogoutModal: boolean = false;
   logoutModalConfig: ModalConfig;

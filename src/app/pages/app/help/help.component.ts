@@ -10,7 +10,7 @@ import { RewardsDTO } from 'src/app/types/pointmotion';
   styleUrls: ['./help.component.scss']
 })
 export class HelpComponent implements OnInit {
-  logoUrl = "/assets/icons/sh_logo_light.png";
+  logoUrl = "/assets/icons/logo-white.png";
   showRewardModal: boolean = false;
   currentReward: RewardsDTO = {
     tier: "bronze",
