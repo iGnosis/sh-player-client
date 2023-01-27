@@ -16,7 +16,7 @@ import { ModalConfig } from 'src/app/types/pointmotion';
 export class NavBarComponent implements OnInit {
   activeTab!: string;
   hideNavbar: boolean = false;
-  logoUrl = "/assets/icons/sound_health_logo_alpha.png";
+  logoUrl = "/assets/icons/sh_logo_light.png";
 
   showLogoutModal: boolean = false;
   logoutModalConfig: ModalConfig;
@@ -38,8 +38,12 @@ export class NavBarComponent implements OnInit {
       else this.hideNavbar = false;
     });
     const logoSubscription = this.themeService.logoSubject.subscribe((url) => {
-      this.logoUrl = url;
-      if (url) logoSubscription.unsubscribe();
+      if (url) {
+        this.logoUrl = url;
+        logoSubscription.unsubscribe();
+      } else {
+        this.themeService.setTheme();
+      }
     });
 
     this.logoutModalConfig = {
