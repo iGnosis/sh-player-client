@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
-import { LoginRequestDTO, SetPatientDetailsRequestDTO } from '../types/pointmotion';
+import { LoginRequestDTO, SetPatientDetailsRequestDTO, SetPatientProfileRequestDTO } from '../types/pointmotion';
 import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,16 @@ export class AuthService {
     }
   }
 
+  async getSubscriptionPlanDetails() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_PLAN_DETAILS);
+      return res.subscription_plans[0];
+    } catch(e) {
+      return e;
+    }
+  }
+  
+
   async getSubscriptionStatus() {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
@@ -79,6 +89,36 @@ export class AuthService {
         id: user.id
       }
       const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_DETAILS, data);
+
+      await this.createStripeCustomer();
+      return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async setPatientProfile(details: SetPatientProfileRequestDTO) {
+    try {
+      const user = this.userService.get();
+      const data = {
+        ...details,
+        id: user.id
+      };
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_PROFILE, data);
+      return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async setPatientEmail(email: string) {
+    try {
+      const user = this.userService.get();
+      const data = {
+        email,
+        id: user.id
+      };
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_EMAIL, data);
 
       await this.createStripeCustomer();
       return res;

@@ -3,6 +3,7 @@ import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 import { PaymentMethod } from '@stripe/stripe-js';
 import { UserService } from 'src/app/services/user.service';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
+import { ModalConfig } from 'src/app/types/pointmotion';
 @Component({
   selector: 'account-details',
   templateUrl: './account-details.component.html',
@@ -30,6 +31,24 @@ export class AccountDetailsComponent implements OnInit {
   subscriptionStatus!: string;
 
   isSubscribed = false;
+
+  cancellationReason: string = '';
+  showCancellationModal: boolean = false;
+  cancellationModalConfig: ModalConfig = {
+    type: 'input',
+    title: 'Cancel Subscription',
+    body: 'Are you sure you want to cancel your subscription?',
+    inputPlaceholder: 'Enter reason for canceling your subscription',
+    closeButtonLabel: 'Cancel',
+    submitButtonLabel: 'Confirm',
+    onClose: () => {
+      this.showCancellationModal = false;
+    },
+    onSubmit: () => {
+      this.cancelSubscription();
+      this.showCancellationModal = false;
+    },
+  };
 
   async ngOnInit() {
     const patientId = this.userService.get().id;
@@ -97,10 +116,14 @@ export class AccountDetailsComponent implements OnInit {
     }
   }
 
+  async openCancelModal() {
+    
+  }
+
   async cancelSubscription() {
     const resp = await this.gqlService.gqlRequest(
       GqlConstants.CANCEL_SUBSCRIPTION,
-      {},
+      { reason: this.cancellationReason },
       true
     );
     this.subscription = resp.cancelSubscription.subscription;

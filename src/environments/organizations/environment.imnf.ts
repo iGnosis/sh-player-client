@@ -9,4 +9,5 @@ export const environment: Environment = {
   servicesEndpoint: 'https://services.prod.pointmotioncontrol.com',
   activityEndpoint: 'https://session.imnf.pointmotioncontrol.com',
   providerEndpoint: 'https://provider.imnf.pointmotioncontrol.com/',
+  stripePublishableKey: 'pk_live_51MSP9MKrHxGkv6aRnWQHqLlx84OnFxBSStSuycGpLO4grZW92ZPu6HoHuZ6ZNNai9JnjaMdPhYoTCi4Wi1MTC3JX00ojfqd6hD',
 };

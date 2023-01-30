@@ -50,18 +50,18 @@ describe('DailyCheckinComponent', () => {
     flush();
   }));
   it('should select genre and go to signup if not onboarded', fakeAsync(() => {
-    mockUserService.isOnboarded.and.returnValue(new Promise((resolve) => resolve(3)));
+    mockUserService.isOnboarded.and.returnValue(new Promise((resolve) => resolve('profile')));
     spyOn(router, 'navigate').and.stub();
 
     component.selectGenre("Jazz");
     tick(1800);
 
     expect(component.selectedGenre).toEqual("Jazz");
-    expect(router.navigate).toHaveBeenCalledWith(["app", "signup", 3]);
+    expect(router.navigate).toHaveBeenCalledWith(["/app/signup/setup"]);
     flush();
   }));
   it('should select genre and go to home if onboarded', fakeAsync(() => {
-    mockUserService.isOnboarded.and.returnValue(new Promise((resolve) => resolve(-1)));
+    mockUserService.isOnboarded.and.returnValue(new Promise((resolve) => resolve('finish')));
     spyOn(router, 'navigate').and.stub();
 
     component.selectGenre("Jazz");

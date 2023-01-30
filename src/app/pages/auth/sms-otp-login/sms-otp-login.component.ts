@@ -195,12 +195,16 @@ export class SmsOtpLoginComponent {
       }
 
       const onBoardedStep = await this.userService.isOnboarded();
-      if (onBoardedStep == -1) {
+      if (onBoardedStep == 'finish') {
         this.router.navigate(["app", "home"]);
       } else {
-        this.router.navigate(["app", "signup", onBoardedStep]);
+        this.router.navigate(["/app/signup/setup"]);
       }
     }
+  }
+
+  goBack() {
+    this.router.navigate(["/public/start"]);
   }
 
   resetForm() {
