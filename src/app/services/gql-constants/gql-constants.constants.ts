@@ -261,6 +261,12 @@ export const GqlConstants = {
         data
       }
     }`,
+  GET_PAYMENT_AUTH_URL: `
+  query getPaymentAuthUrl($subscriptionId: String = "") {
+    subscriptions(where: {subscriptionId: {_eq: $subscriptionId}}) {
+      paymentAuthUrl
+    }
+  }`,  
   GET_SUBSCRIPTION_DETAILS: `
     query GetSubscriptionDetails {
       getSubscriptionDetails {

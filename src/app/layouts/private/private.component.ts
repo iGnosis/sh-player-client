@@ -65,7 +65,7 @@ export class PrivateComponent implements OnInit, OnDestroy {
     const paymentMethodExist = subscriptionObj && Object.keys(subscriptionObj).length !== 0;
     
     if (!paymentMethodExist && paymentMethodRequired) {
-      if (!this.router.url.includes('add-payment-method') && !this.router.url.includes('signup'))
+      if (!this.router.url.includes('add-payment-method') && !this.router.url.includes('signup') && !this.router.url.includes('checkin'))
         this.router.navigate(['/app/add-payment-method', { signup: true }]);
     }
   }
@@ -76,7 +76,22 @@ export class PrivateComponent implements OnInit, OnDestroy {
     if (this.router.url.includes('add-payment-method') || this.router.url.includes('account-details')) {
       this.showPaymentModal = false;
     } else if (["payment_pending", "trial_expired", "cancelled"].includes(subscriptionStatus)) {
-      this.showPaymentModal = true;
+      // if url exists
+      const paymentAuthUrl = await this.authService.getPaymentAuthUrl();
+      if (paymentAuthUrl) {
+        this.paymentModalConfig = {
+          type: 'warning',
+          title: 'Almost There!',
+          body: 'For extra security of your account, you need to authenticate this transaction with your bank. Please click the button below to complete the transaction.',
+          submitButtonLabel: 'Complete Payment',
+          onSubmit: () => {
+            window.open(paymentAuthUrl, "_blank");
+          },
+        };
+        this.showPaymentModal = true;
+      } else {
+        this.showPaymentModal = false;
+      }
     } else {
       this.showPaymentModal = false;
     }

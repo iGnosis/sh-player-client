@@ -52,6 +52,17 @@ export class AuthService {
   }
   
 
+  async getPaymentAuthUrl() {
+    try {
+      const subscription = await this.getSubscriptionDetails();
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_PAYMENT_AUTH_URL, {subscriptionId: subscription.id});
+      return res.subscriptions[0].paymentAuthUrl;
+    } catch(e) {
+      return e;
+    }
+  }
+  
+
   async getSubscriptionStatus() {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
