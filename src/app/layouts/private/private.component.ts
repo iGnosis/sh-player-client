@@ -86,6 +86,11 @@ export class PrivateComponent implements OnInit, OnDestroy {
           submitButtonLabel: 'Complete Payment',
           onSubmit: () => {
             window.open(paymentAuthUrl, "_blank");
+            this.paymentModalConfig.body = 'Please click the button below once you have completed the authentication to refresh the page.'
+            this.paymentModalConfig.submitButtonLabel = 'Refresh the page';
+            this.paymentModalConfig.onSubmit = () => {
+              window.location.reload();
+            };
           },
         };
         this.showPaymentModal = true;
