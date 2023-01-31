@@ -45,6 +45,7 @@ import { PrimaryModalComponent } from './components/modals/primary-modal/primary
 import { NotificationBarComponent } from './components/notification-bar/notification-bar.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { environment } from 'src/environments/environment';
+import { SupportFabComponent } from './components/support-fab/support-fab.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +71,7 @@ import { environment } from 'src/environments/environment';
     PrimaryModalComponent,
     NotificationBarComponent,
     AvatarComponent,
+    SupportFabComponent,
   ],
   imports: [
     BrowserModule,
