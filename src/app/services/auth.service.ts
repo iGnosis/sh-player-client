@@ -58,7 +58,7 @@ export class AuthService {
       const res = await this.graphqlService.gqlRequest(GqlConstants.GET_PAYMENT_AUTH_URL, {subscriptionId: subscription.id});
       return res.subscriptions[0].paymentAuthUrl;
     } catch(e) {
-      return e;
+      console.error(e);
     }
   }
   
