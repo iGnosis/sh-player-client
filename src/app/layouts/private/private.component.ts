@@ -49,7 +49,7 @@ export class PrivateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dailyCheckinService.isCheckedInToday().then((isCheckedInToday: boolean) => {
-      if (!isCheckedInToday) {
+      if (!isCheckedInToday && !this.router.url.includes('signup')) {
         this.router.navigate(["app", "checkin"]);
       }
     })
