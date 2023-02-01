@@ -70,7 +70,7 @@
         font-size: 30px;
       }
       .btn-text {
-        color: $info_color;
+        color: white;
       }
     }
     .icon {
@@ -80,7 +80,15 @@
   }
 }
 
-
+.fab-container .fab-opt .btn-text {
+  color: #fafafa;
+}
+.fab-container:hover .fab-opt:not(:hover) .btn-text {
+  color: #cbd5e0;
+}
+.fab-container .fab:hover ~ .fab-opt .btn-text {
+  color: #ffffff;
+}
 
 .btn-text {
   position: absolute;
