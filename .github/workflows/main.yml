@@ -49,9 +49,10 @@ jobs:
           echo "ENVIRONMENT=development" >> $GITHUB_ENV
           echo "NODE_ENV=development" >> $GITHUB_ENV
           echo "S3_ENV=dev" >> $GITHUB_ENV
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        
+
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+
       - name: npm install and npm run build
         run: |
           # Print current env
