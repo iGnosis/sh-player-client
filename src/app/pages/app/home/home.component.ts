@@ -2,8 +2,8 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
-import { Patient } from "src/app/types/pointmotion";
-import { session } from "src/app/store/reducers/home.reducer";
+import { ModalConfig, Patient } from "src/app/types/pointmotion";
+import { session } from "src/app/types/pointmotion";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
 import { JwtService } from "src/app/services/jwt.service";
@@ -12,7 +12,6 @@ import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
 import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
 import { filter, pairwise, take } from "rxjs";
-import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checkin.service";
 
 @Component({
   selector: "app-home",
@@ -78,7 +77,6 @@ export class HomeComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private dailyCheckinService: DailyCheckinService
   ) {
     this.user = this.userService.get();
     this.router.events
@@ -89,12 +87,6 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.initHome();
-    this.dailyCheckinService.isCheckedInToday().then(isCheckedInToday => {
-      console.log('isCheckedInToday:', isCheckedInToday);
-      if (!isCheckedInToday) {
-        this.router.navigate(["app", "checkin"]);
-      }
-    })
   }
 
   recordGAEvents = (events: RoutesRecognized[]) => {
@@ -182,7 +174,8 @@ export class HomeComponent implements OnInit {
     let dailyGoalsActivities = await this.goalsService.getDailyGoals([
       'sit_stand_achieve',
       'beat_boxer',
-      'sound_explorer'
+      'sound_explorer',
+      'moving_tones',
     ]);
 
     let activitiesWithStatus = dailyGoalsActivities.map(this.mapActivitiesWithStatus);

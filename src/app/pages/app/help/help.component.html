@@ -13,18 +13,18 @@
                 </div>
             </div>
         </div>
-    
-    
+
+
     </div>
     <div class="pt-24 pb-24 ">
         <div class="container max-w-screen-xl">
             <div class="row">
                 <div class="col-lg">
                     <div class="card help pt-6 ps-3 pe-3 text-center">
-                        <img src="assets/icons/sound_health_logo@3x.jpg" alt="Sound Health Logo">
+                        <img src="assets/icons/sound_health_logo.png" alt="Sound Health Logo">
                         <h2 class="text-primary pt-6">Frequently Asked Questions</h2>
-                        <a href="https://www.pointmotion.us/index.php/docs/" (click)="accessSoundhealthFaq()" target="_blank"
-                            class="btn btn-primary btn-block">Open</a>
+                        <a href="https://www.pointmotion.us/index.php/docs/" (click)="accessSoundhealthFaq()"
+                            target="_blank" class="btn btn-primary btn-block">Open</a>
                     </div>
                 </div>
                 <div class="col-lg">
@@ -33,7 +33,8 @@
                             <img src="assets/icons/pf_logo.png" alt="Parkinson Foundation Logo">
                             <h2 class="text-primary pt-6">Free resources from our partner</h2>
                             <a href="https://www.parkinson.org/Living-with-Parkinsons/Resources-and-Support"
-                                (click)="freeParkinsonResourcesAccessed()" target="_blank" class="btn btn-primary btn-block">Open</a>
+                                (click)="freeParkinsonResourcesAccessed()" target="_blank"
+                                class="btn btn-primary btn-block">Open</a>
                         </div>
                     </div>
                 </div>
@@ -49,6 +50,7 @@
             </div>
         </div>
     </div>
-    
-    <share-reward-modal *ngIf="showRewardModal" [currentReward]="currentReward" (changeModalState)="toggleRewardModal()"></share-reward-modal>
+
+    <share-reward-modal *ngIf="showRewardModal" [currentReward]="currentReward"
+        (changeModalState)="toggleRewardModal()"></share-reward-modal>
 </div>

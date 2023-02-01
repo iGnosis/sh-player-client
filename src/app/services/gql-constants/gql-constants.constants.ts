@@ -114,14 +114,30 @@ export const GqlConstants = {
       nickname
     }
   }`,
-
+  SET_PATIENT_PROFILE: `
+  mutation UpdatePatientProfile($id: uuid!, $firstName: String!, $lastName: String!, $namePrefix: String!) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {firstName: $firstName, lastName: $lastName, namePrefix: $namePrefix}) {
+      id
+    }
+  }`,
+  SET_PATIENT_EMAIL: `
+  mutation UpdatePatientEmail($id: uuid!, $email: String) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {email: $email}) {
+      email
+    }
+  }`,
+  CREATE_CUSTOMER: `
+  mutation CreateCustomer {
+    createCustomer {
+      customerId
+    }
+  }`,
   SET_NICKNAME: `
   mutation UpdateNickName($id: uuid!, $nickname: String) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {nickname: $nickname}) {
       nickname
     }
   }`,
-
   SET_FAV_GENRE: `
   mutation SetFavGenre($id: uuid!, $genres: jsonb) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {preferredGenres: $genres}) {
@@ -136,12 +152,19 @@ export const GqlConstants = {
     }
   }
   `,
-  GET_PATIENT_DETAILS: `query PatientDetails($user:uuid!) {
+  GET_PATIENT_DETAILS: `
+  query PatientDetails($user:uuid!) {
     patient_by_pk(id:$user) {
       id
       email
       preferredGenres
       nickname
+      phoneCountryCode
+      phoneNumber
+      lastName
+      firstName
+      customerId
+      createdAt
     }
   }`,
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
@@ -169,10 +192,11 @@ export const GqlConstants = {
       status
     }
   }`,
-  REQUEST_LOGIN_OTP: `mutation RequestLoginOtp($phoneCountryCode: String!, $phoneNumber: String!) {
-    requestLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber) {
+  REQUEST_LOGIN_OTP: `mutation RequestLoginOtp($phoneCountryCode: String!, $phoneNumber: String!, $inviteCode: String = "") {
+    requestLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber, inviteCode: $inviteCode) {
       data {
         message
+        isExistingUser
       }
     }
   }`,
@@ -180,6 +204,7 @@ export const GqlConstants = {
     resendLoginOtp(phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber) {
       data {
         message
+        isExistingUser
       }
     }
   }`,
@@ -196,5 +221,107 @@ export const GqlConstants = {
       name
       emoji
     }
-  }`
+  }`,
+  GET_ORGANIZATION_CONFIG: `
+    query OrganizationConfig($name: String = "") {
+      organization(where: {name: {_eq: $name}}) {
+        configuration
+        logoUrl
+      }
+    }
+  `,
+  GET_PAYMENT_CLIENT_SECRET: `
+    mutation CreatePaymentSetupIntent  {
+      createPaymentSetupIntent {
+        clientSecret
+      }
+    }`,
+  SET_DEFAULT_PAYMENT_METHOD: `
+    mutation SetDefaultPaymentMethod($paymentMethodId: String!) {
+      setDefaultPaymentMethod(paymentMethodId: $paymentMethodId) {
+        data
+      }
+    }`,
+  CREATE_SUBSCRIPTION: `
+    mutation CreateSubscription {
+      createSubscription {
+        subscription
+      }
+    }
+    `,
+  GET_DEFAULT_PAYMENT_METHOD: `
+    query GetDefaultPaymentMethod {
+      getDefaultPaymentMethod {
+        data
+      }
+    }`,
+  GET_SUBSCRIPTION_STATUS: `
+    query GetSubscriptionStatus {
+      getSubscriptionStatus {
+        data
+      }
+    }`,
+  GET_PAYMENT_AUTH_URL: `
+  query getPaymentAuthUrl($subscriptionId: String = "") {
+    subscriptions(where: {subscriptionId: {_eq: $subscriptionId}}) {
+      paymentAuthUrl
+    }
+  }`,  
+  GET_SUBSCRIPTION_DETAILS: `
+    query GetSubscriptionDetails {
+      getSubscriptionDetails {
+        subscription
+      }
+    }`,
+  CANCEL_SUBSCRIPTION: `
+    mutation CancelSubscription {
+      cancelSubscription {
+        subscription
+      }
+    }`,
+  GET_BILLING_HISTORY: `
+  mutation GetBillingHistory($startingAfter: String = "", $limit: Int = 10, $endingBefore: String = "") {
+    getBillingHistory(limit: $limit, startingAfter: $startingAfter, endingBefore: $endingBefore) {
+      hasMore
+      invoices {
+        amountPaid
+        cardDetails {
+          brand
+          last4
+        }
+        paymentDate
+        subscriptionPeriod {
+          end
+          start
+        }
+        url
+      }
+    }
+  }`,
+  GET_PAYMENT_METHOD_REQUIREMENT: `
+  query GetRequirePaymentDetails {
+    subscription_plans {
+      requirePaymentDetails
+    }
+  }`,
+  GET_TRIAL_PERIOD: `
+  query GetRequirePaymentDetails {
+    subscription_plans {
+      trialPeriod
+    }
+  }`,
+  GET_SUBSCRIPTION_PLAN_DETAILS: `
+  query GetSubscriptionPlanDetails {
+    subscription_plans {
+      subscriptionFee
+      trialPeriod
+      requirePaymentDetails
+    }
+  }`,
+  CREATE_SUBSCRIPTION_WITH_PROMOCODE: `
+  mutation CreateSubscriptionWithPromoCode($promocode: String!) {
+  createSubscriptionWithPromocode(promocode: $promocode) {
+    subscription
+  }
+}`,
 };

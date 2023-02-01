@@ -1,4 +1,4 @@
-<div class="home-container container-fluid h-screen w-screen overflow-hidden" [style.background]="'no-repeat bottom center/cover url(/assets/images/backgrounds/home/overlay.png),linear-gradient(rgba(0, 0, 102, .2), rgba(0, 0, 102, .2)), no-repeat top center/cover url(/assets/images/backgrounds/home/' + getBackgroundName(nextSession.name) + '.png), #000066'">
+<div class="home-container container-fluid h-screen w-screen overflow-hidden" [style.background]="'no-repeat bottom center/cover url(/assets/images/backgrounds/home/overlay.png),linear-gradient(rgba(0, 0, 102, .2), rgba(0, 0, 102, .2)), no-repeat top center/cover url(/assets/images/backgrounds/home/' + getBackgroundName(nextSession.name) + '.png), var(--primary)'">
   <div *ngIf="nextSession.name" class="position-relative d-flex">
     <div class="mt-auto w-full mb-14 px-5">
       <h2 class="text-white">Next Activity</h2>

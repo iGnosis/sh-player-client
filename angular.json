@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sh_patient_client": {
+    "sh-player-client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sh_patient_client",
+            "outputPath": "dist/sh-player-client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -33,7 +33,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -126,9 +128,77 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.local.ts"
+                  "with": "src/environments/local/environment.local.default.ts"
                 }
               ]
+            },
+            "local-pure": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10mb",
+                  "maximumError": "15mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "0.5mb",
+                  "maximumError": "1mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/local/environment.local.pure.ts"
+                }
+              ]
+            },
+            "org/pointmotion": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2.5mb",
+                  "maximumError": "3mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10kb",
+                  "maximumError": "15kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/organizations/environment.pointmotion.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "org/imnf": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2.5mb",
+                  "maximumError": "3mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10kb",
+                  "maximumError": "15kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/organizations/environment.imnf.ts"
+                }
+              ],
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": "development"
@@ -137,16 +207,19 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sh_patient_client:build:production"
+              "browserTarget": "sh-player-client:build:production"
             },
             "staging": {
-              "browserTarget": "sh_patient_client:build:staging"
+              "browserTarget": "sh-player-client:build:staging"
             },
             "development": {
-              "browserTarget": "sh_patient_client:build:development"
+              "browserTarget": "sh-player-client:build:development"
             },
             "local": {
-              "browserTarget": "sh_patient_client:build:local"
+              "browserTarget": "sh-player-client:build:local"
+            },
+            "local-pure": {
+              "browserTarget": "sh-player-client:build:local-pure"
             }
           },
           "defaultConfiguration": "local"
@@ -154,7 +227,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sh_patient_client:build"
+            "browserTarget": "sh-player-client:build"
           }
         },
         "test": {
@@ -179,5 +252,5 @@
       }
     }
   },
-  "defaultProject": "sh_patient_client"
+  "defaultProject": "sh-player-client"
 }

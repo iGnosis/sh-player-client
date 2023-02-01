@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ShareRewardModalComponent } from './share-reward-modal.component';
 
@@ -8,7 +9,8 @@ describe('ShareRewardModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShareRewardModalComponent ]
+      declarations: [ ShareRewardModalComponent ],
+      imports: [MatSnackBarModule]
     })
     .compileComponents();
   });

@@ -37,14 +37,6 @@ describe('StartComponent', () => {
     expect(spy).toHaveBeenCalledWith(['public/login']);
   });
 
-  it('should navigate to login page', () => {
-    const spy = spyOn(router, 'navigate');
-
-    component.login();
-
-    expect(spy).toHaveBeenCalledWith(['public/login']);
-  });
-
   it('should update carousel slide', () => {
     component.carouselSlide = 1;
 

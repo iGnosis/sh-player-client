@@ -42,27 +42,22 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
     {
       title: "Irritated",
       img: "/assets/images/moods/irritated.jpg",
-      color: "#EB0000",
     },
     {
       title: "Anxious",
       img: "/assets/images/moods/anxious.jpg",
-      color: "#F26161",
     },
     {
       title: "Okay",
       img: "/assets/images/moods/okay.jpg",
-      color: "#FFC440",
     },
     {
       title: "Happy",
       img: "/assets/images/moods/happy.jpg",
-      color: "#62D989",
     },
     {
       title: "Daring",
       img: "/assets/images/moods/daring.jpg",
-      color: "#00BD3E",
     },
   ];
   genreList = [
@@ -130,10 +125,10 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
       const step = await this.userService.isOnboarded();
 
       Howler.stop();
-      if (step == -1) {
+      if (step == 'finish') {
         this.router.navigate(["app", "home"]);
       } else {
-        this.router.navigate(["app", "signup", step]);
+        this.router.navigate(["/app/signup/setup"]);
       }
     }, 1200);
   }

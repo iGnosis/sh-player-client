@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from './home.component';
 import { GoalsService } from 'src/app/services/goals/goals.service';
 
-fdescribe('HomeComponent', () => {
+describe('HomeComponent', () => {
   let router: Router;
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -55,12 +55,12 @@ fdescribe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show reward card if unlocked', async () => {
+  it('should show reward card if unlocked', (done) => {
     let rewardCard = fixture.debugElement.query(By.css('.reward-card'));
 
     expect(rewardCard).toBeFalsy();
 
-    await component.displayRewardCard({
+    component.displayRewardCard({
       tier: "bronze",
       isViewed: true,
       isUnlocked: true,
@@ -68,15 +68,17 @@ fdescribe('HomeComponent', () => {
       description: '',
       unlockAtDayCompleted: 0,
       couponCode: '',
+    }).then(() => {
+      fixture.detectChanges();
+      rewardCard = fixture.debugElement.query(By.css('.reward-card'));
+  
+      expect(rewardCard).toBeTruthy();
+      done();
     });
-    fixture.detectChanges();
-    rewardCard = fixture.debugElement.query(By.css('.reward-card'));
-
-    expect(rewardCard).toBeTruthy();
   });
 
-  it('should close reward card if open', async () => {
-    await component.displayRewardCard({
+  it('should close reward card if open', (done) => {
+    component.displayRewardCard({
       tier: "bronze",
       isViewed: true,
       isUnlocked: true,
@@ -84,18 +86,20 @@ fdescribe('HomeComponent', () => {
       description: '',
       unlockAtDayCompleted: 0,
       couponCode: '',
+    }).then(() => {
+      fixture.detectChanges();
+      let rewardCard = fixture.debugElement.query(By.css('.reward-card'));
+  
+      expect(rewardCard).toBeTruthy();
+  
+      component.closeRewardCard();
+  
+      fixture.detectChanges();
+      rewardCard = fixture.debugElement.query(By.css('.reward-card'));
+  
+      expect(rewardCard).toBeFalsy();
+      done();
     });
-    fixture.detectChanges();
-    let rewardCard = fixture.debugElement.query(By.css('.reward-card'));
-
-    expect(rewardCard).toBeTruthy();
-
-    component.closeRewardCard();
-
-    fixture.detectChanges();
-    rewardCard = fixture.debugElement.query(By.css('.reward-card'));
-
-    expect(rewardCard).toBeFalsy();
   });
 
   it('should give next session', () => {
@@ -126,9 +130,7 @@ fdescribe('HomeComponent', () => {
 
   it('should start a session', () => {
     spyOn(router, 'navigate').and.stub();
-
     component.startNewSession();
-    
-    expect(router.navigate).toHaveBeenCalledWith(["/app/session/", '']);
+    expect(router.navigate).toHaveBeenCalledWith(["/app/session/"]);
   });
 });

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { HelpService } from 'src/app/services/help/help.service';
+import { ThemeService } from 'src/app/services/theme/theme.service';
 import { RewardsDTO } from 'src/app/types/pointmotion';
 
 @Component({
@@ -9,6 +10,7 @@ import { RewardsDTO } from 'src/app/types/pointmotion';
   styleUrls: ['./help.component.scss']
 })
 export class HelpComponent implements OnInit {
+  logoUrl = "/assets/icons/logo-white.png";
   showRewardModal: boolean = false;
   currentReward: RewardsDTO = {
     tier: "bronze",
@@ -19,7 +21,20 @@ export class HelpComponent implements OnInit {
     description: "5% off on all therapy equipment from EXERTOOLS",
     couponCode: "PTMONU",
   }
-  constructor(private helpService: HelpService, private googleAnalyticsService: GoogleAnalyticsService) { }
+  constructor(
+    private helpService: HelpService, 
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private themeService: ThemeService,
+  ) {
+    const logoSubscription = this.themeService.logoSubject.subscribe((url) => {
+      if (url) {
+        this.logoUrl = url;
+        logoSubscription.unsubscribe();
+      } else {
+        this.themeService.setTheme();
+      }
+    });
+  }
 
   ngOnInit(): void {
   }

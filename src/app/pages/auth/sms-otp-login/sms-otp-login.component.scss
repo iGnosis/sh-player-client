@@ -1,63 +1,9 @@
-@import '../../../variables';
-
-.main {
-  height: 100vh;
-  background-image: radial-gradient(#44444d, #414149, #29292f);
+.signup-container {
+  background-image: url(../../../../assets/images/backgrounds/signup-background.png);
 }
-.login-form {
-  width: 350px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 10px;
-  overflow: hidden;
-
-  .spinner {
-      color: $primary;
-      background-color: #ffff;
-      text-align: center;
-      height: 60px;
-    }
-  .formErrorMsg {
-    background-color: #ff3e00;
-    color: white;
-    text-align: center;
-  }
-
+main {
+  height: calc(100vh - 3.5rem);
 }
-
-.pmc-logo {
-  background-color: #dddddd;
-  vertical-align: middle;
-  text-align: center;
-
-  img {
-    width: auto;
-    height: 60px;
-  }
-}
-
-.input-form {
-  background-color: #ffffff;
-  vertical-align: middle;
-  text-align: center;
-
-  .guide-text {
-    font-size: 12px;
-  }
-
-  a {
-    font-size: 14px;
-  }
-}
-
-.terms {
-  font-size: 12px;
-  text-align: center;
-  background-color: #dddddd;
-}
-
-.submit-btn {
-  background-color: $primary;
+.bg-card {
+    background-color: #fafafa !important;
 }
