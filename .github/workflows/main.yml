@@ -61,6 +61,7 @@ jobs:
           # Listing files
           ls -la
 
+          npm install -g @angular/cli
           npm ci --ignore-scripts
           npm run build -- -c "$ENVIRONMENT"
 

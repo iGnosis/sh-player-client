@@ -188,18 +188,20 @@ export class SmsOtpLoginComponent {
 
       this.shScreen = true;
       await this.waitForTimeout(6500);
+
+      const onBoardedStep = await this.userService.isOnboarded();
+      if (onBoardedStep !== 'finish') {
+        this.router.navigate(["app", "signup", "setup"]);
+        return;
+      }
+
       const isCheckedInToday = await this.dailyCheckinService.isCheckedInToday();
       if (!isCheckedInToday) {
         this.router.navigate(["app", "checkin"]);
         return;
       }
-
-      const onBoardedStep = await this.userService.isOnboarded();
-      if (onBoardedStep == 'finish') {
-        this.router.navigate(["app", "home"]);
-      } else {
-        this.router.navigate(["/app/signup/setup"]);
-      }
+      
+      this.router.navigate(["app", "home"]);
     }
   }
 
