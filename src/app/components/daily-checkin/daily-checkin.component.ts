@@ -125,10 +125,10 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
       const step = await this.userService.isOnboarded();
 
       Howler.stop();
-      if (step == -1) {
+      if (step == 'finish') {
         this.router.navigate(["app", "home"]);
       } else {
-        this.router.navigate(["app", "signup", step]);
+        this.router.navigate(["/app/signup/setup"]);
       }
     }, 1200);
   }

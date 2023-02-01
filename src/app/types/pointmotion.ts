@@ -26,6 +26,12 @@ export interface SetPatientDetailsRequestDTO {
   // code: string,
 }
 
+export interface SetPatientProfileRequestDTO {
+  namePrefix?: string,
+  firstName?: string,
+  lastName?: string,
+}
+
 export interface LogoutRequestDTO {
   refreshToken: string,
 }
@@ -49,6 +55,7 @@ export type Environment = {
   activityEndpoint: string;
   providerEndpoint: string;
   googleAnalyticsTrackingID: string;
+  stripePublishableKey: string;
 }
 
 export interface DailyGoalsApiDTO {
@@ -75,9 +82,10 @@ export interface Theme {
 }
 
 export interface ModalConfig {
-  type?: 'primary' | 'warning';
+  type?: 'primary' | 'warning' | 'input';
   title?: string;
   body?: string;
+  inputPlaceholder?: string;
   closeButtonLabel?: string;
   submitButtonLabel?: string;
   onClose?(): Promise<boolean> | boolean | void;

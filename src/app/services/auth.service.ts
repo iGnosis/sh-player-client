@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
-import { LoginRequestDTO, SetPatientDetailsRequestDTO } from '../types/pointmotion';
+import { LoginRequestDTO, SetPatientDetailsRequestDTO, SetPatientProfileRequestDTO } from '../types/pointmotion';
 import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 export class AuthService {
 
   baseURL: string = ''
-  constructor(private http: HttpClient, private graphqlService: GraphqlService, private userService: UserService) {
+  constructor(private gqlService: GraphqlService, private http: HttpClient, private graphqlService: GraphqlService, private userService: UserService) {
     this.baseURL = environment.servicesEndpoint
   }
 
@@ -41,6 +41,27 @@ export class AuthService {
       return e;
     }
   }
+
+  async getSubscriptionPlanDetails() {
+    try {
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_PLAN_DETAILS);
+      return res.subscription_plans[0];
+    } catch(e) {
+      return e;
+    }
+  }
+  
+
+  async getPaymentAuthUrl() {
+    try {
+      const subscription = await this.getSubscriptionDetails();
+      const res = await this.graphqlService.gqlRequest(GqlConstants.GET_PAYMENT_AUTH_URL, {subscriptionId: subscription.id});
+      return res.subscriptions[0].paymentAuthUrl;
+    } catch(e) {
+      console.error(e);
+    }
+  }
+  
 
   async getSubscriptionStatus() {
     try {
@@ -82,6 +103,52 @@ export class AuthService {
 
       await this.createStripeCustomer();
       return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async setPatientProfile(details: SetPatientProfileRequestDTO) {
+    try {
+      const user = this.userService.get();
+      const data = {
+        ...details,
+        id: user.id
+      };
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_PROFILE, data);
+      return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async setPatientEmail(email: string) {
+    try {
+      const user = this.userService.get();
+      const data = {
+        email,
+        id: user.id
+      };
+      const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_EMAIL, data);
+
+      await this.createStripeCustomer();
+      return res;
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async getPatientDetails() {
+    try {
+      const patientId = this.userService.get().id;
+      const patient = await this.gqlService.gqlRequest(
+        GqlConstants.GET_PATIENT_DETAILS,
+        {
+          user: patientId,
+        },
+        true
+      );
+      return patient.patient_by_pk;
     } catch(e) {
       return e;
     }

@@ -5,7 +5,6 @@ import { PublicGuard } from './guards/public-guard';
 import { PrivateGuard } from './guards/private-guard';
 import { SessionComponent } from "./pages/app/session/session.component";
 import { GoalsComponent } from './pages/app/goals/goals.component';
-import { SignupComponent } from './pages/auth/signup/signup.component';
 import { HelpComponent } from './pages/app/help/help.component';
 import { PrivateComponent } from './layouts/private/private.component';
 import { StartComponent } from './pages/auth/start/start.component';
@@ -16,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import { AccountDetailsComponent } from './pages/app/account-details/account-details.component';
 import { BillingHistoryComponent } from './pages/app/billing-history/billing-history.component';
 import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-payment-method.component';
+import { SignupComponent } from './pages/app/signup/signup.component';
 
 const routes: Routes = [
   {
@@ -39,8 +39,8 @@ const routes: Routes = [
   {
     path: 'app', component: PrivateComponent, canActivateChild: [PrivateGuard], children: [
       { path: 'signup', component: SignupComponent, },
+      { path: 'signup', component: SignupComponent, },
       { path: 'signup/:step', component: SignupComponent, },
-      { path: 'signup/:step/:interest', component: SignupComponent, },
       { path: 'checkin', component: DailyCheckinComponent, },
       { path: 'home', component: HomeComponent, },
       { path: 'rewards', component: RewardsComponent },

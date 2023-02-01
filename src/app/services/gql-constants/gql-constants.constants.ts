@@ -114,6 +114,18 @@ export const GqlConstants = {
       nickname
     }
   }`,
+  SET_PATIENT_PROFILE: `
+  mutation UpdatePatientProfile($id: uuid!, $firstName: String!, $lastName: String!, $namePrefix: String!) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {firstName: $firstName, lastName: $lastName, namePrefix: $namePrefix}) {
+      id
+    }
+  }`,
+  SET_PATIENT_EMAIL: `
+  mutation UpdatePatientEmail($id: uuid!, $email: String) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {email: $email}) {
+      email
+    }
+  }`,
   CREATE_CUSTOMER: `
   mutation CreateCustomer {
     createCustomer {
@@ -126,7 +138,6 @@ export const GqlConstants = {
       nickname
     }
   }`,
-
   SET_FAV_GENRE: `
   mutation SetFavGenre($id: uuid!, $genres: jsonb) {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {preferredGenres: $genres}) {
@@ -141,7 +152,8 @@ export const GqlConstants = {
     }
   }
   `,
-  GET_PATIENT_DETAILS: `query PatientDetails($user:uuid!) {
+  GET_PATIENT_DETAILS: `
+  query PatientDetails($user:uuid!) {
     patient_by_pk(id:$user) {
       id
       email
@@ -151,7 +163,9 @@ export const GqlConstants = {
       phoneNumber
       lastName
       firstName
-      }
+      customerId
+      createdAt
+    }
   }`,
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
     faqAccessed {
@@ -247,6 +261,12 @@ export const GqlConstants = {
         data
       }
     }`,
+  GET_PAYMENT_AUTH_URL: `
+  query getPaymentAuthUrl($subscriptionId: String = "") {
+    subscriptions(where: {subscriptionId: {_eq: $subscriptionId}}) {
+      paymentAuthUrl
+    }
+  }`,  
   GET_SUBSCRIPTION_DETAILS: `
     query GetSubscriptionDetails {
       getSubscriptionDetails {
@@ -284,4 +304,24 @@ export const GqlConstants = {
       requirePaymentDetails
     }
   }`,
+  GET_TRIAL_PERIOD: `
+  query GetRequirePaymentDetails {
+    subscription_plans {
+      trialPeriod
+    }
+  }`,
+  GET_SUBSCRIPTION_PLAN_DETAILS: `
+  query GetSubscriptionPlanDetails {
+    subscription_plans {
+      subscriptionFee
+      trialPeriod
+      requirePaymentDetails
+    }
+  }`,
+  CREATE_SUBSCRIPTION_WITH_PROMOCODE: `
+  mutation CreateSubscriptionWithPromoCode($promocode: String!) {
+  createSubscriptionWithPromocode(promocode: $promocode) {
+    subscription
+  }
+}`,
 };

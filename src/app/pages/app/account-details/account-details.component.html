@@ -22,7 +22,7 @@
           <p class="mt-5">
             Name:
             <span class="font-bold">{{
-              patientDetails.firstName + " " + patientDetails.lastName
+              patientDetails.firstName ? (patientDetails.firstName + " " + patientDetails.lastName) : patientDetails.nickname ? patientDetails.nickname : ''
             }}</span>
           </p>
           <p class="mt-5">
@@ -56,7 +56,7 @@
               *ngIf="isSubscribed && subscription"
               class="text-sm my-2 bg-transparent px-0"
               style="color: #2f51ae"
-              (click)="cancelSubscription()"
+              (click)="showCancellationModal=true"
             >
               Cancel Subscription
             </button>
@@ -78,3 +78,5 @@
     </div>
   </div>
 </div>
+
+<primary-modal [show]="showCancellationModal" [modalConfig]="cancellationModalConfig" [(inputVal)]="cancellationReason" ></primary-modal>

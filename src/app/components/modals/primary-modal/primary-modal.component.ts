@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalConfig } from 'src/app/types/pointmotion';
 
 @Component({
@@ -9,6 +9,9 @@ import { ModalConfig } from 'src/app/types/pointmotion';
 export class PrimaryModalComponent implements OnInit {
   @Input() public modalConfig: ModalConfig;
   @Input() public show: boolean;
+  @Input() public inputVal = '';
+  @Output() public inputValChange = new EventEmitter<string>();
+
   constructor() {
     this.show = false;
     this.modalConfig = {

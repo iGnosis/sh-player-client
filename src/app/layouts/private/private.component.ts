@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { ModalConfig } from 'src/app/types/pointmotion';
@@ -9,10 +10,11 @@ import { ModalConfig } from 'src/app/types/pointmotion';
   templateUrl: './private.component.html',
   styleUrls: ['./private.component.scss']
 })
-export class PrivateComponent implements OnInit {
+export class PrivateComponent implements OnInit, OnDestroy {
   showPaymentModal: boolean = false;
   showFeedbackButton: boolean = true;
   paymentModalConfig: ModalConfig;
+  routeSubscription: Subscription;
 
   constructor(
     private dailyCheckinService: DailyCheckinService,
@@ -32,7 +34,7 @@ export class PrivateComponent implements OnInit {
         this.router.navigate(['/app/add-payment-method']);
       },
     };
-    router.events.subscribe(async (event) => {
+    this.routeSubscription = router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
         if (event.url.includes('signup')) {
           this.showFeedbackButton = false;
@@ -47,10 +49,14 @@ export class PrivateComponent implements OnInit {
 
   ngOnInit(): void {
     this.dailyCheckinService.isCheckedInToday().then((isCheckedInToday: boolean) => {
-      if (!isCheckedInToday) {
+      if (!isCheckedInToday && !this.router.url.includes('signup')) {
         this.router.navigate(["app", "checkin"]);
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 
   async fulfillPaymentDetailsRequirement() {
@@ -59,7 +65,7 @@ export class PrivateComponent implements OnInit {
     const paymentMethodExist = subscriptionObj && Object.keys(subscriptionObj).length !== 0;
     
     if (!paymentMethodExist && paymentMethodRequired) {
-      if (!this.router.url.includes('add-payment-method') && !this.router.url.includes('signup'))
+      if (!this.router.url.includes('add-payment-method') && !this.router.url.includes('signup') && !this.router.url.includes('checkin'))
         this.router.navigate(['/app/add-payment-method', { signup: true }]);
     }
   }
@@ -70,7 +76,27 @@ export class PrivateComponent implements OnInit {
     if (this.router.url.includes('add-payment-method') || this.router.url.includes('account-details')) {
       this.showPaymentModal = false;
     } else if (["payment_pending", "trial_expired", "cancelled"].includes(subscriptionStatus)) {
-      this.showPaymentModal = true;
+      // if url exists
+      const paymentAuthUrl = await this.authService.getPaymentAuthUrl();
+      if (paymentAuthUrl) {
+        this.paymentModalConfig = {
+          type: 'warning',
+          title: 'Almost There!',
+          body: 'For extra security of your account, you need to authenticate this transaction with your bank. Please click the button below to complete the transaction.',
+          submitButtonLabel: 'Complete Payment',
+          onSubmit: () => {
+            window.open(paymentAuthUrl, "_blank");
+            this.paymentModalConfig.body = 'Please click the button below once you have completed the authentication to refresh the page.'
+            this.paymentModalConfig.submitButtonLabel = 'Refresh the page';
+            this.paymentModalConfig.onSubmit = () => {
+              window.location.reload();
+            };
+          },
+        };
+        this.showPaymentModal = true;
+      } else {
+        this.showPaymentModal = false;
+      }
     } else {
       this.showPaymentModal = false;
     }
