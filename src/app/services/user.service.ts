@@ -53,7 +53,13 @@ export class UserService {
     }
 
     const response = await this.gqlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, { user: user.id });
-    const cardResp: { getDefaultPaymentMethod: { data: PaymentMethod } } = await this.gqlService.gqlRequest(GqlConstants.GET_DEFAULT_PAYMENT_METHOD);
+    let subscriptionResponse, statusResponse;
+    try {
+      subscriptionResponse = await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
+      statusResponse = await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
+    } catch (e) {
+      console.error(e);
+    }
 
 
     if (response && response.patient_by_pk) {
@@ -61,7 +67,7 @@ export class UserService {
         return 'profile';
       } else if (!response.patient_by_pk.email) {
         return 'email';
-      } else if (!cardResp || !cardResp.getDefaultPaymentMethod || !cardResp.getDefaultPaymentMethod.data || !cardResp.getDefaultPaymentMethod.data.card) {
+      } else if (!subscriptionResponse.getSubscriptionDetails || !subscriptionResponse.getSubscriptionDetails.subscription || statusResponse.getSubscriptionStatus.data !== 'active') {
         return 'payment';
       } else {
         return 'finish'; // skipping the onboarding
