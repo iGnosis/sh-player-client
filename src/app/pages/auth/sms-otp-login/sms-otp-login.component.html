@@ -12,8 +12,8 @@
   <main class="w-full d-flex flex-column justify-content-center align-items-center overflow-auto py-10">
     <!-- Enter Phone number -->
     <form (ngSubmit)="throttledSubmit($event)" *ngIf="step === 0" class="rounded px-10 py-14 shadow-1 bg-card w-2/5 position-relative">
-      <p *ngIf="formErrorMsg" class="bg-danger h-6 position-absolute top-0 w-full start-0 text-center text-white rounded-top">{{ formErrorMsg }}</p>
-      <div class="w-full d-flex justify-content-center py-5">
+      <p *ngIf="formErrorMsg" class="bg-danger position-relative mx-n10 my-n14 text-center text-white rounded-top">{{ formErrorMsg }}</p>
+      <div class="w-full d-flex justify-content-center py-5" [ngClass]="{ 'mt-14': formErrorMsg }">
           <img src="assets/icons/signup/touch.png" alt="dial pad">
       </div>
       <h3 class="text-primary text-center pb-5">Enter your phone number</h3>
@@ -47,9 +47,9 @@
       </div>
     </form>
     <!-- Enter Otp -->
-    <form (ngSubmit)="throttledSubmit($event)" *ngIf="step === 1" class="rounded px-10 py-14 shadow-1 bg-card w-2/5 row position-relative">
-      <p *ngIf="formErrorMsg" class="bg-danger h-6 position-absolute top-0 w-full start-0 text-center text-white rounded-top">{{ formErrorMsg }}</p>
-      <div class="col-sm-12">
+    <form (ngSubmit)="throttledSubmit($event)" *ngIf="step === 1" class="rounded px-10 py-14 shadow-1 bg-card w-2/5 position-relative">
+      <p *ngIf="formErrorMsg" class="bg-danger position-relative mx-n10 my-n14 text-center text-white rounded-top">{{ formErrorMsg }}</p>
+      <div class="col-sm-12" [ngClass]="{ 'mt-14': formErrorMsg }">
         <div class="w-full d-flex justify-content-center py-5">
             <img src="assets/icons/signup/otp.png" alt="otp">
         </div>
