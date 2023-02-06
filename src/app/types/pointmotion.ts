@@ -56,6 +56,7 @@ export type Environment = {
   providerEndpoint: string;
   googleAnalyticsTrackingID: string;
   stripePublishableKey: string;
+  websocketEndpoint: string;
 }
 
 export interface DailyGoalsApiDTO {

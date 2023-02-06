@@ -11,5 +11,6 @@ export const environment: Environment = {
   servicesEndpoint: 'http://localhost:9000',
   activityEndpoint: 'http://localhost:4201/',
   providerEndpoint: 'http://localhost:4200/',
+  websocketEndpoint: 'ws://localhost:9000',
   stripePublishableKey: 'pk_test_51MSP9MKrHxGkv6aRSuMbHMDH0kNYYhWlYyFgtYNhw9S3UxARQ8WjABwWZdRXuJtMAuSl9st9RzInVuPzyFfclYLR00UCyYpwfK',
 };

@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
+import { SocketService } from 'src/app/services/socket/socket.service';
 import { ModalConfig } from 'src/app/types/pointmotion';
 
 @Component({
@@ -20,6 +21,7 @@ export class PrivateComponent implements OnInit, OnDestroy {
     private dailyCheckinService: DailyCheckinService,
     private router: Router,
     private authService: AuthService,
+    private socketService: SocketService,
   ) {
     this.paymentModalConfig = {
       type: 'warning',
@@ -45,6 +47,8 @@ export class PrivateComponent implements OnInit, OnDestroy {
         await this.showPaymentModalHandler();
       }
     });
+
+    this.socketService.connect();
   }
 
   ngOnInit(): void {

@@ -11,5 +11,6 @@ export const environment: Environment = {
   servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',
   activityEndpoint: 'http://localhost:4201/',
   providerEndpoint: 'https://provider.dev.pointmotioncontrol.com/',
+  websocketEndpoint: 'ws://localhost:9000',
   stripePublishableKey: 'pk_test_51MSP9MKrHxGkv6aRSuMbHMDH0kNYYhWlYyFgtYNhw9S3UxARQ8WjABwWZdRXuJtMAuSl9st9RzInVuPzyFfclYLR00UCyYpwfK',
 };
