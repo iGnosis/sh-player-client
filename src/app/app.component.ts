@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       originalConsoleLog.apply(console, args);
     }
     console.error = (...args) => {
-      this.socketService.sendLogsToServer('[ERROR] ' + JSON.stringify(args, Object.getOwnPropertyNames(args)));
+      this.socketService.sendLogsToServer('[ERROR] '+ args.toString());
       originalConsoleError.apply(console, args);
     }
     console.warn = (...args) => {

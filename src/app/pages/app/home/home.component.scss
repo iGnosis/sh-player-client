@@ -11,9 +11,23 @@
         inset: 0;
         background:inherit;
         animation: grow 8s linear forwards;
-      }
+    }
 
-    button {
+    .carousel-buttons {
+        top: 40%;
+        .prev-btn, .next-btn {
+            transition: all 0.2s ease-in-out;
+            &:hover {
+                background-color: $info_color !important;
+                color: #fff !important;
+            }
+            &:active {
+                background-color: #516FC2 !important;
+            }
+        }
+    }
+
+    button.start-btn {
         &::after {
             content: "";
             background-image: url('/assets/icons/right-arrow.png');
