@@ -85,7 +85,6 @@ export class AccountDetailsComponent implements OnInit {
     ) {
       this.subscription = response.getSubscriptionDetails.subscription;
     }
-    console.log(this.subscription);
   }
 
   async setLocalSubscriptionStatus(card?: PaymentMethod.Card) {
@@ -96,7 +95,6 @@ export class AccountDetailsComponent implements OnInit {
     );
     const subscriptionStatus = subscription.getSubscriptionStatus.data;
     this.subscriptionStatus = subscriptionStatus;
-    console.log('subscriptionStatus::', subscriptionStatus);
     if (subscriptionStatus === 'cancelled') {
       this.isSubscribed = false;
     } else if (subscriptionStatus === 'active') {

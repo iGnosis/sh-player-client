@@ -24,7 +24,6 @@ export class BillingHistoryComponent implements OnInit {
       limit: 10,
     });
     this.invoices = response.getBillingHistory.invoices;
-    console.log('billing history', response);
   }
 
   async nextPage() {
