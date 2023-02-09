@@ -13,5 +13,6 @@ export const environment: Environment = {
   servicesEndpoint: 'https://services.stage.pointmotioncontrol.com',
   activityEndpoint: 'https://session.stage.pointmotioncontrol.com',
   providerEndpoint: 'https://provider.stage.pointmotioncontrol.com/',
+  websocketEndpoint: 'wss://services.stage.pointmotioncontrol.com',
   stripePublishableKey: 'pk_test_51MSP9MKrHxGkv6aRSuMbHMDH0kNYYhWlYyFgtYNhw9S3UxARQ8WjABwWZdRXuJtMAuSl9st9RzInVuPzyFfclYLR00UCyYpwfK',
 };

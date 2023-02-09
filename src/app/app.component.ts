@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { JwtService } from './services/jwt.service';
+import { SocketService } from './services/socket/socket.service';
 import { ThemeService } from './services/theme/theme.service';
 import { UserService } from './services/user.service';
-import { Theme } from './types/pointmotion';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,8 +19,28 @@ export class AppComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private themeService: ThemeService,
+    private socketService: SocketService,
   ) {
     this.themeService.setTheme();
+    this.overrideConsole();
+  }
+
+  overrideConsole() {
+    let originalConsoleLog = console.log;
+    let originalConsoleError = console.error;
+    let originalConsoleWarn = console.warn;
+    console.log = (...args) => {
+      this.socketService.sendLogsToServer((JSON.stringify(args).toLowerCase().includes('error') ? '[ERROR] ' : '[LOG] ') + JSON.stringify(args));
+      originalConsoleLog.apply(console, args);
+    }
+    console.error = (...args) => {
+      this.socketService.sendLogsToServer('[ERROR] '+ args.toString());
+      originalConsoleError.apply(console, args);
+    }
+    console.warn = (...args) => {
+      this.socketService.sendLogsToServer('[WARN] ' + JSON.stringify(args));
+      originalConsoleWarn.apply(console, args);
+    }
   }
 
   async ngOnInit() {
