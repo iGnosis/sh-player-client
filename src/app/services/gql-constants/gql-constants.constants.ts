@@ -95,6 +95,17 @@ export const GqlConstants = {
     }
   }
   `,
+  GET_LATEST_USER_GENRE: `query GetLatestUserGenre($createdAfter: timestamptz!) {
+    checkin(where: {type: {_eq: genre}, createdAt: {_gte: $createdAfter}}, limit: 1, order_by: {createdAt: desc}) {
+      value
+    }
+  }`,
+  SET_USER_GENRE: `
+  mutation UpdateGenre($value: String!, $createdAfter: timestamptz!) {
+    update_checkin(_set: {value: $value}, where: {type: {_eq: genre}, createdAt: {_gte: $createdAfter}}) {
+      affected_rows
+    }
+  }`,  
   USER_FEEDBACK: `mutation InsertFeedback($description: String, $rating: Int!) {
     insert_patient_feedback(objects: {description: $description, rating: $rating}) {
       returning {

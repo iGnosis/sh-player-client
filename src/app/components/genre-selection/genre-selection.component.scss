@@ -1,0 +1,73 @@
+@import '../../variables';
+
+.notification-pill {
+    color: #1A202C;
+    z-index: 2;
+    transform: translateX(-50%);
+}
+
+.dropdown {
+    z-index: 2;
+    > button {
+        opacity: 0.8;
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        .bi.bi-chevron-down {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            transition: all 0.3s ease-out;
+            width: 0;
+            margin: auto 0;
+        }
+        &:hover, &.show {
+            opacity: 1;
+            .bi.bi-chevron-down {
+                width: 1em;
+            }
+        }
+        &:focus {
+            background-color: #fff;
+        }
+    }
+    .icon {
+        background-color: #4A5568;
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        > img {
+            opacity: 0;
+        }
+        &.classical {
+            -webkit-mask: url(../../../assets/icons/genre-selection/classical.svg) no-repeat center;
+            mask: url(../../../assets/icons/genre-selection/classical.svg) no-repeat center;
+        }
+        &.jazz {
+            -webkit-mask: url(../../../assets/icons/genre-selection/jazz.svg) no-repeat center;
+            mask: url(../../../assets/icons/genre-selection/jazz.svg) no-repeat center;
+        }
+        &.rock {
+            -webkit-mask: url(../../../assets/icons/genre-selection/rock.svg) no-repeat center;
+            mask: url(../../../assets/icons/genre-selection/rock.svg) no-repeat center;
+        }
+        &.dance {
+            -webkit-mask: url(../../../assets/icons/genre-selection/dance.svg) no-repeat center;
+            mask: url(../../../assets/icons/genre-selection/dance.svg) no-repeat center;
+        }
+        &.surprise-me {
+            -webkit-mask: url(../../../assets/icons/genre-selection/surprise-me.svg) no-repeat center;
+            mask: url(../../../assets/icons/genre-selection/surprise-me.svg) no-repeat center;
+        }
+    }
+    .dropdown-btn {
+        color: #4A5568;
+    }
+    .option {
+        color: #4A5568;
+        &:hover, &.active {
+            color: $success_color;
+            .icon {
+                background-color: $success_color;
+            }
+        }
+    }
+}
