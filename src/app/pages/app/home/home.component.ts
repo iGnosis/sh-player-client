@@ -1,6 +1,6 @@
 /// <reference types="chrome"/>
 import { Component, OnInit } from "@angular/core";
-import { Router, RoutesRecognized } from "@angular/router";
+import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/types/pointmotion";
@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit {
   nextSessionIdx: number = 0;
 
   isVisitingAfterSession = false;
+  showFeedbackForm = false;
 
   constructor(
     private careplanService: CareplanService,
@@ -84,7 +85,13 @@ export class HomeComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private googleAnalyticsService: GoogleAnalyticsService,
+    private route: ActivatedRoute
   ) {
+    const isVisitingAfterGame = this.route.snapshot.queryParamMap.get("isVisitingAfterGame");
+    if (isVisitingAfterGame) {
+      this.showFeedbackForm = true;
+      this.router.navigate([], { queryParams: { isVisitingAfterGame: null }, queryParamsHandling: 'merge', relativeTo: this.route });
+    }
     this.user = this.userService.get();
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))

@@ -18,6 +18,8 @@
   </div>
 </div>
 
+<feedback-form [show]="showFeedbackForm"></feedback-form>
+
 <div class="modal reward-modal" id="modal_example" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true" [style.display]="'block'" *ngIf="currentReward !== null">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content reward-card shadow-3 bg-primary">

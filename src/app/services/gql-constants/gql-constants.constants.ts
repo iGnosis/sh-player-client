@@ -113,6 +113,18 @@ export const GqlConstants = {
       }
     }
   }`,
+  INSERT_PATIENT_FEEDBACK: `mutation InsertPatientFeedback($response: jsonb) {
+    insert_patient_feedback(objects: {response: $response}) {
+      returning {
+        id
+      }
+    }
+  }`,
+  UPDATE_PATIENT_FEEDBACK: `mutation UpdatePatientFeedback($response: jsonb, $id: uuid!) {
+    update_patient_feedback_by_pk(pk_columns: {id: $id}, _set: {response: $response}) {
+      id
+    }
+  }`,  
   SET_RECOMMENDATION_SCORE: `mutation SetRecommendationScore($feedbackId: uuid!, $recommendationScore: Int!) {
     update_patient_feedback_by_pk(pk_columns: {id: $feedbackId}, _set: {recommendationScore: $recommendationScore}) {
       id

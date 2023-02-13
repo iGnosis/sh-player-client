@@ -47,6 +47,7 @@ import { AvatarComponent } from './components/avatar/avatar.component';
 import { environment } from 'src/environments/environment';
 import { SupportFabComponent } from './components/support-fab/support-fab.component';
 import { GenreSelectionComponent } from './components/genre-selection/genre-selection.component';
+import { FeedbackFormComponent } from './components/modals/feedback-form/feedback-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +75,7 @@ import { GenreSelectionComponent } from './components/genre-selection/genre-sele
     AvatarComponent,
     SupportFabComponent,
     GenreSelectionComponent,
+    FeedbackFormComponent,
   ],
   imports: [
     BrowserModule,
