@@ -135,21 +135,25 @@ export class AddPaymentMethodComponent implements OnInit {
         throw new Error('Subscription does not exist');
       }
     } catch (err) {
-      await this.gqlService.client.request(
-        GqlConstants.CREATE_SUBSCRIPTION_WITH_PROMOCODE,
-        {
-          promocode: this.promoCode,
-        }
-      );
-    } finally {
-      const continueSignup = this.isSignup === true;
-      if (continueSignup) {
-        this.router.navigate(['/app/signup/finish']);
-      } else {
-        this.router.navigate(['/app/home'], {
-          queryParams: { paymentAdded: true },
+      console.log('promocode::', this.promoCode.toUpperCase());
+      this.gqlService.client
+        .request(GqlConstants.CREATE_SUBSCRIPTION_WITH_PROMOCODE, {
+          promocode: this.promoCode.toUpperCase(),
+        })
+        .then(() => {
+          console.log('Success::', 'Subscription created');
+          const continueSignup = this.isSignup === true;
+          if (continueSignup) {
+            this.router.navigate(['/app/signup/finish']);
+          } else {
+            this.router.navigate(['/app/home'], {
+              queryParams: { paymentAdded: true },
+            });
+          }
+        })
+        .catch((err) => {
+          console.log('Error::', err);
         });
-      }
     }
   }
 }
