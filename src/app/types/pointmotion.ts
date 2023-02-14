@@ -1,3 +1,5 @@
+import { environment } from 'src/environments/environment';
+
 declare global {
   interface Window {
     dataLayer: any;
@@ -15,29 +17,29 @@ export interface Patient {
   provider?: string;
 }
 export interface LoginRequestDTO {
-  email: string,
-  password: string,
+  email: string;
+  password: string;
 }
 
 export interface SetPatientDetailsRequestDTO {
-  email?: string,
+  email?: string;
   // password: string,
-  nickname: string,
+  nickname: string;
   // code: string,
 }
 
 export interface SetPatientProfileRequestDTO {
-  namePrefix?: string,
-  firstName?: string,
-  lastName?: string,
+  namePrefix?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface LogoutRequestDTO {
-  refreshToken: string,
+  refreshToken: string;
 }
 
 export interface RewardsDTO {
-  tier: "bronze" | "silver" | "gold";
+  tier: 'bronze' | 'silver' | 'gold';
   isViewed: boolean;
   isUnlocked: boolean;
   isAccessed: boolean;
@@ -57,7 +59,7 @@ export type Environment = {
   googleAnalyticsTrackingID: string;
   stripePublishableKey: string;
   websocketEndpoint: string;
-}
+};
 
 export interface DailyGoalsApiDTO {
   /**
@@ -70,7 +72,12 @@ export interface DailyGoalsApiDTO {
   isCompleted: boolean;
 }
 
-export enum session { Start, Continue, Completed, Locked }
+export enum session {
+  Start,
+  Continue,
+  Completed,
+  Locked,
+}
 
 export interface Theme {
   colors: {
@@ -79,7 +86,7 @@ export interface Theme {
   font: {
     family: string;
     url: string;
-  }
+  };
 }
 
 export interface ModalConfig {
@@ -93,5 +100,11 @@ export interface ModalConfig {
   onSubmit?(): Promise<boolean> | boolean | void;
 }
 
-export const Genres = <const>['classical', 'jazz', 'rock', 'dance', 'surprise-me'];
+export const Genres = ['classical', 'jazz', 'rock', 'dance', 'surprise-me'];
+
+// adding afro to genres only in dev environment
+if (environment.name === 'dev' || environment.name === 'local') {
+  Genres.push('afro');
+}
+
 export type Genre = typeof Genres[number];

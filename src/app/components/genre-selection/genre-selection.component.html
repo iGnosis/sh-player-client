@@ -13,7 +13,7 @@
             <a class="option dropdown-item text-lg font-bold" (click)="setGenre(genre)" [class.active]="currentGenre==genre">
                 <div class="d-inline-block me-3 icon" [ngClass]="[genre]">
                     <img [src]="'/assets/icons/genre-selection/' + genre + '.svg'" />
-                </div>{{genre.replace("-", ' ') | titlecase}}{{i < genres.length - 1 ? ' Music': ''}}
+                </div>{{genre.replace("-", ' ') | titlecase}}{{genre !== 'surprise-me' ? ' Music': ''}}
             </a>
             <div *ngIf="i !== genres.length - 1" class="dropdown-divider mx-5"></div>
         </ng-container>

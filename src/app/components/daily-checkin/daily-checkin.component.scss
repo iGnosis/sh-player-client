@@ -30,6 +30,9 @@
       &:nth-child(5) {
         transform: translate(175%, -50%);
       }
+      &:nth-child(6) {
+        transform: translate(287%, -50%);
+      }
       &.active {
         z-index: 1;
       }
