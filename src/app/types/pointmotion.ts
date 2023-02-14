@@ -93,5 +93,5 @@ export interface ModalConfig {
   onSubmit?(): Promise<boolean> | boolean | void;
 }
 
-export const Genres = <const>['classical', 'jazz', 'rock', 'dance', 'surprise-me'];
+export const Genres = <const>['classical', 'jazz', 'rock', 'dance', 'surprise me!'];
 export type Genre = typeof Genres[number];

@@ -4,15 +4,15 @@
 </div>
 <div class="dropdown position-absolute top-5 end-5 h-auto">
     <button class="dropdown-btn btn btn-sm btn-neutral rounded-pill position-relative" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        <div class="icon" [ngClass]="[currentGenre]"><img src="/assets/icons/genre-selection/classical.svg" style="opacity:0;" /></div>
-        <p class="ps-2 pe-7 text-lg font-bold">{{currentGenre.replace("-", ' ') | titlecase}}{{currentGenre === 'surprise-me' ? '': ' Music'}}</p>
+        <div class="icon" [ngClass]="[currentGenre.replace(' ', '-').replace('!', '')]"><img src="/assets/icons/genre-selection/classical.svg" style="opacity:0;" /></div>
+        <p class="ps-2 pe-7 text-lg font-bold">{{currentGenre.replace("-", ' ') | titlecase}}{{currentGenre === 'surprise me!' ? '': ' Music'}}</p>
         <i class="bi bi-chevron-down text-lg"></i>
     </button>
     <div class="dropdown-menu w-full rounded-4 mt-1" aria-labelledby="dropdownMenuButton">
         <ng-container *ngFor="let genre of genres; let i=index">
             <a class="option dropdown-item text-lg font-bold" (click)="setGenre(genre)" [class.active]="currentGenre==genre">
-                <div class="d-inline-block me-3 icon" [ngClass]="[genre]">
-                    <img [src]="'/assets/icons/genre-selection/' + genre + '.svg'" />
+                <div class="d-inline-block me-3 icon" [ngClass]="[genre.replace(' ', '-').replace('!', '')]">
+                    <img [src]="'/assets/icons/genre-selection/' + genre.replace(' ', '-').replace('!', '') + '.svg'" />
                 </div>{{genre.replace("-", ' ') | titlecase}}{{i < genres.length - 1 ? ' Music': ''}}
             </a>
             <div *ngIf="i !== genres.length - 1" class="dropdown-divider mx-5"></div>

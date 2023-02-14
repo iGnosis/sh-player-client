@@ -31,10 +31,7 @@ export class GenreSelectionComponent {
     createdAfter.setHours(0, 0, 0, 0);
     this.graphqlService.gqlRequest(GqlConstants.GET_LATEST_USER_GENRE, { createdAfter: createdAfter.toISOString() }).then((res) => {
       if (res.checkin.length) {
-        if (res.checkin[0].value === 'surprise me!')
-          this.currentGenre = 'surprise-me';
-        else
-          this.currentGenre = res.checkin[0].value as Genre;
+        this.currentGenre = res.checkin[0].value as Genre;
       }
     });
   }
