@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { first } from 'rxjs';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
@@ -37,10 +38,9 @@ export class NavBarComponent implements OnInit {
       if (this.route.url.split('/')[2] === 'signup') this.hideNavbar = true;
       else this.hideNavbar = false;
     });
-    const logoSubscription = this.themeService.logoSubject.subscribe((url) => {
+    this.themeService.logoSubject.pipe(first()).subscribe((url) => {
       if (url) {
         this.logoUrl = url;
-        logoSubscription.unsubscribe();
       } else {
         this.themeService.setTheme();
       }
