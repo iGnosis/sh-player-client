@@ -87,8 +87,9 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   selectedMood?: string;
   selectedGenre?: string;
   moodSlideOut: boolean = false;
-  showGenreCard: boolean = false;
+  showGenreCard: boolean = true;
   genreSlideOut: boolean = false;
+  enableAfroGenre = false;
   debouncedPlayMusic: (...args: any[]) => void;
   playState: "play" | "stop" | undefined = undefined;
   timer: any;
@@ -102,10 +103,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   ) {
 
     if (environment.name === 'dev' || environment.name === 'local') {
-      this.genreList.push({
-        title: 'Afro',
-        img: '/assets/images/genres/Tabla.png',
-      });
+      this.enableAfroGenre = true;
     }
 
     this.debouncedPlayMusic = this.debounce((genre: string) => {
