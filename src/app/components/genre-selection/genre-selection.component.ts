@@ -56,7 +56,12 @@ export class GenreSelectionComponent {
   async setGenre(genre: Genre) {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
-    await this.authService.setGenreChoice(genre);
+
+    if (genre === 'surprise-me') {
+      await this.authService.setGenreChoice('surprise me!');
+    } else {
+      await this.authService.setGenreChoice(genre);
+    }
 
     this.currentGenre = genre;
 
