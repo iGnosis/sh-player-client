@@ -102,7 +102,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
     if (environment.name === 'dev' || environment.name === 'local') {
       this.genreList.push({
         title: 'Afro',
-        img: '/assets/images/genres/Dancing.jpg',
+        img: '/assets/images/genres/Tabla.png',
       });
     }
 
