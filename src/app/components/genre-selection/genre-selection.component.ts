@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 import { Genre, Genres } from 'src/app/types/pointmotion';
@@ -26,12 +27,12 @@ export class GenreSelectionComponent {
   genres = Genres;
   showToast = false;
 
-  constructor(private graphqlService: GraphqlService) {
+  constructor(private authService: AuthService) {
     const createdAfter = new Date();
     createdAfter.setHours(0, 0, 0, 0);
-    this.graphqlService.gqlRequest(GqlConstants.GET_LATEST_USER_GENRE, { createdAfter: createdAfter.toISOString() }).then((res) => {
-      if (res.checkin.length) {
-        this.currentGenre = res.checkin[0].value as Genre;
+    this.authService.getPatientDetails().then((res) => {
+      if (res.genreChoice) {
+        this.currentGenre = res.genreChoice as Genre;
       }
     });
   }
@@ -39,7 +40,7 @@ export class GenreSelectionComponent {
   async setGenre(genre: Genre) {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
-    await this.graphqlService.gqlRequest(GqlConstants.SET_USER_GENRE, { value: genre, createdAfter: date });
+    await this.authService.setGenreChoice(genre);
 
     this.currentGenre = genre;
 

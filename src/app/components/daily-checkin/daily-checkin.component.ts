@@ -12,6 +12,7 @@ import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checki
 import { Howler } from "howler";
 import { SoundsService } from "src/app/services/sounds/sounds.service";
 import { UserService } from "src/app/services/user.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-mood-checkin",
@@ -95,7 +96,8 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
     private router: Router,
     private dailyCheckinService: DailyCheckinService,
     private soundsService: SoundsService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService,
   ) {
     this.debouncedPlayMusic = this.debounce((genre: string) => {
       this.playMusic(genre);
@@ -119,6 +121,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   async selectGenre(choice: string) {
     this.selectedGenre = choice;
     await this.dailyCheckinService.dailyCheckin("genre", choice.toLowerCase());
+    await this.authService.setGenreChoice(choice.toLowerCase());
     setTimeout(() => (this.genreSlideOut = true), 500);
     setTimeout(async () => {
       this.showGenreCard = false;
