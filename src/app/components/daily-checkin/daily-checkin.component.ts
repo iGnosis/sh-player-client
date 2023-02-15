@@ -87,7 +87,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   selectedMood?: string;
   selectedGenre?: string;
   moodSlideOut: boolean = false;
-  showGenreCard: boolean = true;
+  showGenreCard: boolean = false;
   genreSlideOut: boolean = false;
   enableAfroGenre = false;
   debouncedPlayMusic: (...args: any[]) => void;
