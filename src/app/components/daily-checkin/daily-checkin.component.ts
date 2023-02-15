@@ -13,6 +13,7 @@ import { Howler } from "howler";
 import { SoundsService } from "src/app/services/sounds/sounds.service";
 import { UserService } from "src/app/services/user.service";
 import { AuthService } from "src/app/services/auth.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-mood-checkin",
@@ -99,6 +100,14 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private authService: AuthService,
   ) {
+
+    if (environment.name === 'dev' || environment.name === 'local') {
+      this.genreList.push({
+        title: 'Afro',
+        img: '/assets/images/genres/Tabla.png',
+      });
+    }
+
     this.debouncedPlayMusic = this.debounce((genre: string) => {
       this.playMusic(genre);
     }, 300);

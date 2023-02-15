@@ -12,6 +12,8 @@ import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
 import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
 import { filter, pairwise, take } from "rxjs";
+import { environment } from "src/environments/environment";
+import { SoundsService } from "src/app/services/sounds/sounds.service";
 
 @Component({
   selector: "app-home",
@@ -85,7 +87,8 @@ export class HomeComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private soundsService: SoundsService
   ) {
     const isVisitingAfterGame = this.route.snapshot.queryParamMap.get("isVisitingAfterGame");
     if (isVisitingAfterGame) {
@@ -152,6 +155,9 @@ export class HomeComponent implements OnInit {
   }
 
   async startNewSession() {
+    if (environment.name === 'dev' || environment.name === 'local') {
+          this.soundsService.stopLoungeSound();
+    }
     this.googleAnalyticsService.sendEvent('start_game');
     this.router.navigate(["/app/session/", { game: this.nextSession.name.replace(/\s/g, "_").toLowerCase() }]);
   }
