@@ -1,6 +1,6 @@
 /// <reference types="chrome"/>
 import { Component, OnInit } from "@angular/core";
-import { Router, RoutesRecognized } from "@angular/router";
+import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/types/pointmotion";
@@ -12,6 +12,8 @@ import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
 import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
 import { filter, pairwise, take } from "rxjs";
+import { environment } from "src/environments/environment";
+import { SoundsService } from "src/app/services/sounds/sounds.service";
 
 @Component({
   selector: "app-home",
@@ -75,6 +77,7 @@ export class HomeComponent implements OnInit {
   nextSessionIdx: number = 0;
 
   isVisitingAfterSession = false;
+  showFeedbackForm = false;
 
   constructor(
     private careplanService: CareplanService,
@@ -84,7 +87,14 @@ export class HomeComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private googleAnalyticsService: GoogleAnalyticsService,
+    private route: ActivatedRoute,
+    private soundsService: SoundsService
   ) {
+    const isVisitingAfterGame = this.route.snapshot.queryParamMap.get("isVisitingAfterGame");
+    if (isVisitingAfterGame) {
+      this.showFeedbackForm = true;
+      this.router.navigate([], { queryParams: { isVisitingAfterGame: null }, queryParamsHandling: 'merge', relativeTo: this.route });
+    }
     this.user = this.userService.get();
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))
@@ -145,6 +155,9 @@ export class HomeComponent implements OnInit {
   }
 
   async startNewSession() {
+    if (environment.name === 'dev' || environment.name === 'local') {
+          this.soundsService.stopLoungeSound();
+    }
     this.googleAnalyticsService.sendEvent('start_game');
     this.router.navigate(["/app/session/", { game: this.nextSession.name.replace(/\s/g, "_").toLowerCase() }]);
   }

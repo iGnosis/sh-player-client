@@ -78,11 +78,8 @@ export class SmsOtpLoginComponent {
 
       this.countryCode = this.countryCode ? this.countryCode.trim() : '';
       this.phoneNumber = this.phoneNumber ? this.phoneNumber.trim() : '';
-      console.log('submit:countryCode:', this.countryCode);
-      console.log('submit:phoneNumber:', this.phoneNumber);
 
       let phoneObj = phone(`${this.countryCode}${this.phoneNumber}`);
-      console.log(phoneObj);
 
       if (!phoneObj.isValid) {
         this.showError('Phone number is not valid');
@@ -146,7 +143,6 @@ export class SmsOtpLoginComponent {
     // call API to validate the code
     else if (this.step === 1) {
       this.otpCode = event.target.otpCode.value;
-      console.log('submit:otpCode:', this.otpCode);
 
       // you should get back JWT in success response.
       const resp = await this.graphQlService.gqlRequest(GqlConstants.VERIFY_LOGIN_OTP, {

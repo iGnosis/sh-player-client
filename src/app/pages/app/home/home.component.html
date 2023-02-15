@@ -1,4 +1,5 @@
 <div class="home-container container-fluid h-screen w-screen overflow-hidden position-relative" [style.background]="'no-repeat bottom center/cover url(/assets/images/backgrounds/home/overlay.png),linear-gradient(rgba(0, 0, 102, .2), rgba(0, 0, 102, .2)), no-repeat top center/cover url(/assets/images/backgrounds/home/' + getBackgroundName(nextSession.name) + '.png), var(--primary)'">
+  <genre-selection></genre-selection>
   <div *ngIf="nextSession.name" class="position-relative d-flex">
     <div class="mt-auto w-full mb-14 px-5">
       <h1 [@fadeText]="nextSession.name" class="display-2 text-white">{{nextSession.name}}</h1>
@@ -16,6 +17,8 @@
     </div>
   </div>
 </div>
+
+<feedback-form [show]="showFeedbackForm"></feedback-form>
 
 <div class="modal reward-modal" id="modal_example" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true" [style.display]="'block'" *ngIf="currentReward !== null">
   <div class="modal-dialog modal-dialog-centered">

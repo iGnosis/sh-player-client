@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { HelpService } from 'src/app/services/help/help.service';
 import { ThemeService } from 'src/app/services/theme/theme.service';
@@ -22,14 +23,13 @@ export class HelpComponent implements OnInit {
     couponCode: "PTMONU",
   }
   constructor(
-    private helpService: HelpService, 
+    private helpService: HelpService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private themeService: ThemeService,
   ) {
-    const logoSubscription = this.themeService.logoSubject.subscribe((url) => {
+    this.themeService.logoSubject.pipe(first()).subscribe((url) => {
       if (url) {
         this.logoUrl = url;
-        logoSubscription.unsubscribe();
       } else {
         this.themeService.setTheme();
       }

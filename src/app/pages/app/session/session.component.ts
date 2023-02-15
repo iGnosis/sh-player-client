@@ -102,12 +102,12 @@ export class SessionComponent implements OnInit {
         }
         // sends a latest valid access_token.
         else if (event.data.type === 'end-game') {
-          this.router.navigate(['/app/home'])
+          this.router.navigate(['/app/home', { isVisitingAfterGame: true }])
         }
       }
 
       if (event && event.data && event.data.session && event.data.session.id) {
-        this.router.navigate(['/app/home'])
+        this.router.navigate(['/app/home', { isVisitingAfterGame: true }])
       }
       if (event && event.data && event.data.type === 'check-auth' && !event.data.token) {
         this.jwtService.clearTokens();
