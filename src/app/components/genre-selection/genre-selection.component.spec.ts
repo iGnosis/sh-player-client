@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GenreSelectionComponent } from './genre-selection.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('GenreSelectionComponent', () => {
   let component: GenreSelectionComponent;
@@ -8,7 +9,8 @@ describe('GenreSelectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GenreSelectionComponent ]
+      declarations: [ GenreSelectionComponent ],
+      imports: [HttpClientModule],
     })
     .compileComponents();
   });

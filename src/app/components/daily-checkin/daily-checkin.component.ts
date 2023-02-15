@@ -12,6 +12,7 @@ import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checki
 import { Howler } from "howler";
 import { SoundsService } from "src/app/services/sounds/sounds.service";
 import { UserService } from "src/app/services/user.service";
+import { AuthService } from "src/app/services/auth.service";
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -86,8 +87,9 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   selectedMood?: string;
   selectedGenre?: string;
   moodSlideOut: boolean = false;
-  showGenreCard: boolean = false;
+  showGenreCard: boolean = true;
   genreSlideOut: boolean = false;
+  enableAfroGenre = false;
   debouncedPlayMusic: (...args: any[]) => void;
   playState: "play" | "stop" | undefined = undefined;
   timer: any;
@@ -96,14 +98,12 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
     private router: Router,
     private dailyCheckinService: DailyCheckinService,
     private soundsService: SoundsService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService,
   ) {
 
     if (environment.name === 'dev' || environment.name === 'local') {
-      this.genreList.push({
-        title: 'Afro',
-        img: '/assets/images/genres/Tabla.png',
-      });
+      this.enableAfroGenre = true;
     }
 
     this.debouncedPlayMusic = this.debounce((genre: string) => {
@@ -128,6 +128,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   async selectGenre(choice: string) {
     this.selectedGenre = choice;
     await this.dailyCheckinService.dailyCheckin("genre", choice.toLowerCase());
+    await this.authService.setGenreChoice(choice.toLowerCase());
     setTimeout(() => (this.genreSlideOut = true), 500);
     setTimeout(async () => {
       this.showGenreCard = false;

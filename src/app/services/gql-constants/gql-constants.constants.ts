@@ -100,10 +100,10 @@ export const GqlConstants = {
       value
     }
   }`,
-  SET_USER_GENRE: `
-  mutation UpdateGenre($value: String!, $createdAfter: timestamptz!) {
-    update_checkin(_set: {value: $value}, where: {type: {_eq: genre}, createdAt: {_gte: $createdAfter}}) {
-      affected_rows
+  SET_GENRE_CHOICE: `
+  mutation SetGenreChoice($id: uuid!, $genreChoice: String!) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {genreChoice: $genreChoice}) {
+      genreChoice
     }
   }`,  
   USER_FEEDBACK: `mutation InsertFeedback($description: String, $rating: Int!) {
@@ -188,8 +188,10 @@ export const GqlConstants = {
       firstName
       customerId
       createdAt
+      genreChoice
     }
   }`,
+  
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
     faqAccessed {
       status

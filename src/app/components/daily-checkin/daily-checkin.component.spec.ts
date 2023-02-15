@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DailyCheckinComponent } from './daily-checkin.component';
 import { UserService } from '../../services/user.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 describe('DailyCheckinComponent', () => {
   let router: Router;
@@ -15,6 +16,7 @@ describe('DailyCheckinComponent', () => {
   let mockUserService = jasmine.createSpyObj('UserService', ['isOnboarded', 'get']);
   mockUserService.get.and.returnValue(JSON.parse('{"id":"4b44e0f7-3ac5-49ef-85c8-63ab14d8ad77"}'));
   const mockDailyCheckinService = jasmine.createSpyObj('DailyCheckinService', ['dailyCheckin']);
+  const mockAuthService = jasmine.createSpyObj('DailyCheckinService', ['setGenreChoice']);
 
   function timeout(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -26,6 +28,7 @@ describe('DailyCheckinComponent', () => {
       providers: [
         { provide: UserService, useValue: mockUserService },
         { provide: DailyCheckinService, useValue: mockDailyCheckinService },
+        { provide: AuthService, useValue: mockAuthService },
       ],
     })
     .compileComponents();

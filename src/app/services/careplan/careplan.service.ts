@@ -14,12 +14,6 @@ export class CareplanService {
       GqlConstants.GET_AVAILABLE_GAMES
     );
 
-    const allowMovingTones = environment.name !== "prod" && environment.name !== "stage";
-
-    if (!allowMovingTones && games?.game_name) {
-      games.game_name = games.game_name.filter((game: { name: string }) => game.name !== "moving_tones");
-    }
-
     return games;
   }
 }
