@@ -44,9 +44,9 @@ export class GenreSelectionComponent {
     this.authService.getPatientDetails().then((res) => {
       if (res.genreChoice) {
         if (environment.name === 'dev' || environment.name === 'local') {
-          this.soundsService.playLoungeSound(res.checkin[0].value as Genre);
+          this.soundsService.playLoungeSound(res.genreChoice as Genre);
         }
-        if (res.checkin[0].value === 'surprise me!')
+        if (res.genreChoice === 'surprise me!')
           this.currentGenre = 'surprise-me';
         else this.currentGenre = res.genreChoice as Genre;
       }
