@@ -145,7 +145,7 @@ describe('HomeComponent', () => {
     ];
     spyOn(router, 'navigate').and.stub();
     component.getNextSession();
-    component.startNewSession();
+    await component.startNewSession();
     expect(router.navigate).toHaveBeenCalledWith(["/app/session/", { game: component.nextSession.name.replace(/\s/g, "_").toLowerCase() }]);
   });
 });
