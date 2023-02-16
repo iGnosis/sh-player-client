@@ -159,6 +159,7 @@ export class HomeComponent implements OnInit {
           this.soundsService.stopLoungeSound();
     }
     this.googleAnalyticsService.sendEvent('start_game');
+    await this.router.navigate([], { queryParams: { isVisitingAfterGame: true }, queryParamsHandling: 'merge', relativeTo: this.route });
     this.router.navigate(["/app/session/", { game: this.nextSession.name.replace(/\s/g, "_").toLowerCase() }]);
   }
 
