@@ -8,13 +8,36 @@ import { GraphqlService } from 'src/app/services/graphql/graphql.service';
   styleUrls: ['./billing-history.component.scss']
 })
 export class BillingHistoryComponent implements OnInit {
+  subscription!: any;
   page: number = 1;
   invoices: any = [];
 
   constructor(private graphqlService: GraphqlService) { }
 
   async ngOnInit(): Promise<void> {
+    await this.getSubscriptionDetails();
     await this.getBillingHistory('', '');
+  }
+
+  async getSubscriptionDetails() {
+    const response = await this.graphqlService.gqlRequest(
+      GqlConstants.GET_SUBSCRIPTION_DETAILS,
+      {},
+      true
+    );
+    if (
+      response.getSubscriptionDetails &&
+      response.getSubscriptionDetails.subscription
+    ) {
+      this.subscription = response.getSubscriptionDetails.subscription;
+    }
+  }
+
+  getDateStr(timestamp: string): string {
+    const date = new Date(parseInt(timestamp) * 1000);
+    return `${date.toLocaleDateString('default', {
+      month: 'long',
+    })} ${date.getDate()}, ${date.getFullYear()}`;
   }
 
   async getBillingHistory(endingBefore: string, startingAfter: string) {

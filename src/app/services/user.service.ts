@@ -11,6 +11,8 @@ import { PaymentMethod } from '@stripe/stripe-js';
 })
 export class UserService {
   private user?: Patient
+  patientForm?: Patient;
+
   constructor(
     private gqlService: GraphqlService,
     private http: HttpClient
@@ -43,6 +45,19 @@ export class UserService {
       code
     }, false)
     return resp.country;
+  }
+
+  async savePatientFormDetails() {
+    try {
+      const patient = await this.gqlService.gqlRequest(
+        GqlConstants.UPDATE_PATIENT_DETAILS,
+        this.patientForm ? {...this.patientForm} : {},
+        true
+      );
+      return patient.update_patient_by_pk;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async isOnboarded() {

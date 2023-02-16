@@ -1,0 +1,96 @@
+<div style="background-color: #fafafa">
+    <div class="row">&nbsp;</div>
+    <div class="row gy-5 w-full" *ngIf="!edit">
+      <div class="col-6 offset-3" *ngIf="patientDetails">
+        <div class="card bg-white p-8 shadow-3">
+          <h5 class="text-dark">General Information</h5>
+          <div class="ms-5">
+            <p class="mt-5">
+              First Name:
+              <span class="font-bold">{{(patientDetails.firstName | titlecase) || ''}}</span>
+            </p>
+            <p class="mt-5">
+              Last Name:
+              <span class="font-bold">{{(patientDetails.lastName | titlecase) || ''}}</span>
+            </p>
+            <p class="mt-5">
+              E-mail: <span class="font-bold">{{ patientDetails.email }}</span>
+            </p>
+            <p class="mt-5">
+              Phone Number:
+              <span class="font-bold">{{
+                patientDetails.phoneCountryCode + " " + patientDetails.phoneNumber
+              }}</span>
+            </p>
+            <p class="mt-5">
+              Card Details:
+              <span class="text-black" *ngIf="card">
+                <i class="bi bi-credit-card mx-2"></i>**** **** ****
+                {{ card.last4 }}
+              </span>
+              <span class="text-black" *ngIf="!card">
+                <i class="bi bi-credit-card mx-2"></i>Card details not found
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row gy-5 w-full" *ngIf="edit">
+      <div class="col-6 offset-3" *ngIf="patientDetails">
+        <form class="card bg-white p-8 shadow-3 position-relative" [formGroup]="patientForm">
+            <p *ngIf="error" class="bg-danger h-6 position-absolute top-0 w-full start-0 text-center text-white rounded-top">{{error}}</p>
+          <h5 class="text-dark p-5 pt-2">General Information</h5>
+          <div class="ms-5">
+            <div class="row gy-5">
+              <div class="col-md-6">
+                <div class="">
+                  <label class="form-label" for="first_name">First name</label>
+                  <input formControlName="firstName" type="text" class="form-control" id="first_name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="">
+                  <label class="form-label" for="last_name">Last name</label>
+                  <input formControlName="lastName" type="text" class="form-control" id="last_name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="">
+                  <label class="form-label" for="email">Email</label>
+                  <input formControlName="email" type="email" class="form-control" id="email">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="">
+                  <label class="form-label" for="phone_number">Phone number</label>
+                  <div class="input-group input-group-inline">
+                    <div class="input-group-prepend w-24 pe-0">
+                        <select [value]="patientDetails.phoneCountryCode" formControlName="phoneCountryCode" id="countryCode" class="form-select-sm form-select h-full w-full shadow-none rounded-start rounded-0 pe-10">
+                            <option value="+1">+1</option>
+                            <option value="+91">+91</option>
+                        </select>
+                    </div>
+                    <input formControlName="phoneNumber" type="text" class="form-control" id="phone_number">
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="">
+                    <label class="form-label" for="card_details">Card Details</label>
+                    <div class="input-group input-group-inline">
+                        <span class="input-group-text" id=""><i class="bi bi-credit-card"></i></span>
+                        <input type="text" [value]="card && card.last4 ? '**** **** **** ' + card.last4 : ''" class="form-control" placeholder="Card details not found" readonly>
+                        <span class="input-group-text" id=""><a routerLink="/app/add-payment-method" class="text-primary">Change</a></span>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="row">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <primary-modal [show]="showCancellationModal" [modalConfig]="cancellationModalConfig" [(inputVal)]="cancellationReason" ></primary-modal> -->
