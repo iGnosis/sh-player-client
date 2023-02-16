@@ -4,6 +4,7 @@ import { PaymentMethod } from '@stripe/stripe-js';
 import { UserService } from 'src/app/services/user.service';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
 import { ModalConfig } from 'src/app/types/pointmotion';
+import { Stripe } from 'stripe';
 @Component({
   selector: 'account-details',
   templateUrl: './account-details.component.html',
@@ -27,7 +28,8 @@ export class AccountDetailsComponent implements OnInit {
     nickname: string;
   };
 
-  subscription!: any;
+  subscription!: Stripe.Subscription;
+  amount: number = 30;
   subscriptionStatus!: string;
 
   isSubscribed = false;
@@ -84,6 +86,11 @@ export class AccountDetailsComponent implements OnInit {
       response.getSubscriptionDetails.subscription
     ) {
       this.subscription = response.getSubscriptionDetails.subscription;
+
+      // setting payable amount based on user's discount (Coupon code)
+      if (this.subscription.discount) {
+        this.amount -= (30 * this.subscription.discount.coupon.percent_off!) / 100;
+      }
     }
   }
 
@@ -114,9 +121,7 @@ export class AccountDetailsComponent implements OnInit {
     }
   }
 
-  async openCancelModal() {
-    
-  }
+  async openCancelModal() {}
 
   async cancelSubscription() {
     const resp = await this.gqlService.gqlRequest(
