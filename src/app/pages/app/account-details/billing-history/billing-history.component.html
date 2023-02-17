@@ -5,7 +5,7 @@
         <div class="card bg-white p-8 shadow-3">
           <h5 class="text-dark">Plan Details</h5>
           <p class="mt-5 font-bold">
-            Active Sound Health Membership for ${{ subscription && subscription.plan ? (subscription.plan.amount / 100) : 0 }}/month
+            Active Sound Health Membership for ${{ amount }}/month
           </p>
           <p class="mt-5" *ngIf="subscription">
             Next Billing Date:
