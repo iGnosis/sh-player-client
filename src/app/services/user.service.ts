@@ -82,7 +82,11 @@ export class UserService {
         return 'profile';
       } else if (!response.patient_by_pk.email) {
         return 'email';
-      } else if (!subscriptionResponse.getSubscriptionDetails || !subscriptionResponse.getSubscriptionDetails.subscription || statusResponse.getSubscriptionStatus.data !== 'active') {
+      } else if (
+        !subscriptionResponse.getSubscriptionDetails || 
+        !subscriptionResponse.getSubscriptionDetails.subscription || 
+        !['active', 'trial_period'].includes(statusResponse.getSubscriptionStatus.data)
+      ) {
         return 'payment';
       } else {
         return 'finish'; // skipping the onboarding
