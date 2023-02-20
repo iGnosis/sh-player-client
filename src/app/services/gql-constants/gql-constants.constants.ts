@@ -191,7 +191,12 @@ export const GqlConstants = {
       genreChoice
     }
   }`,
-  
+  UPDATE_PATIENT_DETAILS: `
+  mutation UpdatePatientDetails($id: uuid!, $firstName: String!, $lastName: String!, $email: String!, $phoneCountryCode: String!, $phoneNumber: String!) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {firstName: $firstName, lastName: $lastName, email: $email, phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber}) {
+      id
+    }
+  }`,
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {
     faqAccessed {
       status

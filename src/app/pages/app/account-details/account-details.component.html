@@ -1,82 +1,22 @@
-<div style="background-color: #fafafa" class="h-screen">
-  <div class="row">&nbsp;</div>
-  <div class="row gy-5 w-full">
-    <div class="col-6 offset-3">
-      <div class="card bg-white p-8 shadow-3">
-        <h5 class="text-dark">Plan Details</h5>
-        <p class="mt-5 font-bold">
-          Active Sound Health Membership for ${{ 30 }}/month
-        </p>
-        <p class="mt-5" *ngIf="subscription">
-          Next Billing Date:
-          <span class="font-bold">{{
-            getDateStr(subscription.current_period_end)
-          }}</span>
-        </p>
-      </div>
+<div class="overflow-x-hidden overflow-y-auto" style="height: calc(100vh - 56px)">
+  <header class="pt-5">
+    <div class="d-flex justify-content-between align-items-center px-5">
+      <h2>Account Details</h2>
+      <button [class.d-none]="editBtnState() !== 'edit'" routerLink="./" [queryParams]="{ edit: true }" class="btn btn-outline-primary px-14">
+        <i class="bi bi-pencil-square"></i>&nbsp;Edit
+      </button>
+      <button (click)="save()" [class.d-none]="editBtnState() !== 'save'" routerLink="./" [queryParams]="{ edit: true }" class="btn btn-primary px-5" [disabled]="disableSaveBtn">
+        Save Changes
+      </button>
     </div>
-    <div class="col-6 offset-3" *ngIf="patientDetails">
-      <div class="card bg-white p-8 shadow-3">
-        <h5 class="text-dark">Account Details</h5>
-        <div class="ms-5">
-          <p class="mt-5">
-            Name:
-            <span class="font-bold">{{
-              patientDetails.firstName ? (patientDetails.firstName + " " + patientDetails.lastName) : patientDetails.nickname ? patientDetails.nickname : ''
-            }}</span>
-          </p>
-          <p class="mt-5">
-            E-mail: <span class="font-bold">{{ patientDetails.email }}</span>
-          </p>
-          <p class="mt-5">
-            Phone Number:
-            <span class="font-bold">{{
-              patientDetails.phoneCountryCode + " " + patientDetails.phoneNumber
-            }}</span>
-          </p>
-        </div>
-        <div class="ms-5 mt-5 d-flex justify-content-between">
-          <p class="text-black" *ngIf="card">
-            <i class="bi bi-credit-card me-5"></i>**** **** ****
-            {{ card.last4 }}
-          </p>
-          <p class="text-black" *ngIf="!card">
-            <i class="bi bi-credit-card me-2"></i>Card details not found
-          </p>
-          <div class="d-flex flex-column align-items-end">
-            <button
-              *ngIf="(!isSubscribed || !subscription) && card"
-              class="text-sm my-2 bg-transparent px-0"
-              style="color: #2f51ae"
-              (click)="subscribe()"
-            >
-              Subscribe
-            </button>
-            <button
-              *ngIf="isSubscribed && subscription"
-              class="text-sm my-2 bg-transparent px-0"
-              style="color: #2f51ae"
-              (click)="showCancellationModal=true"
-            >
-              Cancel Subscription
-            </button>
-            <a
-              class="text-sm"
-              style="color: #2f51ae"
-              routerLink="/app/add-payment-method"
-              >{{ card ? "Update Payment Method" : "Add Payment Method" }}</a
-            >
-            <a
-              class="text-sm mt-2"
-              style="color: #2f51ae"
-              routerLink="/app/billing-history"
-              >Billing History</a
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <ul class="nav nav-tabs px-5">
+      <li *ngFor="let tab of tabs" class="nav-item">
+        <a class="nav-link" [routerLink]="tab" [routerLinkActive]="['active']">{{tab | titlecase}}</a>
+      </li>
+    </ul>
+  </header>
+  
+  <main>
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </main>
 </div>
-
-<primary-modal [show]="showCancellationModal" [modalConfig]="cancellationModalConfig" [(inputVal)]="cancellationReason" ></primary-modal>

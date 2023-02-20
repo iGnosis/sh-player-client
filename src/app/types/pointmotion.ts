@@ -15,6 +15,8 @@ export interface Patient {
   phoneCountryCode?: string;
   phoneNumber?: string;
   provider?: string;
+  firstName?: string;
+  lastName?: string;
 }
 export interface LoginRequestDTO {
   email: string;
