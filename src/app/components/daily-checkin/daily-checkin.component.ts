@@ -22,15 +22,15 @@ import { environment } from "src/environments/environment";
   animations: [
     trigger("slideInOut", [
       transition(":enter", [
-        style({ transform: "translate(-50%, 100vh)" }),
+        style({ transform: "translate(-50%, 105vh)" }),
         animate(
           "500ms ease-out",
           style({ transform: "translate(-50%, -50%)" })
         ),
       ]),
-      state("slideIn", style({ transform: "translate(-50%, 100vh)" })),
+      state("slideIn", style({ transform: "translate(-50%, 105vh)" })),
       state("open", style({ transform: "translate(-50%, -50%)" })),
-      state("slideOut", style({ transform: "translate(-50%, -100vh)" })),
+      state("slideOut", style({ transform: "translate(-50%, -105vh)" })),
       transition("* => open", animate("0.5s ease-in")),
       transition("* => slideOut", animate("0.5s ease-in")),
     ]),
