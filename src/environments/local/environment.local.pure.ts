@@ -5,6 +5,7 @@ import { Environment } from "src/app/types/pointmotion";
 export const environment: Environment = {
   production: false,
   name: 'local',
+  playerClientUrl: 'https://patient.dev.pointmotioncontrol.com',
   organizationName: 'pointmotion',
   googleAnalyticsTrackingID: 'G-MTGG72G6ND',
   gqlEndpoint: 'http://localhost:8080/v1/graphql',

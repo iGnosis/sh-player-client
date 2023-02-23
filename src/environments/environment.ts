@@ -8,6 +8,7 @@ export const environment: Environment = {
   production: false,
   name: 'local',
   organizationName: 'pointmotion',
+  playerClientUrl: 'https://patient.dev.pointmotioncontrol.com',
   googleAnalyticsTrackingID: 'G-MTGG72G6ND',
   gqlEndpoint: 'https://api.dev.pointmotioncontrol.com/v1/graphql',
   servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',

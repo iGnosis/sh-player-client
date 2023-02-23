@@ -7,6 +7,7 @@ import { Environment } from "src/app/types/pointmotion";
 export const environment: Environment = {
   production: false,
   name: 'stage',
+  playerClientUrl: 'https://patient.stage.pointmotioncontrol.com',
   organizationName: 'pointmotion',
   googleAnalyticsTrackingID: 'G-MTGG72G6ND',
   gqlEndpoint: 'https://api.stage.pointmotioncontrol.com/v1/graphql',
