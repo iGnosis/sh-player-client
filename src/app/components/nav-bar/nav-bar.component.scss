@@ -14,9 +14,6 @@ nav {
             filter: brightness(0.7);
         }
     }
-    & > div.active {
-        border-bottom: 3px solid #FFFFFF;
-    }
 }
 .navbar-light .navbar-nav .nav-link {
     &:hover, &:focus {
@@ -26,5 +23,16 @@ nav {
 .nav-right {
     p {
         color: #000033;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .nav-left {
+        & > div.active {
+            border-bottom: 3px solid #FFFFFF;
+        }
+        .nav-item {
+            border-right-width: 1px;
+        }
     }
 }

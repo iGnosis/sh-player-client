@@ -43,21 +43,21 @@
             </div>
         </div> -->
         <!-- Collapse -->
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse" id="navbarCollapse" #navbar>
             <!-- Nav -->
-            <div class="nav-left navbar-nav ms-10">
+            <div class="nav-left navbar-nav ms-lg-10">
                 <div class="h-full" [class.active]="activeTab === 'home'">
-                    <a class="nav-item nav-link px-7 py-1 my-3 border-end text-white" (click)="activeTab = 'home'" routerLink="/app/home" aria-current="page"><span>Home</span></a>
+                    <a class="nav-item nav-link px-7 py-1 my-3 text-white" (click)="setTab('home')" routerLink="/app/home" aria-current="page"><span>Home</span></a>
                 </div>
                 <div class="h-full" [class.active]="activeTab === 'rewards'">
-                    <a class="nav-item nav-link px-7 py-1 my-3 border-end text-white" (click)="activeTab = 'rewards'" routerLink="/app/rewards"
+                    <a class="nav-item nav-link px-7 py-1 my-3 text-white" (click)="setTab('rewards')" routerLink="/app/rewards"
                         aria-current="page"><span>Rewards</span></a>
                 </div>
-                <!-- <div class="h-full" [class.active]="activeTab === 'goals'">
-                    <a class="nav-item nav-link px-7 py-1 my-3 border-end" (click)="activeTab = 'goals'" routerLink="/app/goals">Goals</a>
-                </div> -->
                 <div class="h-full" [class.active]="activeTab === 'help'">
-                    <a class="nav-item nav-link px-7 py-1 my-3 text-white" (click)="activeTab = 'help'" routerLink="/app/help"><span>Help</span></a>
+                    <a class="nav-item nav-link px-7 py-1 my-3 text-white" (click)="setTab('help')" routerLink="/app/help"><span>Help</span></a>
+                </div>
+                <div class="h-full d-block d-lg-none">
+                    <a class="nav-item nav-link px-7 py-1 my-3 text-white" (click)="logout()"><span>Sign Out</span></a>
                 </div>
             </div>
             <!-- Right navigation -->
