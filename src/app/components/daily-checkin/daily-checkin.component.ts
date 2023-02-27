@@ -34,6 +34,17 @@ import { environment } from "src/environments/environment";
       transition("* => open", animate("0.5s ease-in")),
       transition("* => slideOut", animate("0.5s ease-in")),
     ]),
+    trigger("fadeInOut", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate("500ms ease-out", style({ opacity: 1 })),
+      ]),
+      state("fadeIn", style({ opacity: 0 })),
+      state("open", style({ opacity: 1 })),
+      state("fadeOut", style({ opacity: 0, display: "none" })),
+      transition("* => open", animate("0.5s ease-in")),
+      transition("* => fadeOut", animate("0.5s ease-in")),
+    ]),
   ],
 })
 export class DailyCheckinComponent implements OnInit, AfterViewInit {

@@ -1,4 +1,4 @@
-<div class="mood-container position-fixed bg-white w-screen h-screen top-0 start-0">
+<div class="d-none d-lg-block mood-container position-fixed bg-white w-screen h-screen top-0 start-0">
   <div class="w-1/2 h-screen position-absolute top-0 end-0">
     <ng-lottie [options]="options">
     </ng-lottie>
@@ -32,6 +32,41 @@
     <div *ngIf="enableAfroGenre" class="mt-8">
       <h3 class="text-primary cursor-pointer" (click)="selectGenre('afro')"><span class="hover-underline">
           Try Afro Genre</span></h3>
+    </div>
+  </div>
+</div>
+
+<!-- mobile -->
+<div class="d-block d-lg-none mood-sm-container position-fixed bg-white w-screen h-screen top-0 start-0 py-16 px-5" style="z-index: 100;">
+  <div class="row">&nbsp;</div>
+  <h1 [@fadeInOut]="{value:moodSlideOut ? 'fadeOut' : '', params:{duration : 500}}" class="h2 text-primary text-center">How are you feeling today?</h1>
+  <div class="row gy-5 pt-5 px-10" [@fadeInOut]="{value:moodSlideOut ? 'fadeOut' : '', params:{duration : 500}}">
+    <div *ngFor="let mood of moodList" class="col-12">
+      <div (click)="selectMood(mood.title)" 
+        class="mood-card row p-3 shadow rounded-pill"
+        [class.active]="mood.title === selectedMood">
+        <div class="col-4 col-md-6 d-flex">
+          <img class="w-10 ms-auto my-auto" [src]="mood.img" [alt]="mood.title">
+        </div>
+        <div class="col d-flex p-0">
+          <p class=" px-3 h4 text-primary me-auto my-auto">{{mood.title}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1 *ngIf="showGenreCard" [@fadeInOut]="{value:!showGenreCard ? 'fadeIn' : !genreSlideOut ? 'open' : 'fadeOut'}" class="h2 text-primary text-center">Select genre of music</h1>
+  <div *ngIf="showGenreCard" class="row gy-5 pt-5 px-10" [@fadeInOut]="{value:!showGenreCard ? 'fadeIn' : !genreSlideOut ? 'open' : 'fadeOut'}">
+    <div *ngFor="let genre of genreList" class="col-12">
+      <div (click)="selectGenre(genre.title)"
+        class="genre-card row p-3 shadow rounded-pill"
+        [class.active]="genre.title === selectedGenre">
+        <div class="col-4 col-md-6 d-flex">
+          <img class="w-10 ms-auto my-auto" [src]="genre.img" [alt]="genre.title">
+        </div>
+        <div class="col d-flex p-0">
+          <p class=" px-3 h4 text-primary me-auto my-auto">{{genre.title}}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
