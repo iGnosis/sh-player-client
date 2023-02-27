@@ -2,7 +2,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
-import { Patient } from "src/app/types/pointmotion";
+import { ModalConfig, Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/types/pointmotion";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
@@ -78,6 +78,17 @@ export class HomeComponent implements OnInit {
 
   isVisitingAfterSession = false;
   showFeedbackForm = false;
+
+  showDeviceWarning = false;
+  deviceWarningConfig: ModalConfig = {
+    type: 'warning',
+    title: 'Please switch to a larger screen',
+    body: 'Playing the activities are not supported on mobile devices. Please use a laptop or desktop computer to play. Thank you!',
+    submitButtonLabel: 'Done',
+    onSubmit: () => {
+      this.showDeviceWarning = false;
+    },
+  };
 
   constructor(
     private careplanService: CareplanService,

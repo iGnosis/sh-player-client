@@ -3,8 +3,11 @@
   <div *ngIf="nextSession.name" class="position-relative d-flex">
     <div class="mt-auto w-full mb-14 px-5">
       <h1 [@fadeText]="nextSession.name" class="display-2 text-white">{{nextSession.name}}</h1>
-      <div class="mt-5">
+      <div class="mt-5 d-none d-md-block">
         <button (click)="startNewSession()" class="start-btn btn btn-primary px-20 py-2 border-2 border-white rounded-3 position-relative"><h1 class="display-6 text-white">Start</h1></button>
+      </div>
+      <div class="mt-5 d-md-none">
+        <button (click)="showDeviceWarning = true" class="start-btn btn btn-primary px-20 py-2 border-2 border-white rounded-3 position-relative"><h1 class="display-6 text-white">Start</h1></button>
       </div>
     </div>
   </div>
@@ -19,6 +22,7 @@
 </div>
 
 <feedback-form [show]="showFeedbackForm"></feedback-form>
+<primary-modal [show]="showDeviceWarning" [modalConfig]="deviceWarningConfig"></primary-modal>
 
 <div class="modal reward-modal" id="modal_example" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true" [style.display]="'block'" *ngIf="currentReward !== null">
   <div class="modal-dialog modal-dialog-centered">

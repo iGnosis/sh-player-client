@@ -3,6 +3,7 @@ import { Environment } from "src/app/types/pointmotion";
 export const environment: Environment = {
   production: true,
   name: 'prod',
+  playerClientUrl: 'https://app.pointmotion.us',
   organizationName: 'pointmotion',
   googleAnalyticsTrackingID: 'G-MTGG72G6ND',
   gqlEndpoint: 'https://api.prod.pointmotioncontrol.com/v1/graphql',

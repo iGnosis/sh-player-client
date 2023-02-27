@@ -48,3 +48,13 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+.mood-sm-container {
+  .mood-card, .genre-card {
+    background-color: #fbfafb;
+    &.active {
+      background-color: #fff;
+      outline: 2px solid $primary_color !important;
+    }
+  }
+}

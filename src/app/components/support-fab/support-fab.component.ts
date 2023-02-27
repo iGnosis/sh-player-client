@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-support-fab',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SupportFabComponent implements OnInit {
   fab = false;
+  redirectUrl = environment.playerClientUrl;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   toggleFab() {
     this.fab = !this.fab;
