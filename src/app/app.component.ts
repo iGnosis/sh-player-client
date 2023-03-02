@@ -30,8 +30,13 @@ export class AppComponent implements OnInit {
     let originalConsoleError = console.error;
     let originalConsoleWarn = console.warn;
     console.log = (...args) => {
-      this.socketService.sendLogsToServer((JSON.stringify(args).toLowerCase().includes('error') ? '[ERROR] ' : '[LOG] ') + JSON.stringify(args));
-      originalConsoleLog.apply(console, args);
+      if (JSON.stringify(args).includes('invalid-jwt')) {
+        this.jwtService.clearTokens();
+        this.router.navigate(['/public/start']);
+      } else {
+        this.socketService.sendLogsToServer((JSON.stringify(args).toLowerCase().includes('error') ? '[ERROR] ' : '[LOG] ') + JSON.stringify(args));
+        originalConsoleLog.apply(console, args);
+      }
     }
     console.error = (...args) => {
       const message: string =
