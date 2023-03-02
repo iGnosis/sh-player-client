@@ -17,6 +17,7 @@ export interface Patient {
   provider?: string;
   firstName?: string;
   lastName?: string;
+  salutation?: string;
 }
 export interface LoginRequestDTO {
   email: string;

@@ -66,6 +66,12 @@ export class SmsOtpLoginComponent {
 
   ngOnInit(): void { }
 
+  ngAfterContentInit() {
+    const patientDetails = JSON.parse(sessionStorage.getItem('patient') || '{}');
+    this.countryCode = patientDetails.phoneCountryCode ? '+' + patientDetails.phoneCountryCode.trim() : this.countryCode;
+    this.phoneNumber = patientDetails.phoneNumber ? patientDetails.phoneNumber : this.phoneNumber;
+  }
+
   async submit(event: any) {
 
     // call API to send an OTP

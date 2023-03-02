@@ -20,7 +20,7 @@
       <div class="row px-4 g-3">
         <div class="col-sm-4">
           <label for="countryCode" class="form-label">Country Code</label>
-          <select id="countryCode" class="form-select" required>
+          <select id="countryCode" class="form-select" [value]="countryCode" required>
             <option value="{{ countryCode }}" selected>{{ selectedCountry }}</option>
             <option value="+1">+1 Canada</option>
             <option value="+91">+91 India</option>
@@ -28,7 +28,7 @@
         </div>
         <div class="col-sm-8">
           <label for="phoneNumber" class="form-label">Phone Number</label>
-          <input #phoneNumber type="text" class="form-control" id="phoneNumber" placeholder="Your phone number"
+          <input #phoneNumberRef [value]="phoneNumber" type="text" class="form-control" id="phoneNumber" placeholder="Your phone number"
             required>
         </div>
       </div>

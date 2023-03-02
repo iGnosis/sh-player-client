@@ -58,6 +58,20 @@ export class SignupComponent implements OnInit {
     await this.getSubscriptionDetails();
   }
 
+  ngAfterContentInit(): void {
+    const patientDetails = JSON.parse(sessionStorage.getItem('patient') || '{}');
+
+    for (const key in this.profileForm.controls) {
+      if (patientDetails[key] && patientDetails[key].trim() !== '') {
+        this.profileForm.get(key)?.setValue(patientDetails[key]);
+      }
+    }
+
+    if (patientDetails['email'] && patientDetails['email'].trim() !== '') {
+      this.emailForm.get('email')?.setValue(patientDetails['email']);
+    }
+  }
+
   async getIncompleteSteps() {
     const step = await this.userService.isOnboarded();
     this.incompleteStep = this.steps.indexOf(step);
