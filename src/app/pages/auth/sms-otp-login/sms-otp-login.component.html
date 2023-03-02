@@ -28,7 +28,7 @@
         </div>
         <div class="col-sm-8">
           <label for="phoneNumber" class="form-label">Phone Number</label>
-          <input #phoneNumberRef [value]="phoneNumber" type="text" class="form-control" id="phoneNumber" placeholder="Your phone number"
+          <input #phoneNumberRef [value]="phoneNumber || ''" type="text" class="form-control" id="phoneNumber" placeholder="Your phone number"
             required>
         </div>
       </div>
