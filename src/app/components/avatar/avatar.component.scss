@@ -1,9 +1,10 @@
 .avatar {
+    background-color: #FAFAFA;
     &.sm {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        color: #FFF;
+        color: #2D3748;
         font-size: 16px;
 
         &.text-dark {
@@ -16,7 +17,7 @@
         width: 64px;
         height: 64px;
         border-radius: 50%;
-        color: #FFF;
+        color: #2D3748;
         font-size: 32px;
 
         &.text-dark {
@@ -28,7 +29,7 @@
         width: 128px;
         height: 128px;
         border-radius: 50%;
-        color: #FFF;
+        color: #2D3748;
         font-size: 64px;
 
         &.text-dark {

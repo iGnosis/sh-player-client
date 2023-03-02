@@ -38,7 +38,7 @@ import { DailyCheckinComponent } from './components/daily-checkin/daily-checkin.
 import { ShareRewardModalComponent } from './components/share-reward-modal/share-reward-modal.component';
 import { SmsOtpLoginComponent } from './pages/auth/sms-otp-login/sms-otp-login.component';
 import { AccountDetailsComponent } from './pages/app/account-details/account-details.component';
-import { BillingHistoryComponent } from './pages/app/billing-history/billing-history.component';
+import { BillingHistoryComponent } from './pages/app/account-details/billing-history/billing-history.component';
 import { AddPaymentMethodComponent } from './pages/app/add-payment-method/add-payment-method.component';
 import { NgxStripeModule } from 'ngx-stripe';
 import { PrimaryModalComponent } from './components/modals/primary-modal/primary-modal.component';
@@ -46,6 +46,9 @@ import { NotificationBarComponent } from './components/notification-bar/notifica
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { environment } from 'src/environments/environment';
 import { SupportFabComponent } from './components/support-fab/support-fab.component';
+import { GenreSelectionComponent } from './components/genre-selection/genre-selection.component';
+import { FeedbackFormComponent } from './components/modals/feedback-form/feedback-form.component';
+import { GeneralSettingsComponent } from './pages/app/account-details/general-settings/general-settings.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,6 +75,9 @@ import { SupportFabComponent } from './components/support-fab/support-fab.compon
     NotificationBarComponent,
     AvatarComponent,
     SupportFabComponent,
+    GenreSelectionComponent,
+    FeedbackFormComponent,
+    GeneralSettingsComponent,
   ],
   imports: [
     BrowserModule,

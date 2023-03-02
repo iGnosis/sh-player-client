@@ -1,6 +1,6 @@
 /// <reference types="chrome"/>
-import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { Router, RoutesRecognized } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
 import { ModalConfig, Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/types/pointmotion";
@@ -12,6 +12,8 @@ import { RewardsDTO } from "src/app/types/pointmotion";
 import { RewardsService } from "src/app/services/rewards/rewards.service";
 import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
 import { filter, pairwise, take } from "rxjs";
+import { environment } from "src/environments/environment";
+import { SoundsService } from "src/app/services/sounds/sounds.service";
 
 @Component({
   selector: "app-home",
@@ -44,6 +46,12 @@ import { filter, pairwise, take } from "rxjs";
     trigger("fadeOut", [
       transition(":leave", [animate("200ms ease-in", style({ opacity: "0" }))]),
     ]),
+    trigger("fadeText", [
+      transition('* => *', [
+        style({ opacity: '0' }),
+        animate("200ms ease-in", style({ opacity: '1' })),
+      ]),
+    ]),
   ],
 })
 export class HomeComponent implements OnInit {
@@ -66,8 +74,21 @@ export class HomeComponent implements OnInit {
   };
   sessions: any = [];
   nextSession: any = {};
+  nextSessionIdx: number = 0;
 
   isVisitingAfterSession = false;
+  showFeedbackForm = false;
+
+  showDeviceWarning = false;
+  deviceWarningConfig: ModalConfig = {
+    type: 'warning',
+    title: 'Please switch to a larger screen',
+    body: 'Playing the activities are not supported on mobile devices. Please use a laptop or desktop computer to play. Thank you!',
+    submitButtonLabel: 'Done',
+    onSubmit: () => {
+      this.showDeviceWarning = false;
+    },
+  };
 
   constructor(
     private careplanService: CareplanService,
@@ -77,7 +98,14 @@ export class HomeComponent implements OnInit {
     private jwtService: JwtService,
     private userService: UserService,
     private googleAnalyticsService: GoogleAnalyticsService,
+    private route: ActivatedRoute,
+    private soundsService: SoundsService
   ) {
+    const isVisitingAfterGame = this.route.snapshot.queryParamMap.get("isVisitingAfterGame");
+    if (isVisitingAfterGame) {
+      this.showFeedbackForm = true;
+      this.router.navigate([], { queryParams: { isVisitingAfterGame: null }, queryParamsHandling: 'merge', relativeTo: this.route });
+    }
     this.user = this.userService.get();
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))
@@ -138,8 +166,12 @@ export class HomeComponent implements OnInit {
   }
 
   async startNewSession() {
+    if (environment.name === 'dev' || environment.name === 'local') {
+          this.soundsService.stopLoungeSound();
+    }
     this.googleAnalyticsService.sendEvent('start_game');
-    this.router.navigate(["/app/session/"]);
+    await this.router.navigate([], { queryParams: { isVisitingAfterGame: true }, queryParamsHandling: 'merge', relativeTo: this.route });
+    this.router.navigate(["/app/session/", { game: this.nextSession.name.replace(/\s/g, "_").toLowerCase() }]);
   }
 
   async getMonthlyGoals() {
@@ -201,12 +233,32 @@ export class HomeComponent implements OnInit {
   }
 
   getNextSession() {
-    const idxOfCurrentSession = this.sessions.findIndex((item: any) => item.status === session.Start);
-    if (idxOfCurrentSession === -1) {
-      this.nextSession = this.sessions[0];
+    let nextSessionIdx = -1;
+    if (sessionStorage.getItem('random-session')) {
+      nextSessionIdx = Number(sessionStorage.getItem('random-session'));
     } else {
-      this.nextSession = this.sessions[idxOfCurrentSession];
+      nextSessionIdx = Math.floor(Math.random() * this.sessions.length);
+      sessionStorage.setItem('random-session', nextSessionIdx.toString());
     }
+
+    this.nextSession = this.sessions[nextSessionIdx];
+    this.nextSessionIdx = nextSessionIdx;
+  }
+
+  nextGame() {
+    if (this.nextSessionIdx < this.sessions.length - 1) {
+      this.nextSessionIdx++;
+    }
+
+    this.nextSession = this.sessions[this.nextSessionIdx];
+  }
+
+  prevGame() {
+    if (this.nextSessionIdx > 0) {
+      this.nextSessionIdx--;
+    }
+
+    this.nextSession = this.sessions[this.nextSessionIdx];
   }
 
   getBackgroundName(name?: string) {

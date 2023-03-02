@@ -3,15 +3,20 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content shadow-4">
         <div class="modal-body pb-0">
-          <div class="pb-3 px-5">
+          <div class="pb-3 px-0 px-md-5">
             <!-- Title -->
-            <h1 class="mb-4">
-                <span *ngIf="modalConfig.type === 'warning'">
-                    <i class="bi bi-exclamation-triangle-fill text-danger"></i>&nbsp;
-                </span>{{ modalConfig.title }}
+            <h3 class="mb-4 text-center d-md-none">
+              <span *ngIf="modalConfig.type === 'warning'" class="d-block d-md-none text-center text-md-start">
+                <i class="bi bi-exclamation-triangle-fill text-warning display-3"></i>&nbsp;
+              </span>{{ modalConfig.title }}
+            </h3>
+            <h1 class="mb-4 d-none d-md-block">
+              <span *ngIf="modalConfig.type === 'warning'">
+                <i class="bi bi-exclamation-triangle-fill text-danger"></i>&nbsp;
+              </span>{{ modalConfig.title }}
             </h1>
             <!-- Text -->
-            <p class="text-black">
+            <p class="text-black text-center text-md-start">
                 {{ modalConfig.body }}
             </p>
             <!-- Input -->
@@ -20,9 +25,9 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer pt-0 mx-5">
-          <button *ngIf="modalConfig.closeButtonLabel" (click)="modalConfig.onClose && modalConfig.onClose()" type="button" class="btn btn-sm btn-outline-primary">{{ modalConfig.closeButtonLabel }}</button>
-          <button *ngIf="modalConfig.submitButtonLabel" (click)="modalConfig.onSubmit && modalConfig.onSubmit()" type="button" class="btn btn-sm btn-primary">{{ modalConfig.submitButtonLabel }}</button>
+        <div class="modal-footer pt-0 mx-5 d-flex d-md-block justify-content-center align-items-center">
+          <button *ngIf="modalConfig.closeButtonLabel" (click)="modalConfig.onClose && modalConfig.onClose()" type="button" class="btn btn-sm btn-outline-primary px-20 px-md-5">{{ modalConfig.closeButtonLabel }}</button>
+          <button *ngIf="modalConfig.submitButtonLabel" (click)="modalConfig.onSubmit && modalConfig.onSubmit()" type="button" class="btn btn-sm btn-primary px-20 px-md-5">{{ modalConfig.submitButtonLabel }}</button>
         </div>
       </div>
     </div>

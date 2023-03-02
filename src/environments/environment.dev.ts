@@ -7,12 +7,14 @@ import { Environment } from "src/app/types/pointmotion";
 export const environment: Environment = {
   production: false,
   name: 'dev',
+  playerClientUrl: 'https://patient.dev.pointmotioncontrol.com',
   organizationName: 'pointmotion',
   googleAnalyticsTrackingID: 'G-MTGG72G6ND',
   gqlEndpoint: 'https://api.dev.pointmotioncontrol.com/v1/graphql',
   servicesEndpoint: 'https://services.dev.pointmotioncontrol.com',
   activityEndpoint: 'https://session.dev.pointmotioncontrol.com',
   providerEndpoint: 'https://provider.dev.pointmotioncontrol.com/',
+  websocketEndpoint: 'wss://services.dev.pointmotioncontrol.com',
   stripePublishableKey: 'pk_test_51MSP9MKrHxGkv6aRSuMbHMDH0kNYYhWlYyFgtYNhw9S3UxARQ8WjABwWZdRXuJtMAuSl9st9RzInVuPzyFfclYLR00UCyYpwfK',
 };
 

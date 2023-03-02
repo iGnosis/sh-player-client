@@ -7,10 +7,10 @@
         <img class="h-10" src="assets/icons/sound_health_logo_alpha.png" alt="alpha logo">
     </nav>
 
-    <main class="w-full d-flex flex-column justify-content-center align-items-center overflow-auto py-10">
+    <main class="w-full d-flex flex-column justify-content-center align-items-center overflow-auto py-md-10">
         <!-- First step -->
         <ng-container *ngIf="steps[stepperIndex] === 'setup'">
-            <div class="rounded px-5 py-14 shadow-1 bg-card">
+            <div class="rounded px-5 py-14 shadow-1 bg-card w-full w-md-auto h-full h-md-auto">
                 <div class="w-full d-flex justify-content-center py-5">
                     <img src="assets/icons/signup/notepad.png" alt="notepad">
                 </div>
@@ -46,7 +46,7 @@
         </mat-stepper>
         <!-- Stepper steps -->
         <ng-container *ngIf="['profile', 'email', 'payment'].includes(steps[stepperIndex])">
-            <mat-stepper #stepperSteps class="stepper-steps rounded w-2/5 shadow-1 bg-card position-relative" [selectedIndex]="stepperIndex - 1">
+            <mat-stepper #stepperSteps class="stepper-steps rounded w-md-2/5 shadow-1 bg-card position-relative" [selectedIndex]="stepperIndex - 1">
                 <!-- Setup profile -->
                 <mat-step>
                     <p *ngIf="error" class="bg-danger h-6 position-absolute top-0 w-full start-0 text-center text-white rounded-top">{{error}}</p>
@@ -110,15 +110,15 @@
                     </div>
                 </mat-step>
             </mat-stepper>
-            <p *ngIf="steps[stepperIndex] === 'payment'" class="pt-3 text-sm">By starting your membership, you agree to our <a href="https://www.pointmotion.us/index.php/end-user-license-agreement/">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+            <p *ngIf="steps[stepperIndex] === 'payment'" class="pt-3 text-sm text-center">By starting your membership, you agree to our <a href="https://www.pointmotion.us/index.php/end-user-license-agreement/">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
         </ng-container>
         <!-- Finish -->
         <ng-container *ngIf="steps[stepperIndex] === 'finish'">
-            <div class="w-2/5 text-center">
+            <div class="w-4/5 w-lg-2/5 text-center">
                 <img src="assets/icons/signup/notepad.png" alt="notepad">
                 <h2 class="text-primary py-5">You're all set.</h2>
                 <p class="text-primary pb-5">Get ready to embark on a journey of healthy aging<br/>through the power of music and movement.</p>
-                <button class="btn btn-primary mt-5 w-2/3" routerLink="/app/home">Let's Begin!</button>
+                <button class="btn btn-primary mt-5 w-2/3" (click)="finishSignup()">Let's Begin!</button>
             </div>
         </ng-container>
     </main>

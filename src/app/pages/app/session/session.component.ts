@@ -15,6 +15,7 @@ import { AuthService } from "src/app/services/auth.service";
 export class SessionComponent implements OnInit {
   url = "";
   sessionId = "";
+  game: string = "";
   private resizeSubscription!: Subscription;
 
   showPaymentModal: boolean = false;
@@ -33,6 +34,7 @@ export class SessionComponent implements OnInit {
       window['private'] = this;
     }
 
+    this.game = this.route.snapshot.paramMap.get("game") as string;
     this.sessionId = this.route.snapshot.paramMap.get("id") as string;
     console.log(this.sessionId);
     this.url = environment.activityEndpoint + "?session=" + this.sessionId;
@@ -93,18 +95,19 @@ export class SessionComponent implements OnInit {
               token: this.jwtService.getToken(),
               session: this.sessionId,
               benchmarkId: this.route.snapshot.queryParamMap.get('benchmarkId'),
+              game: this.game,
             },
             "*"
           );
         }
         // sends a latest valid access_token.
         else if (event.data.type === 'end-game') {
-          this.router.navigate(['/app/home'])
+          this.router.navigate(['/app/home'], { queryParams: { isVisitingAfterGame: true }});
         }
       }
 
       if (event && event.data && event.data.session && event.data.session.id) {
-        this.router.navigate(['/app/home'])
+        this.router.navigate(['/app/home'], { queryParams: { isVisitingAfterGame: true }});
       }
       if (event && event.data && event.data.type === 'check-auth' && !event.data.token) {
         this.jwtService.clearTokens();

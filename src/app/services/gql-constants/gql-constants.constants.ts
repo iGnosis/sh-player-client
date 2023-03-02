@@ -95,6 +95,17 @@ export const GqlConstants = {
     }
   }
   `,
+  GET_LATEST_USER_GENRE: `query GetLatestUserGenre($createdAfter: timestamptz!) {
+    checkin(where: {type: {_eq: genre}, createdAt: {_gte: $createdAfter}}, limit: 1, order_by: {createdAt: desc}) {
+      value
+    }
+  }`,
+  SET_GENRE_CHOICE: `
+  mutation SetGenreChoice($id: uuid!, $genreChoice: String!) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {genreChoice: $genreChoice}) {
+      genreChoice
+    }
+  }`,  
   USER_FEEDBACK: `mutation InsertFeedback($description: String, $rating: Int!) {
     insert_patient_feedback(objects: {description: $description, rating: $rating}) {
       returning {
@@ -102,6 +113,18 @@ export const GqlConstants = {
       }
     }
   }`,
+  INSERT_PATIENT_FEEDBACK: `mutation InsertPatientFeedback($response: jsonb) {
+    insert_patient_feedback(objects: {response: $response}) {
+      returning {
+        id
+      }
+    }
+  }`,
+  UPDATE_PATIENT_FEEDBACK: `mutation UpdatePatientFeedback($response: jsonb, $id: uuid!) {
+    update_patient_feedback_by_pk(pk_columns: {id: $id}, _set: {response: $response}) {
+      id
+    }
+  }`,  
   SET_RECOMMENDATION_SCORE: `mutation SetRecommendationScore($feedbackId: uuid!, $recommendationScore: Int!) {
     update_patient_feedback_by_pk(pk_columns: {id: $feedbackId}, _set: {recommendationScore: $recommendationScore}) {
       id
@@ -165,6 +188,13 @@ export const GqlConstants = {
       firstName
       customerId
       createdAt
+      genreChoice
+    }
+  }`,
+  UPDATE_PATIENT_DETAILS: `
+  mutation UpdatePatientDetails($id: uuid!, $firstName: String!, $lastName: String!, $email: String!, $phoneCountryCode: String!, $phoneNumber: String!) {
+    update_patient_by_pk(pk_columns: {id: $id}, _set: {firstName: $firstName, lastName: $lastName, email: $email, phoneCountryCode: $phoneCountryCode, phoneNumber: $phoneNumber}) {
+      id
     }
   }`,
   SOUNDHEALTH_FAQ_ACCESSED: `mutation SoundhealthFaqAccessed {

@@ -118,7 +118,7 @@ describe('HomeComponent', () => {
         }
     ];
     component.getNextSession();
-    expect(component.nextSession.name).toBe('Sit Stand Achieve');
+    expect(component.sessions.map((session: any) => session.name).includes(component.nextSession.name)).toBeTruthy();
   });
 
   it('should give background name', () => {
@@ -128,9 +128,24 @@ describe('HomeComponent', () => {
     expect(component.getBackgroundName('Sound Explorer')).toBe('sound-explorer');
   });
 
-  it('should start a session', () => {
+  it('should start a session', async () => {
+    component.sessions = [
+        {
+            "name": "Sit Stand Achieve",
+            "status": 0
+        },
+        {
+            "name": "Beat Boxer",
+            "status": 0
+        },
+        {
+            "name": "Sound Explorer",
+            "status": 0
+        }
+    ];
     spyOn(router, 'navigate').and.stub();
-    component.startNewSession();
-    expect(router.navigate).toHaveBeenCalledWith(["/app/session/"]);
+    component.getNextSession();
+    await component.startNewSession();
+    expect(router.navigate).toHaveBeenCalledWith(["/app/session/", { game: component.nextSession.name.replace(/\s/g, "_").toLowerCase() }]);
   });
 });

@@ -2,6 +2,7 @@
 
 .mood-container {
   z-index: 101;
+
   .genre-cards-container,
   .cards-container {
     transform: translate(-50%, -50%);
@@ -30,12 +31,30 @@
       &:nth-child(5) {
         transform: translate(175%, -50%);
       }
+      &:nth-child(6) {
+        transform: translate(287%, -50%);
+      }
       &.active {
         z-index: 1;
       }
       &.stack {
         transform: translate(-50%, -50%);
       }
+    }
+  }
+}
+
+.hover-underline:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.mood-sm-container {
+  .mood-card, .genre-card {
+    background-color: #fbfafb;
+    &.active {
+      background-color: #fff;
+      outline: 2px solid $primary_color !important;
     }
   }
 }

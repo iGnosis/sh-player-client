@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { first } from 'rxjs';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
@@ -18,6 +19,7 @@ export class NavBarComponent implements OnInit {
   hideNavbar: boolean = false;
   logoUrl = "/assets/icons/logo-white.png";
 
+  @ViewChild('navbar') navbar!: ElementRef;
   showLogoutModal: boolean = false;
   logoutModalConfig: ModalConfig;
 
@@ -37,10 +39,9 @@ export class NavBarComponent implements OnInit {
       if (this.route.url.split('/')[2] === 'signup') this.hideNavbar = true;
       else this.hideNavbar = false;
     });
-    const logoSubscription = this.themeService.logoSubject.subscribe((url) => {
+    this.themeService.logoSubject.pipe(first()).subscribe((url) => {
       if (url) {
         this.logoUrl = url;
-        logoSubscription.unsubscribe();
       } else {
         this.themeService.setTheme();
       }
@@ -84,6 +85,11 @@ export class NavBarComponent implements OnInit {
     } else if (user.nickname) {
       this.username = user.nickname;
     }
+  }
+
+  setTab(tab: string) {
+    this.navbar.nativeElement.classList.remove('show');
+    this.activeTab = tab;
   }
 
   async logout() {

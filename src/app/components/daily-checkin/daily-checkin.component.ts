@@ -12,6 +12,8 @@ import { DailyCheckinService } from "src/app/services/daily-checkin/daily-checki
 import { Howler } from "howler";
 import { SoundsService } from "src/app/services/sounds/sounds.service";
 import { UserService } from "src/app/services/user.service";
+import { AuthService } from "src/app/services/auth.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-mood-checkin",
@@ -20,17 +22,28 @@ import { UserService } from "src/app/services/user.service";
   animations: [
     trigger("slideInOut", [
       transition(":enter", [
-        style({ transform: "translate(-50%, 100vh)" }),
+        style({ transform: "translate(-50%, 105vh)" }),
         animate(
           "500ms ease-out",
           style({ transform: "translate(-50%, -50%)" })
         ),
       ]),
-      state("slideIn", style({ transform: "translate(-50%, 100vh)" })),
+      state("slideIn", style({ transform: "translate(-50%, 105vh)" })),
       state("open", style({ transform: "translate(-50%, -50%)" })),
-      state("slideOut", style({ transform: "translate(-50%, -100vh)" })),
+      state("slideOut", style({ transform: "translate(-50%, -105vh)" })),
       transition("* => open", animate("0.5s ease-in")),
       transition("* => slideOut", animate("0.5s ease-in")),
+    ]),
+    trigger("fadeInOut", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate("500ms ease-out", style({ opacity: 1 })),
+      ]),
+      state("fadeIn", style({ opacity: 0 })),
+      state("open", style({ opacity: 1 })),
+      state("fadeOut", style({ opacity: 0, display: "none" })),
+      transition("* => open", animate("0.5s ease-in")),
+      transition("* => fadeOut", animate("0.5s ease-in")),
     ]),
   ],
 })
@@ -87,6 +100,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   moodSlideOut: boolean = false;
   showGenreCard: boolean = false;
   genreSlideOut: boolean = false;
+  enableAfroGenre = false;
   debouncedPlayMusic: (...args: any[]) => void;
   playState: "play" | "stop" | undefined = undefined;
   timer: any;
@@ -95,8 +109,14 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
     private router: Router,
     private dailyCheckinService: DailyCheckinService,
     private soundsService: SoundsService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService,
   ) {
+
+    if (environment.name === 'dev' || environment.name === 'local') {
+      this.enableAfroGenre = true;
+    }
+
     this.debouncedPlayMusic = this.debounce((genre: string) => {
       this.playMusic(genre);
     }, 300);
@@ -119,6 +139,7 @@ export class DailyCheckinComponent implements OnInit, AfterViewInit {
   async selectGenre(choice: string) {
     this.selectedGenre = choice;
     await this.dailyCheckinService.dailyCheckin("genre", choice.toLowerCase());
+    await this.authService.setGenreChoice(choice.toLowerCase());
     setTimeout(() => (this.genreSlideOut = true), 500);
     setTimeout(async () => {
       this.showGenreCard = false;

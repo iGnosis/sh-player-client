@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -29,6 +30,7 @@ export class SignupComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
+    private dailyCheckinService: DailyCheckinService,
   ) {
     this.route.params.subscribe(params => {
       this.error = '';
@@ -122,6 +124,15 @@ export class SignupComponent implements OnInit {
     } else {
       this.nextStep();
     }
+  }
+
+  async finishSignup() {
+    const isCheckedInToday = await this.dailyCheckinService.isCheckedInToday();
+    if (!isCheckedInToday) {
+      this.router.navigate(["app", "checkin"]);
+      return;
+    }
+    this.router.navigate(["/app/home"]);
   }
 
   addPaymentMethod() {

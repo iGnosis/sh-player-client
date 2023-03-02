@@ -1,0 +1,157 @@
+<div *ngIf="show" [@slideInOut] class="feedback-form-container position-fixed end-0 top-0 w-1/2 h-screen overflow-y-auto">
+    <div *ngIf="stepper.selectedIndex < stepper.steps.length - 1" class="close bg-white position-absolute end-8 top-8 cursor-pointer h-10 w-10 d-flex rounded-pill" (click)="show = !show">
+        <i class="bi bi-x-lg m-auto h3"></i>
+    </div>
+
+    <div *ngIf="stepper.selectedIndex < stepper.steps.length - 1" class="d-flex flex-column justify-content-center align-items-center pt-10 pb-2">
+        <img src="/assets/icons/form.png" alt="form" class="w-10 h-10">
+        <h2 class="text-center pt-4 pb-2">Share Your Feedback</h2>
+        <p class="text-black">As our first users, you can help shape our product. It'll only take a minute.</p>
+    </div>
+    <hr class="hr mx-10" *ngIf="stepper.selectedIndex < stepper.steps.length - 1"/>
+
+    <div class="pb-10 px-10" [formGroup]="formGroup">
+        <mat-stepper #stepper class="stepper w-full position-relative" formArrayName="response" linear>
+            <!-- Mood -->
+            <mat-step formGroupName="0" [stepControl]="getForm(0)">
+                <p class="text-center text-black">Question <span class="font-bold">{{stepper.selectedIndex + 1 }}</span> out of <span class="font-bold">{{stepper.steps.length - 1}}</span></p>
+                <h3 class="py-8">{{stepper.selectedIndex + 1}}. How are you feeling now?</h3>
+
+                <div class="mood-cards d-flex justify-content-between mb-14 h-24">
+                    <div 
+                    (click)="setFormValue(0, mood.title)"
+                    *ngFor="let mood of moodList"
+                    class="mood-card cursor-pointer h-24 w-24 rounded-2 d-flex bg-white flex-column justify-content-center align-items-center" [class.active]="mood.title === getFormAnswer(0)">
+                        <div class="w-10 mb-2 icon" [innerHtml]="mood.icon | safe: ''"></div>
+                        <p class="h6">{{mood.title}}</p>
+                    </div>
+                </div>
+                <form (ngSubmit)="sendPatientFeedback()">
+                    <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(0).valid">Next</button>
+                </form>
+                <div class="d-flex">
+                    <button mat-button matStepperNext class="h5 bg-transparent cursor-pointer py-3 mx-auto" style="color: #4A5568;">Skip for today</button>
+                </div>
+            </mat-step>
+            <!-- Star Rating -->
+            <mat-step formGroupName="1" [stepControl]="getForm(1)">
+                <p class="text-center text-black">Question <span class="font-bold">{{stepper.selectedIndex + 1 }}</span> out of <span class="font-bold">{{stepper.steps.length - 1}}</span></p>
+                <h3 class="py-8">{{stepper.selectedIndex + 1}}. How was your overall experience today?</h3>
+
+                <div class="d-flex flex-column justify-content-between align-items-center mb-40">
+                    <div class="w-full ratings d-flex justify-content-between px-32 mb-3">
+                        <i
+                        (click)="setFormValue(1, rating)"
+                        *ngFor="let rating of [1,2,3,4,5]"
+                        [class.rating-selected]="rating <= getFormAnswer(1)" class="fa fa-star cursor-pointer text-2xl"></i>
+                    </div>
+                </div>
+
+                <form (ngSubmit)="sendPatientFeedback()">
+                    <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(1).valid">Next</button>
+                </form>
+            </mat-step>
+            <!-- Feedback -->
+            <mat-step formGroupName="2" [stepControl]="getForm(2)">
+                <p class="text-center text-black">Question <span class="font-bold">{{stepper.selectedIndex + 1 }}</span> out of <span class="font-bold">{{stepper.steps.length - 1}}</span></p>
+                <h3 class="py-8">{{stepper.selectedIndex + 1}}. {{
+                    getFormAnswer(1) <= 2 ? 'What were your biggest frustrations?' :
+                    getFormAnswer(1) <= 3 ? 'What can we do better?' :
+                    'What did you like the most?'
+                }}</h3>
+                <p class="text-sm text-black pb-2">Share your thoughts</p>
+                <textarea
+                class="w-full rounded border mb-5 p-3" name="answer" id="answer" rows="10"
+                formControlName="answer"
+                [placeholder]="
+                    getFormAnswer(1) <= 2 ? 'Please mention some of your other frustrations here.' :
+                    getFormAnswer(1) <= 3 ? 'Tell us what you thought about your experience today.' :
+                    'Let us know what parts of the experience stood out to you.'
+                "></textarea>
+                <form (ngSubmit)="sendPatientFeedback()">
+                    <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(2).valid">Next</button>
+                </form>
+            </mat-step>
+            <!-- Most favorite -->
+            <mat-step formGroupName="3" [stepControl]="getForm(3)">
+                <p class="text-center text-black">Question <span class="font-bold">{{stepper.selectedIndex + 1 }}</span> out of <span class="font-bold">{{stepper.steps.length - 1}}</span></p>
+                <h3 class="pt-8">{{stepper.selectedIndex + 1}}. Which activity did you enjoy the most today?</h3>
+
+                <div class="row pb-8">
+                    <div class="col-8 offset-2 row g-4">
+                        <div *ngFor="let game of gameList" class="col-6" (click)="setFormValue(3, game.title)">
+                            <div [class.active]="game.title === getFormAnswer(3)" class="game-icon cursor-pointer rounded-2 py-4 bg-white shadow d-flex flex-column justify-content-center align-items-center">
+                                <div [style]="'-webkit-mask: url(' + game.img + ') no-repeat center; mask: url(' + game.img + ') no-repeat center;'">
+                                    <img [src]="game.img" [alt]="game.title">
+                                </div>
+                                <p>{{game.title}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <form (ngSubmit)="sendPatientFeedback()">
+                    <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(3).valid">Next</button>
+                </form>
+            </mat-step>
+            <!-- Favorite Feedback -->
+            <mat-step formGroupName="4" [stepControl]="getForm(4)">
+                <p class="text-center text-black">Question <span class="font-bold">{{stepper.selectedIndex + 1 }}</span> out of <span class="font-bold">{{stepper.steps.length - 1}}</span></p>
+                <h3 class="py-8">{{stepper.selectedIndex + 1}}. What did you enjoy about the activity?</h3>
+                <p class="text-sm text-black pb-2">Share your thoughts</p>
+
+                <textarea
+                formControlName="answer"
+                class="w-full rounded border mb-5 p-3" name="answer" id="answer" rows="10" placeholder="Let us know why this activity was your favorite one of the day."></textarea>
+                <form (ngSubmit)="sendPatientFeedback()">
+                    <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(4).valid">Next</button>
+                </form>
+            </mat-step>
+            <!-- Least favorite -->
+            <mat-step formGroupName="5" [stepControl]="getForm(5)">
+                <p class="text-center text-black">Question <span class="font-bold">{{stepper.selectedIndex + 1 }}</span> out of <span class="font-bold">{{stepper.steps.length - 1}}</span></p>
+                <h3 class="pt-8">{{stepper.selectedIndex + 1}}. Which activity was the least enjoyable today?</h3>
+
+                <div class="row pb-8">
+                    <div class="col-8 offset-2 row g-4">
+                        <div *ngFor="let game of gameList" class="col-6" (click)="setFormValue(5, game.title)">
+                            <div [class.active]="game.title === getFormAnswer(5)" class="game-icon cursor-pointer rounded-2 py-4 bg-white shadow d-flex flex-column justify-content-center align-items-center">
+                                <div [style]="'-webkit-mask: url(' + game.img + ') no-repeat center; mask: url(' + game.img + ') no-repeat center;'">
+                                    <img [src]="game.img" [alt]="game.title">
+                                </div>
+                                <p>{{game.title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form (ngSubmit)="sendPatientFeedback()">
+                    <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(5).valid">Next</button>
+                </form>
+            </mat-step>
+            <!-- Least favorite Feedback -->
+            <mat-step formGroupName="6" [stepControl]="getForm(6)">
+                <p class="text-center text-black">Question <span class="font-bold">{{stepper.selectedIndex + 1 }}</span> out of <span class="font-bold">{{stepper.steps.length - 1}}</span></p>
+                <h3 class="py-8">{{stepper.selectedIndex + 1}}. What did you dislike about the activity?</h3>
+                <p class="text-sm text-black pb-2">Share your thoughts</p>
+                <textarea
+                formControlName="answer"
+                class="w-full rounded border mb-5 p-3" name="answer" id="answer" rows="10" placeholder="Let us know why this activity was your least favorite one of the day."></textarea>
+                <form (ngSubmit)="sendPatientFeedback()">
+                    <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(6).valid">Next</button>
+                </form>
+            </mat-step>
+            <!-- Finish -->
+            <mat-step>
+                <div class="row">&nbsp;</div>
+                <div class="check-icon bg-success rounded-pill w-24 h-24 d-flex mx-auto my-14">
+                    <i class="fa fa-check text-white m-auto h1"></i>
+                </div>
+                <h3 class="pb-4 text-center">Thank you for your feedback.</h3>
+                <p class="text-black pb-8 px-10 text-center">Your opinion is valuable to us and will help us deliver an improved experience that matters to you.</p>
+                <button (click)="show = !show" class="next btn btn-primary w-full font-bold">Finish</button>
+            </mat-step>
+        </mat-stepper>
+    </div>
+</div>

@@ -11,6 +11,8 @@ import { PaymentMethod } from '@stripe/stripe-js';
 })
 export class UserService {
   private user?: Patient
+  patientForm?: Patient;
+
   constructor(
     private gqlService: GraphqlService,
     private http: HttpClient
@@ -45,6 +47,19 @@ export class UserService {
     return resp.country;
   }
 
+  async savePatientFormDetails() {
+    try {
+      const patient = await this.gqlService.gqlRequest(
+        GqlConstants.UPDATE_PATIENT_DETAILS,
+        this.patientForm ? {...this.patientForm} : {},
+        true
+      );
+      return patient.update_patient_by_pk;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   async isOnboarded() {
     const user = this.get()
 
@@ -67,7 +82,11 @@ export class UserService {
         return 'profile';
       } else if (!response.patient_by_pk.email) {
         return 'email';
-      } else if (!subscriptionResponse.getSubscriptionDetails || !subscriptionResponse.getSubscriptionDetails.subscription || statusResponse.getSubscriptionStatus.data !== 'active') {
+      } else if (
+        !subscriptionResponse.getSubscriptionDetails || 
+        !subscriptionResponse.getSubscriptionDetails.subscription || 
+        !['active', 'trial_period'].includes(statusResponse.getSubscriptionStatus.data)
+      ) {
         return 'payment';
       } else {
         return 'finish'; // skipping the onboarding

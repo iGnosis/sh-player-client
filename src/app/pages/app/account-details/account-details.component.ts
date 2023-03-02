@@ -1,149 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { GraphqlService } from 'src/app/services/graphql/graphql.service';
-import { PaymentMethod } from '@stripe/stripe-js';
-import { UserService } from 'src/app/services/user.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
-import { ModalConfig } from 'src/app/types/pointmotion';
+import { UserService } from 'src/app/services/user.service';
+import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 @Component({
   selector: 'account-details',
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.scss'],
 })
 export class AccountDetailsComponent implements OnInit {
-  paymentMethod: any;
-  constructor(
-    private gqlService: GraphqlService,
-    private userService: UserService
-  ) {}
+  tabs = <const>['general', 'subscription'];
+  disableSaveBtn?: boolean;
+  componentRef?: any;
 
-  card!: PaymentMethod.Card;
-  patientDetails!: {
-    id: string;
-    email: string;
-    lastName: string;
-    firstName: string;
-    phoneCountryCode: string;
-    phoneNumber: string;
-    nickname: string;
-  };
+  constructor(private router: Router, private userService: UserService) {}
 
-  subscription!: any;
-  subscriptionStatus!: string;
-
-  isSubscribed = false;
-
-  cancellationReason: string = '';
-  showCancellationModal: boolean = false;
-  cancellationModalConfig: ModalConfig = {
-    type: 'input',
-    title: 'Cancel Subscription',
-    body: 'Are you sure you want to cancel your subscription?',
-    inputPlaceholder: 'Enter reason for canceling your subscription',
-    closeButtonLabel: 'Cancel',
-    submitButtonLabel: 'Confirm',
-    onClose: () => {
-      this.showCancellationModal = false;
-    },
-    onSubmit: () => {
-      this.cancelSubscription();
-      this.showCancellationModal = false;
-    },
-  };
-
-  async ngOnInit() {
-    const patientId = this.userService.get().id;
-    const patient = await this.gqlService.gqlRequest(
-      GqlConstants.GET_PATIENT_DETAILS,
-      {
-        user: patientId,
-      },
-      true
-    );
-    this.patientDetails = patient.patient_by_pk;
-
-    const resp: { getDefaultPaymentMethod: { data: PaymentMethod } } =
-      await this.gqlService.gqlRequest(
-        GqlConstants.GET_DEFAULT_PAYMENT_METHOD,
-        {},
-        true
-      );
-
-    const { card } = resp.getDefaultPaymentMethod.data;
-    if (card) {
-      this.card = card;
-    }
-    await this.setLocalSubscriptionStatus(card);
-
-    const response = await this.gqlService.gqlRequest(
-      GqlConstants.GET_SUBSCRIPTION_DETAILS,
-      {},
-      true
-    );
-    if (
-      response.getSubscriptionDetails &&
-      response.getSubscriptionDetails.subscription
-    ) {
-      this.subscription = response.getSubscriptionDetails.subscription;
-    }
-    console.log(this.subscription);
-  }
-
-  async setLocalSubscriptionStatus(card?: PaymentMethod.Card) {
-    const subscription = await this.gqlService.gqlRequest(
-      GqlConstants.GET_SUBSCRIPTION_STATUS,
-      {},
-      true
-    );
-    const subscriptionStatus = subscription.getSubscriptionStatus.data;
-    this.subscriptionStatus = subscriptionStatus;
-    console.log('subscriptionStatus::', subscriptionStatus);
-    if (subscriptionStatus === 'cancelled') {
-      this.isSubscribed = false;
-    } else if (subscriptionStatus === 'active') {
-      this.isSubscribed = true;
-    } else if (subscriptionStatus === 'trial_period') {
-      if (!card) {
-        // ask the user to add payment method.
-      } else {
-        this.isSubscribed = true;
-      }
-    } else if (subscriptionStatus === 'trial_expired') {
-      this.isSubscribed = false;
-      // ask the user to add payment method and subscribe
+  editBtnState(): 'edit' | 'save' | '' {
+    const currentUrl = this.router.url;
+    if (currentUrl.includes('edit=true')) {
+      return 'save';
+    } else if (currentUrl.includes('general')) {
+      return 'edit';
     } else {
-      // handle this case
-      this.isSubscribed = false;
+      return '';
     }
   }
 
-  async openCancelModal() {
-    
+  onActivate(componentRef: any) {
+    if (componentRef instanceof GeneralSettingsComponent) {
+      componentRef.patientFormStatusSubject.subscribe((status) => {
+        this.disableSaveBtn = status === 'INVALID';
+      });
+    }
   }
 
-  async cancelSubscription() {
-    const resp = await this.gqlService.gqlRequest(
-      GqlConstants.CANCEL_SUBSCRIPTION,
-      { reason: this.cancellationReason },
-      true
-    );
-    this.subscription = resp.cancelSubscription.subscription;
-    this.setLocalSubscriptionStatus();
+  async save() {
+    const resp = await this.userService.savePatientFormDetails();
+    if (resp.id) {
+      this.router.navigate(['/app/account-details/general']);
+    }
   }
 
-  async subscribe() {
-    const subscription = await this.gqlService.gqlRequest(
-      GqlConstants.CREATE_SUBSCRIPTION,
-      {},
-      true
-    );
-    this.subscription = subscription.createSubscription.subscription;
-    this.setLocalSubscriptionStatus();
-  }
-
-  getDateStr(timestamp: string): string {
-    const date = new Date(parseInt(timestamp) * 1000);
-    return `${date.toLocaleDateString('default', {
-      month: 'long',
-    })} ${date.getDate()}, ${date.getFullYear()}`;
-  }
+  async ngOnInit() {}
 }

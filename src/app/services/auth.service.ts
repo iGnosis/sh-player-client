@@ -163,6 +163,23 @@ export class AuthService {
     }
   }
 
+  async setGenreChoice(genreChoice: string) {
+    try {
+      const patientId = this.userService.get().id;
+      const patient = await this.gqlService.gqlRequest(
+        GqlConstants.SET_GENRE_CHOICE,
+        {
+          id: patientId,
+          genreChoice,
+        },
+        true
+      );
+      return patient.update_patient_by_pk;
+    } catch(e) {
+      return e;
+    }
+  }
+
   async setPreferredActivities(details: {id: string, activities: any}) {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.SET_FAV_ACTIVITIES, details);
