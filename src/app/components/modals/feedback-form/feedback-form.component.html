@@ -30,7 +30,7 @@
                     <button mat-button matStepperNext class="next btn btn-primary w-full font-bold" [disabled]="!getForm(0).valid">Next</button>
                 </form>
                 <div class="d-flex">
-                    <button mat-button matStepperNext class="h5 bg-transparent cursor-pointer py-3 mx-auto" style="color: #4A5568;">Skip for today</button>
+                    <button (click)="show = !show" mat-button matStepperNext class="h5 bg-transparent cursor-pointer py-3 mx-auto" style="color: #4A5568;">Skip for today</button>
                 </div>
             </mat-step>
             <!-- Star Rating -->
