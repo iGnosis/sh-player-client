@@ -76,8 +76,9 @@ export class AuthService {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
       return res.getSubscriptionDetails.subscription;
-    } catch(e) {
-      console.log(e);
+    } catch(e: any) {
+      if (!e.message.includes("Cannot read properties of undefined (reading 'subscription')")) 
+        console.log(e);
       return null;
     }
   }

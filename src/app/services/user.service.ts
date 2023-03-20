@@ -72,8 +72,9 @@ export class UserService {
     try {
       subscriptionResponse = await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
       statusResponse = await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      if (!e.message.includes("Cannot read properties of undefined (reading 'subscription')")) 
+        console.log(e);
     }
 
 

@@ -21,22 +21,27 @@ export class BillingHistoryComponent implements OnInit {
   }
 
   async getSubscriptionDetails() {
-    const response = await this.graphqlService.gqlRequest(
-      GqlConstants.GET_SUBSCRIPTION_DETAILS,
-      {},
-      true
-    );
-    
-    if (
-      response.getSubscriptionDetails &&
-      response.getSubscriptionDetails.subscription
-    ) {
-      this.subscription = response.getSubscriptionDetails.subscription;
-
-      // setting payable amount based on user's discount (Coupon code)
-      if (this.subscription.discount) {
-        this.amount -= (30 * this.subscription.discount.coupon.percent_off!) / 100;
+    try {
+      const response = await this.graphqlService.gqlRequest(
+        GqlConstants.GET_SUBSCRIPTION_DETAILS,
+        {},
+        true
+      );
+      
+      if (
+        response.getSubscriptionDetails &&
+        response.getSubscriptionDetails.subscription
+      ) {
+        this.subscription = response.getSubscriptionDetails.subscription;
+  
+        // setting payable amount based on user's discount (Coupon code)
+        if (this.subscription.discount) {
+          this.amount -= (30 * this.subscription.discount.coupon.percent_off!) / 100;
+        }
       }
+    } catch (e: any) {
+      if (!e.message.includes("Cannot read properties of undefined (reading 'subscription')")) 
+        console.log(e);
     }
   }
 
