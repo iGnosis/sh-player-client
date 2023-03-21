@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 
@@ -143,6 +144,12 @@ export class FeedbackFormComponent implements OnInit {
 
   getFormAnswer(idx: number): string | number {
     return this.formGroup.get('response')?.get([idx])?.get('answer')?.value || '';
+  }
+
+  skipNSteps(stepper: MatStepper, steps: number) {
+    for (let i = 1; i <= steps; i++) {
+      stepper.next();
+    }
   }
 
 }
