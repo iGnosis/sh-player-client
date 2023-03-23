@@ -20,11 +20,19 @@ export class GeneralSettingsComponent implements OnInit {
   card!: PaymentMethod.Card;
   patientDetails!: {
     id: string;
-    email: string;
+    email: {
+      data: {
+        value: string;
+      }
+    };
     lastName: string;
     firstName: string;
     phoneCountryCode: string;
-    phoneNumber: string;
+    phoneNumber: {
+      data: {
+        value: string
+      }
+    };
     nickname: string;
   };
 
@@ -59,9 +67,9 @@ export class GeneralSettingsComponent implements OnInit {
       id: new FormControl(this.patientDetails.id),
       firstName: new FormControl(this.patientDetails.firstName, [Validators.required]),
       lastName: new FormControl(this.patientDetails.lastName, [Validators.required]),
-      email: new FormControl(this.patientDetails.email, [Validators.required, Validators.email]),
+      email: new FormControl(this.patientDetails.email.data.value, [Validators.required, Validators.email]),
       phoneCountryCode: new FormControl(this.patientDetails.phoneCountryCode, [Validators.required]),
-      phoneNumber: new FormControl(this.patientDetails.phoneNumber, [Validators.required, Validators.pattern('[0-9]*'), Validators.minLength(10), Validators.maxLength(10)]),
+      phoneNumber: new FormControl(this.patientDetails.phoneNumber.data.value, [Validators.required, Validators.pattern('[0-9]*'), Validators.minLength(10), Validators.maxLength(10)]),
     });
 
     this.patientForm.statusChanges.pipe(distinctUntilChanged()).subscribe((status) => {
