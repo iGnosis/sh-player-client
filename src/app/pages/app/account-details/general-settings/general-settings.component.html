@@ -14,12 +14,12 @@
               <span class="font-bold">{{(patientDetails.lastName | titlecase) || ''}}</span>
             </p>
             <p class="mt-5">
-              E-mail: <span class="font-bold">{{ patientDetails.email }}</span>
+              E-mail: <span class="font-bold">{{ patientDetails.email.value }}</span>
             </p>
             <p class="mt-5">
               Phone Number:
               <span class="font-bold">{{
-                patientDetails.phoneCountryCode + " " + patientDetails.phoneNumber
+                patientDetails.phoneCountryCode + " " + patientDetails.phoneNumber.value
               }}</span>
             </p>
             <p class="mt-5">
@@ -92,5 +92,5 @@
       </div>
     </div>
   </div>
-  
+
   <!-- <primary-modal [show]="showCancellationModal" [modalConfig]="cancellationModalConfig" [(inputVal)]="cancellationReason" ></primary-modal> -->
