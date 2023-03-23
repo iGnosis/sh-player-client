@@ -21,17 +21,13 @@ export class GeneralSettingsComponent implements OnInit {
   patientDetails!: {
     id: string;
     email: {
-      data: {
-        value: string;
-      }
+      value: string;
     };
     lastName: string;
     firstName: string;
     phoneCountryCode: string;
     phoneNumber: {
-      data: {
-        value: string
-      }
+      value: string
     };
     nickname: string;
   };
@@ -67,9 +63,9 @@ export class GeneralSettingsComponent implements OnInit {
       id: new FormControl(this.patientDetails.id),
       firstName: new FormControl(this.patientDetails.firstName, [Validators.required]),
       lastName: new FormControl(this.patientDetails.lastName, [Validators.required]),
-      email: new FormControl(this.patientDetails.email.data.value, [Validators.required, Validators.email]),
+      email: new FormControl(this.patientDetails.email.value, [Validators.required, Validators.email]),
       phoneCountryCode: new FormControl(this.patientDetails.phoneCountryCode, [Validators.required]),
-      phoneNumber: new FormControl(this.patientDetails.phoneNumber.data.value, [Validators.required, Validators.pattern('[0-9]*'), Validators.minLength(10), Validators.maxLength(10)]),
+      phoneNumber: new FormControl(this.patientDetails.phoneNumber.value, [Validators.required, Validators.pattern('[0-9]*'), Validators.minLength(10), Validators.maxLength(10)]),
     });
 
     this.patientForm.statusChanges.pipe(distinctUntilChanged()).subscribe((status) => {

@@ -81,7 +81,7 @@ export class UserService {
     if (response && response.patient_by_pk) {
       if (!response.patient_by_pk.firstName || !response.patient_by_pk.lastName) {
         return 'profile';
-      } else if (!response.patient_by_pk.email.data.value) {
+      } else if (!response.patient_by_pk.email.value) {
         return 'email';
       } else if (
         !subscriptionResponse.getSubscriptionDetails ||
