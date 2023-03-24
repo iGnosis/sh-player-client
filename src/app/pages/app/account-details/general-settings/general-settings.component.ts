@@ -17,7 +17,7 @@ export class GeneralSettingsComponent implements OnInit {
   paymentMethod: any;
   edit = false;
 
-  card!: PaymentMethod.Card;
+  card?: PaymentMethod.Card;
   patientDetails!: {
     id: string;
     email: string;
@@ -73,16 +73,20 @@ export class GeneralSettingsComponent implements OnInit {
       this.patientDetails = value;
     });
 
-    const resp: { getDefaultPaymentMethod: { data: PaymentMethod } } =
-      await this.gqlService.gqlRequest(
-        GqlConstants.GET_DEFAULT_PAYMENT_METHOD,
-        {},
-        true
-      );
-
-    const { card } = resp.getDefaultPaymentMethod.data;
-    if (card) {
-      this.card = card;
+    try {
+      const resp: { getDefaultPaymentMethod: { data: PaymentMethod } } =
+        await this.gqlService.gqlRequest(
+          GqlConstants.GET_DEFAULT_PAYMENT_METHOD,
+          {},
+          true
+        );
+  
+      const { card } = resp.getDefaultPaymentMethod.data;
+      if (card) {
+        this.card = card;
+      }
+    } catch (e) {
+      this.card = undefined;
     }
   }
 }
