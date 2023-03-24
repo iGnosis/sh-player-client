@@ -105,7 +105,7 @@ export const GqlConstants = {
     update_patient_by_pk(pk_columns: {id: $id}, _set: {genreChoice: $genreChoice}) {
       genreChoice
     }
-  }`,  
+  }`,
   USER_FEEDBACK: `mutation InsertFeedback($description: String, $rating: Int!) {
     insert_patient_feedback(objects: {description: $description, rating: $rating}) {
       returning {
@@ -124,7 +124,7 @@ export const GqlConstants = {
     update_patient_feedback_by_pk(pk_columns: {id: $id}, _set: {response: $response}) {
       id
     }
-  }`,  
+  }`,
   SET_RECOMMENDATION_SCORE: `mutation SetRecommendationScore($feedbackId: uuid!, $recommendationScore: Int!) {
     update_patient_feedback_by_pk(pk_columns: {id: $feedbackId}, _set: {recommendationScore: $recommendationScore}) {
       id
@@ -179,11 +179,11 @@ export const GqlConstants = {
   query PatientDetails($user:uuid!) {
     patient_by_pk(id:$user) {
       id
-      email
+      email: pii_email
       preferredGenres
       nickname
       phoneCountryCode
-      phoneNumber
+      phoneNumber: pii_phoneNumber
       lastName
       firstName
       customerId
@@ -296,7 +296,7 @@ export const GqlConstants = {
     subscriptions(where: {subscriptionId: {_eq: $subscriptionId}}) {
       paymentAuthUrl
     }
-  }`,  
+  }`,
   GET_SUBSCRIPTION_DETAILS: `
     query GetSubscriptionDetails {
       getSubscriptionDetails {

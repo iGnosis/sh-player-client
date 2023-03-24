@@ -1,4 +1,4 @@
-# PatientProvider ![check-code-coverage](https://img.shields.io/badge/code--coverage-46.69%25-red)
+# PatientProvider ![check-code-coverage](https://img.shields.io/badge/code--coverage-47.1%25-red)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
 
