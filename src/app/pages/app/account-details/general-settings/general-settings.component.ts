@@ -23,8 +23,12 @@ export class GeneralSettingsComponent implements OnInit {
     email: {
       value: string;
     };
-    lastName: string;
-    firstName: string;
+    lastName: {
+      value: string;
+    };
+    firstName: {
+      value: string;
+    };
     phoneCountryCode: string;
     phoneNumber: {
       value: string
@@ -61,8 +65,8 @@ export class GeneralSettingsComponent implements OnInit {
 
     this.patientForm = new FormGroup({
       id: new FormControl(this.patientDetails.id),
-      firstName: new FormControl(this.patientDetails.firstName, [Validators.required]),
-      lastName: new FormControl(this.patientDetails.lastName, [Validators.required]),
+      firstName: new FormControl(this.patientDetails.firstName.value, [Validators.required]),
+      lastName: new FormControl(this.patientDetails.lastName.value, [Validators.required]),
       email: new FormControl(this.patientDetails.email.value, [Validators.required, Validators.email]),
       phoneCountryCode: new FormControl(this.patientDetails.phoneCountryCode, [Validators.required]),
       phoneNumber: new FormControl(this.patientDetails.phoneNumber.value, [Validators.required, Validators.pattern('[0-9]*'), Validators.minLength(10), Validators.maxLength(10)]),
@@ -84,7 +88,7 @@ export class GeneralSettingsComponent implements OnInit {
           {},
           true
         );
-  
+
       const { card } = resp.getDefaultPaymentMethod.data;
       if (card) {
         this.card = card;

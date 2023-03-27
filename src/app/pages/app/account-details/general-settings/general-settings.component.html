@@ -7,11 +7,11 @@
           <div class="ms-5">
             <p class="mt-5">
               First Name:
-              <span class="font-bold">{{(patientDetails.firstName | titlecase) || ''}}</span>
+              <span class="font-bold">{{(patientDetails.firstName.value | titlecase) || ''}}</span>
             </p>
             <p class="mt-5">
               Last Name:
-              <span class="font-bold">{{(patientDetails.lastName | titlecase) || ''}}</span>
+              <span class="font-bold">{{(patientDetails.lastName.value | titlecase) || ''}}</span>
             </p>
             <p class="mt-5">
               E-mail: <span class="font-bold">{{ patientDetails.email.value }}</span>

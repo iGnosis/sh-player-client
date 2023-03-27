@@ -184,8 +184,8 @@ export const GqlConstants = {
       nickname
       phoneCountryCode
       phoneNumber: pii_phoneNumber
-      lastName
-      firstName
+      lastName: pii_lastName
+      firstName: pii_firstName
       customerId
       createdAt
       genreChoice
