@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Patient } from 'src/app/types/pointmotion';
+import { UserService } from 'src/app/services/user.service';
+import { ErpNextEventTypes, Patient } from 'src/app/types/pointmotion';
 
 @Component({
   selector: 'app-start',
@@ -14,7 +15,14 @@ export class StartComponent implements OnInit, OnDestroy {
   loginLink = ''
   routeSubscription: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+  ) {
+    const erpNextActionType = this.route.snapshot.queryParamMap.get("actionType") as ErpNextEventTypes;
+    this.userService.erpNextEvent(erpNextActionType);
+
     this.routeSubscription = this.route.queryParams.subscribe(params => {
       let patientDetails: Partial<Patient> = {
         phoneNumber: '',
@@ -28,7 +36,7 @@ export class StartComponent implements OnInit, OnDestroy {
       for (const key of Object.keys(patientDetails)) {
         patientDetails[key as keyof typeof patientDetails] = params[key];
       }
-      
+
       sessionStorage.setItem('patient', JSON.stringify(patientDetails));
     });
   }

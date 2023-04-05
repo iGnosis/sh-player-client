@@ -83,6 +83,11 @@ export enum session {
   Locked,
 }
 
+export enum ErpNextEventTypes {
+  SUPPORT = 'support',
+  FEEDBACK = 'feedback',
+}
+
 export interface Theme {
   colors: {
     [key: string]: any;

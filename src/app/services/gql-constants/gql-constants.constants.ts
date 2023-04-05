@@ -349,9 +349,19 @@ export const GqlConstants = {
     }
   }`,
   CREATE_SUBSCRIPTION_WITH_PROMOCODE: `
-  mutation CreateSubscriptionWithPromoCode($promocode: String!) {
-  createSubscriptionWithPromocode(promocode: $promocode) {
-    subscription
-  }
-}`,
+    mutation CreateSubscriptionWithPromoCode($promocode: String!) {
+    createSubscriptionWithPromocode(promocode: $promocode) {
+      subscription
+    }
+  }`,
+  SUPPORT_FORM_FILLED: `mutation SupportFormFilled {
+    supportIssueEvent {
+      status
+    }
+  }`,
+  FEEDBACK_FORM_FILLED: `mutation FeedbackFormFilled {
+    fabFeedbackEvent {
+      status
+    }
+  }`,
 };

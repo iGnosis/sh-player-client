@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Patient } from '../types/pointmotion';
+import { ErpNextEventTypes, Patient } from '../types/pointmotion';
 import { GqlConstants } from './gql-constants/gql-constants.constants';
 import { GraphqlService } from './graphql/graphql.service';
 import { HttpClient } from '@angular/common/http';
@@ -128,5 +128,15 @@ export class UserService {
   async appAccessed() {
     console.log('app accessed event sent');
     this.gqlService.gqlRequest(GqlConstants.APP_ACCESSED);
+  }
+
+  async erpNextEvent(eventType: ErpNextEventTypes) {
+    if (eventType === ErpNextEventTypes.FEEDBACK) {
+      console.log('fab feedback event sent');
+      this.gqlService.gqlRequest(GqlConstants.FEEDBACK_FORM_FILLED);
+    } else if (eventType === ErpNextEventTypes.SUPPORT) {
+      console.log('contact support event sent');
+      this.gqlService.gqlRequest(GqlConstants.SUPPORT_FORM_FILLED);
+    }
   }
 }

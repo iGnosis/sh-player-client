@@ -2,7 +2,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
 import { CareplanService } from "src/app/services/careplan/careplan.service";
-import { ModalConfig, Patient } from "src/app/types/pointmotion";
+import { ErpNextEventTypes, ModalConfig, Patient } from "src/app/types/pointmotion";
 import { session } from "src/app/types/pointmotion";
 import { trigger, transition, animate, style } from "@angular/animations";
 import { GoalsService } from "src/app/services/goals/goals.service";
@@ -106,6 +106,10 @@ export class HomeComponent implements OnInit {
       this.showFeedbackForm = true;
       this.router.navigate([], { queryParams: { isVisitingAfterGame: null }, queryParamsHandling: 'merge', relativeTo: this.route });
     }
+
+    const erpNextActionType = this.route.snapshot.queryParamMap.get("actionType") as ErpNextEventTypes;
+    this.userService.erpNextEvent(erpNextActionType);
+
     this.user = this.userService.get();
     this.router.events
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise(), take(1))
