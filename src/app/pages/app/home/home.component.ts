@@ -104,6 +104,7 @@ export class HomeComponent implements OnInit {
     const isVisitingAfterGame = this.route.snapshot.queryParamMap.get("isVisitingAfterGame");
     if (isVisitingAfterGame) {
       this.showFeedbackForm = true;
+      this.googleAnalyticsService.sendEvent('open_feedback_modal');
       this.router.navigate([], { queryParams: { isVisitingAfterGame: null }, queryParamsHandling: 'merge', relativeTo: this.route });
     }
 
