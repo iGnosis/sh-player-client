@@ -44,7 +44,6 @@ export class GeneralSettingsComponent implements OnInit {
     private gqlService: GraphqlService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
   ) {
     this.patientForm = new FormGroup({});
     this.route.queryParams.subscribe((params) => {

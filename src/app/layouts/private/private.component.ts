@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { SocketService } from 'src/app/services/socket/socket.service';
 import { ModalConfig } from 'src/app/types/pointmotion';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-private',
@@ -48,7 +49,9 @@ export class PrivateComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.socketService.connect();
+    if (environment.name !== 'local') {
+      this.socketService.connect();
+    }
   }
 
   ngOnInit(): void {
@@ -65,9 +68,12 @@ export class PrivateComponent implements OnInit, OnDestroy {
 
   async fulfillPaymentDetailsRequirement() {
     const subscriptionObj = await this.authService.getSubscriptionDetails();
+    console.log('fulfillPaymentDetailsRequirement::subscriptionObj::', subscriptionObj);
     const paymentMethodRequired = await this.authService.getPaymentMethodRequirement();
+    console.log('fulfillPaymentDetailsRequirement::paymentMethodRequired::', paymentMethodRequired);
     const paymentMethodExist = subscriptionObj && Object.keys(subscriptionObj).length !== 0;
-    
+    console.log('fulfillPaymentDetailsRequirement::paymentMethodExist:', paymentMethodExist);
+
     if (!paymentMethodExist && paymentMethodRequired) {
       if (!this.router.url.includes('add-payment-method') && !this.router.url.includes('signup') && !this.router.url.includes('checkin'))
         this.router.navigate(['/app/add-payment-method', { signup: true }]);

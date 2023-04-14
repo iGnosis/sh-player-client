@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GqlConstants } from 'src/app/services/gql-constants/gql-constants.constants';
 import { UserService } from 'src/app/services/user.service';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 @Component({
@@ -12,6 +11,7 @@ export class AccountDetailsComponent implements OnInit {
   tabs = <const>['general', 'subscription'];
   disableSaveBtn?: boolean;
   componentRef?: any;
+  showToastDetailsSaved = false;
 
   constructor(private router: Router, private userService: UserService) {}
 
@@ -36,9 +36,13 @@ export class AccountDetailsComponent implements OnInit {
 
   async save() {
     const resp = await this.userService.savePatientFormDetails();
-    if (resp.id) {
-      this.router.navigate(['/app/account-details/general']);
-    }
+    this.showToastDetailsSaved = true;
+    setTimeout(() => {
+      this.showToastDetailsSaved = false;
+    }, 3000);
+    // if (resp.id) {
+    //   this.router.navigate(['/app/account-details/general']);
+    // }
   }
 
   async ngOnInit() {}
