@@ -13,7 +13,7 @@ export class UserService {
   private user?: Patient
   constructor(
     private gqlService: GraphqlService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
   }
@@ -26,6 +26,16 @@ export class UserService {
   get(): Patient {
     const user = this.user || JSON.parse(localStorage.getItem('user') || '{}')
     return user as Patient
+  }
+
+   async getSubscriptionDetails() {
+    try {
+      const res = await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS, {}, true);
+      return res.getSubscriptionDetails.subscription;
+    } catch(e) {
+      console.log(e);
+      return null;
+    }
   }
 
   fetchCountry(): Observable<{
@@ -47,6 +57,7 @@ export class UserService {
 
   async isOnboarded() {
     const user = this.get()
+    const subscription: { status: string } = await this.getSubscriptionDetails();
 
     if (!user || !user.id) {
       throw new Error('User not set');
@@ -62,6 +73,12 @@ export class UserService {
       } else if (!response.patient_by_pk.email) {
         return 'email';
       } else if (!cardResp || !cardResp.getDefaultPaymentMethod || !cardResp.getDefaultPaymentMethod.data || !cardResp.getDefaultPaymentMethod.data.card) {
+
+        // if the user is subscibed using a coupon code, then we don't ask user to add a payment method.
+        if (subscription && subscription.status === 'active') {
+          return 'finish';
+        }
+
         return 'payment';
       } else {
         return 'finish'; // skipping the onboarding
