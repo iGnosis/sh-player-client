@@ -30,9 +30,9 @@ const routes: Routes = [
     }
   },
   { path: '', redirectTo: 'public/start', pathMatch: 'full' },
+  { path: 'public/start', component: StartComponent },
   {
     path: 'public', canActivateChild: [PublicGuard], children: [
-      { path: 'start', component: StartComponent },
       { path: 'login', component: SmsOtpLoginComponent }
     ]
   },

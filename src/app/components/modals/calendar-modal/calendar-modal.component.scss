@@ -1,0 +1,7 @@
+::ng-deep {
+    .mat-stepper-horizontal, .mat-stepper-vertical {
+        .mat-horizontal-stepper-header-container {
+            display: none;
+        }
+    }
+}

@@ -1,19 +1,18 @@
 /// <reference types="chrome"/>
+import { animate, style, transition, trigger } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
-import { CareplanService } from "src/app/services/careplan/careplan.service";
-import { ErpNextEventTypes, ModalConfig, Patient } from "src/app/types/pointmotion";
-import { session } from "src/app/types/pointmotion";
-import { trigger, transition, animate, style } from "@angular/animations";
-import { GoalsService } from "src/app/services/goals/goals.service";
-import { JwtService } from "src/app/services/jwt.service";
-import { UserService } from "src/app/services/user.service";
-import { RewardsDTO } from "src/app/types/pointmotion";
-import { RewardsService } from "src/app/services/rewards/rewards.service";
-import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
 import { filter, pairwise, take } from "rxjs";
-import { environment } from "src/environments/environment";
+import { CareplanService } from "src/app/services/careplan/careplan.service";
+import { GoalsService } from "src/app/services/goals/goals.service";
+import { GoogleAnalyticsService } from "src/app/services/google-analytics/google-analytics.service";
+import { JwtService } from "src/app/services/jwt.service";
+import { NotificationsService } from "src/app/services/notifications/notifications.service";
+import { RewardsService } from "src/app/services/rewards/rewards.service";
 import { SoundsService } from "src/app/services/sounds/sounds.service";
+import { UserService } from "src/app/services/user.service";
+import { ErpNextEventTypes, ModalConfig, Patient, RewardsDTO, session } from "src/app/types/pointmotion";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-home",
@@ -90,6 +89,8 @@ export class HomeComponent implements OnInit {
     },
   };
 
+  showCalendarEventModal = false;
+
   constructor(
     private careplanService: CareplanService,
     private goalsService: GoalsService,
@@ -99,8 +100,10 @@ export class HomeComponent implements OnInit {
     private userService: UserService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private route: ActivatedRoute,
-    private soundsService: SoundsService
+    private soundsService: SoundsService,
+    private notificationsService: NotificationsService,
   ) {
+    this.notificationsService.shouldInviteCalendar.subscribe((shouldInvite) => this.showCalendarEventModal = shouldInvite);
     const isVisitingAfterGame = this.route.snapshot.queryParamMap.get("isVisitingAfterGame");
     if (isVisitingAfterGame) {
       this.showFeedbackForm = true;

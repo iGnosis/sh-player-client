@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { UserService } from 'src/app/services/user.service';
 import { ErpNextEventTypes, Patient } from 'src/app/types/pointmotion';
 
@@ -19,6 +21,8 @@ export class StartComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
+    private titleService: Title,
+    private googleAnalyticsService: GoogleAnalyticsService,
   ) {
     const erpNextActionType = this.route.snapshot.queryParamMap.get("actionType") as ErpNextEventTypes;
     this.userService.erpNextEvent(erpNextActionType);
@@ -41,7 +45,19 @@ export class StartComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const refParam = this.route.snapshot.queryParamMap.get('ref');
+    const title = this.titleService.getTitle();
+
+    if (refParam) {
+      this.googleAnalyticsService.sendEvent('page_view', {
+        page_location: window.location.href,
+        page_path: window.location.pathname,
+        page_title: title,
+        page_referrer: refParam,
+      })
+    }
+  }
 
   ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();

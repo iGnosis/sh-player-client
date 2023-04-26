@@ -364,4 +364,9 @@ export const GqlConstants = {
       status
     }
   }`,
+  REQUEST_CALENDAR_INVITE: `mutation RequestCalendarInvite($fileValue: String!) {
+    requestCalendarEvent(fileDetails: {fileValue: $fileValue}) {
+      status
+    }
+  }`,  
 };

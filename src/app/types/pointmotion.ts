@@ -63,6 +63,9 @@ export type Environment = {
   googleAnalyticsTrackingID: string;
   stripePublishableKey: string;
   websocketEndpoint: string;
+  novuAppId: string;
+  novuBackendUrl: string;
+  novuSocketUrl: string;
 };
 
 export interface DailyGoalsApiDTO {

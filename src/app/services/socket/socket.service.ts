@@ -23,6 +23,8 @@ export class SocketService {
   }
 
   sendLogsToServer(logs: string) {
-    this.socket?.emit('cloudwatch-log', { logs, portal: 'player-client' });
+    if (environment.name !== 'local') {
+      this.socket?.emit('cloudwatch-log', { logs, portal: 'player-client' });
+    }
   }
 }

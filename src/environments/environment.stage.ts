@@ -16,4 +16,7 @@ export const environment: Environment = {
   providerEndpoint: 'https://provider.stage.pointmotioncontrol.com/',
   websocketEndpoint: 'wss://services.stage.pointmotioncontrol.com',
   stripePublishableKey: 'pk_test_51MSP9MKrHxGkv6aRSuMbHMDH0kNYYhWlYyFgtYNhw9S3UxARQ8WjABwWZdRXuJtMAuSl9st9RzInVuPzyFfclYLR00UCyYpwfK',
+  novuAppId: 'E7N-OVEhENfa',
+  novuBackendUrl: 'https://api.ma.pointmotioncontrol.com',
+  novuSocketUrl: 'https://ws.ma.pointmotioncontrol.com',
 };

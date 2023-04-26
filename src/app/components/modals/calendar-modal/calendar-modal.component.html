@@ -1,0 +1,198 @@
+<div class="modal-backdrop fade" [class.show]="show" [style.display]="show ? 'block' : 'none'"></div>
+<div class="modal fade in" [class.show]="show" id="test-modal" tabindex="-1" aria-labelledby="test-modal" aria-hidden="true" [style.display]="show ? 'block' : 'none'">
+    <div class="modal-dialog modal-dialog-centered max-w-full w-2/4">
+        <mat-stepper #stepper class="stepper w-full position-relative rounded" linear>
+            <!-- Step 0 -->
+            <mat-step [stepControl]="step1">
+                <div class="modal-content shadow-none">
+                    <div class="modal-body pb-0">
+                        <h1>Schedule time to play</h1>
+                        <p class="py-5">Hey there!<br>Want to keep up your daily streak? No problem, just click on the "Get Started" button and fill in the details to set up a notification in your calendar.</p>
+                    </div>
+                    <div class="modal-footer p-0 border-none">
+                        <button class="btn btn-primary-outline" (click)="show = !show">Remind me later</button>
+                        <button class="btn btn-primary" matStepperNext>Get started</button>
+                    </div>
+                </div>
+            </mat-step>
+            <!-- Step 1 -->
+            <mat-step [stepControl]="step1">
+                <form [formGroup]="step1" (ngSubmit)="submitForm(1)">
+                    <div class="modal-content shadow-none">
+                        <div class="modal-body pb-0">
+                            <h3 class="d-flex">Create an event <span class="ms-auto"><button type="button" class="btn-close text-md" aria-label="Close" (click)="show = !show"></button></span></h3>
+                            <p class="text-muted py-3">Step 1 of 3</p>
+                            <div class="text-danger py-3" *ngIf="error">{{error}}</div>
+
+                            <div class="col-md-12">
+                                <div>
+                                    <label class="form-label" for="event_name">Event Name</label>
+                                    <input matInput type="text" class="form-control" id="event_name" formControlName="eventName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pt-2">
+                                <div>
+                                    <label class="form-label w-full d-flex" for="game">Game Name <span class="ms-auto text-muted">Optional</span></label>
+                                    <select class="form-control" id="game" formControlName="gameName">
+                                        <option value="">None</option>
+                                        <option value="Sit, Stand, Achieve">Sit, Stand, Achieve</option>
+                                        <option value="Beat Boxer">Beat Boxer</option>
+                                        <option value="Sound Explorer">Sound Explorer</option>
+                                        <option value="Moving Tones">Moving Tones</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer p-0 border-none mx-4 pt-2">
+                            <button class="btn btn-outline-primary" matStepperPrevious>Previous</button>
+                            <button class="btn btn-primary" matStepperNext>Next</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-step>
+            <!-- Step 2 -->
+            <mat-step [stepControl]="step2">
+                <form [formGroup]="step2" (ngSubmit)="submitForm(2)">
+                    <div class="modal-content shadow-none">
+                        <div class="modal-body pb-0">
+                            <h3 class="d-flex">Create an event <span class="ms-auto"><button type="button" class="btn-close text-md" aria-label="Close" (click)="show = !show"></button></span></h3>
+                            <p class="text-muted py-3">Step 2 of 3</p>
+                            <div class="text-danger py-3" *ngIf="error">{{error}}</div>
+                            <div class="card border shadow-none my-3">
+                                <div class="card-body d-flex">
+                                    <i class="bi bi-calendar-plus text-lg text-black pe-5"></i>
+                                    <div>
+                                        <h4>{{ step1.get('eventName')?.value || '' }}</h4>
+                                        <p>Game: {{ step1.get('gameName')?.value || 'None' }}</p>
+                                        <p>Reminder {{getFormValue('notifyBefore')}} {{getFormValue('notifyBeforeUnit')}} before</p>
+                                        <p>{{toggleCustomDuration ?  getFormValue('customDuration') : getFormValue('duration')}} {{toggleCustomDuration ? durationUnits : 'minutes'}} at {{timeFormatted}}</p>
+                                        <p *ngIf="getFormValue('endDate')">Until {{getFormValue('endDate') | date: 'mediumDate'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 pt-2">
+                                <div>
+                                    <label class="form-label" for="frequency">Frequency</label>
+                                    <div class="options">
+                                        <button (click)="setFormValue({ frequency: 'once' })" class="btn rounded-pill me-2" [ngClass]="getFormValue('frequency') === 'once' ? 'btn-primary' : 'btn-outline-primary'">Once</button>
+                                        <button (click)="setFormValue({ frequency: 'daily' })" class="btn rounded-pill me-2" [ngClass]="getFormValue('frequency') === 'daily' ? 'btn-primary' : 'btn-outline-primary'">Daily</button>
+                                        <button (click)="setFormValue({ frequency: 'weekly' })" class="btn rounded-pill me-2" [ngClass]="getFormValue('frequency') === 'weekly' ? 'btn-primary' : 'btn-outline-primary'">Weekly</button>
+                                        <button (click)="setFormValue({ frequency: 'monthly' })" class="btn rounded-pill me-2" [ngClass]="getFormValue('frequency') === 'monthly' ? 'btn-primary' : 'btn-outline-primary'">Monthly</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pt-2" *ngIf="['once', 'monthly'].includes(getFormValue('frequency'))">
+                                <div>
+                                    <input type="date" name="frequencyDate" class="form-control" id="frequencyDate" formControlName="frequencyDate">
+                                </div>
+                            </div>
+                            <div class="col-md-12 pt-5" *ngIf="getFormValue('frequency') === 'weekly'">
+                                <div>
+                                    <div class="options">
+                                        <button (click)="toggleWeekday('SU')" class="btn rounded-pill me-2" [ngClass]="getFormValue('weekdays').has('SU') ? 'btn-primary' : 'btn-outline-primary'">Su</button>
+                                        <button (click)="toggleWeekday('MO')" class="btn rounded-pill me-2" [ngClass]="getFormValue('weekdays').has('MO') ? 'btn-primary' : 'btn-outline-primary'">Mo</button>
+                                        <button (click)="toggleWeekday('TU')" class="btn rounded-pill me-2" [ngClass]="getFormValue('weekdays').has('TU') ? 'btn-primary' : 'btn-outline-primary'">Tu</button>
+                                        <button (click)="toggleWeekday('WE')" class="btn rounded-pill me-2" [ngClass]="getFormValue('weekdays').has('WE') ? 'btn-primary' : 'btn-outline-primary'">We</button>
+                                        <button (click)="toggleWeekday('TH')" class="btn rounded-pill me-2" [ngClass]="getFormValue('weekdays').has('TH') ? 'btn-primary' : 'btn-outline-primary'">Th</button>
+                                        <button (click)="toggleWeekday('FR')" class="btn rounded-pill me-2" [ngClass]="getFormValue('weekdays').has('FR') ? 'btn-primary' : 'btn-outline-primary'">Fr</button>
+                                        <button (click)="toggleWeekday('SA')" class="btn rounded-pill me-2" [ngClass]="getFormValue('weekdays').has('SA') ? 'btn-primary' : 'btn-outline-primary'">Sa</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pt-2">
+                                <div>
+                                    <label class="form-label" for="duration">Duration</label>
+                                    <div class="options">
+                                        <button (click)="setFormValue({ duration: 5 }); toggleCustomDuration = false" class="btn rounded-pill me-2" [ngClass]="getFormValue('duration') === 5 && !toggleCustomDuration ? 'btn-primary' : 'btn-outline-primary'">5 min</button>
+                                        <button (click)="setFormValue({ duration: 10 }); toggleCustomDuration = false" class="btn rounded-pill me-2" [ngClass]="getFormValue('duration') === 10 && !toggleCustomDuration ? 'btn-primary' : 'btn-outline-primary'">10 min</button>
+                                        <button (click)="setFormValue({ duration: 20 }); toggleCustomDuration = false" class="btn rounded-pill me-2" [ngClass]="getFormValue('duration') === 20 && !toggleCustomDuration ? 'btn-primary' : 'btn-outline-primary'">20 min</button>
+                                        <button (click)="setFormValue({ duration: 30 }); toggleCustomDuration = false" class="btn rounded-pill me-2" [ngClass]="getFormValue('duration') === 30 && !toggleCustomDuration ? 'btn-primary' : 'btn-outline-primary'">30 min</button>
+                                        <button (click)="setFormValue({ duration: 60 }); toggleCustomDuration = false" class="btn rounded-pill me-2" [ngClass]="getFormValue('duration') === 60 && !toggleCustomDuration ? 'btn-primary' : 'btn-outline-primary'">1 hr</button>
+                                        <button (click)="toggleCustomDuration = !toggleCustomDuration" class="btn rounded-pill me-2" [ngClass]="toggleCustomDuration ? 'btn-primary' : 'btn-outline-primary'">Custom</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pt-2" *ngIf="toggleCustomDuration">
+                                <div>
+                                    <label class="form-label" for="duration">Custom Duration</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" formControlName="customDuration" min="1">
+                                        <select name="durationUnits" id="" class="form-control px-5" (change)="setDurationUnit($event)">
+                                            <option value="minutes" [selected]="getFormValue('customDurationUnits') === 'minutes'">Minute(s)</option>
+                                            <option value="hours" [selected]="getFormValue('customDurationUnits') === 'hours'">Hour(s)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pt-2">
+                                <div>
+                                    <label class="form-label" for="time">Time</label>
+                                    <input type="time" name="time" class="form-control" id="time" formControlName="time" value="now">
+                                </div>
+                            </div>
+                            <div class="col-md-12 pt-2">
+                                <div>
+                                    <label class="form-label" for="reminder">Reminder</label>
+                                    <div class="input-group">
+                                        <input type="text" value="Notification" class="form-control bg-transparent" disabled>
+                                        <input type="number" class="form-control" formControlName="notifyBefore">
+                                        <select name="before" id="before" class=" px-5 form-control" formControlName="notifyBeforeUnit">
+                                            <option value="minutes">Minutes before</option>
+                                            <option value="hours">Hours before</option>
+                                            <option value="days">Days before</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pt-2">
+                                <div>
+                                    <label class="form-label" for="end_date">End date</label>
+                                    <div class="d-flex align-items-center"><input type="date" name="end_date" class="form-control" id="end_date" formControlName="endDate"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer p-0 border-none mx-4 pt-2">
+                            <button class="btn btn-outline-primary" matStepperPrevious>Previous</button>
+                            <button class="btn btn-primary" matStepperNext>Next</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-step>
+            <!-- Step 3 -->
+            <mat-step>
+                <div class="modal-content shadow-none">
+                    <div class="modal-body pb-0">
+                            <h3 class="d-flex">Create an event <span class="ms-auto"><button type="button" class="btn-close text-md" aria-label="Close" (click)="show = !show"></button></span></h3>
+                        <p class="text-muted py-3">Step 3 of 3</p>
+                        <div class="card border shadow-none my-3">
+                            <div class="card-body d-flex">
+                                <i class="bi bi-calendar-plus text-lg text-black pe-5"></i>
+                                <div>
+                                    <h4>Sound Health Time!</h4>
+                                    <p>Game Name: Sound Explorer</p>
+                                    <p>Reminder Notification 30min before</p>
+                                    <p>20 min at 12:00 PM</p>
+                                    <p>Until April 21, 2023</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pt-2">
+                            <div>
+                                <div class="d-flex">
+                                    <button class="btn btn-outline-primary" (click)="downloadICS()">Save to your calendar</button>
+                                    <button class="btn btn-outline-primary mx-5" (click)="sendInviteToEmail()">Receive email invitation</button>
+                                </div>
+                                <p class="text-muted text-sm pt-5">Open the downloaded file to add it to your calendar.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer p-0 border-none mx-4 pt-2">
+                        <button class="btn btn-outline-primary" matStepperPrevious>Previous</button>
+                        <button class="btn btn-primary" (click)="show = !show">Done</button>
+                    </div>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </div>
+  </div>

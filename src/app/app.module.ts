@@ -49,6 +49,7 @@ import { SupportFabComponent } from './components/support-fab/support-fab.compon
 import { GenreSelectionComponent } from './components/genre-selection/genre-selection.component';
 import { FeedbackFormComponent } from './components/modals/feedback-form/feedback-form.component';
 import { GeneralSettingsComponent } from './pages/app/account-details/general-settings/general-settings.component';
+import { CalendarModalComponent } from './components/modals/calendar-modal/calendar-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,6 +79,7 @@ import { GeneralSettingsComponent } from './pages/app/account-details/general-se
     GenreSelectionComponent,
     FeedbackFormComponent,
     GeneralSettingsComponent,
+    CalendarModalComponent,
   ],
   imports: [
     BrowserModule,

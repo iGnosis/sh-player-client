@@ -49,9 +49,7 @@ export class PrivateComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (environment.name !== 'local') {
-      this.socketService.connect();
-    }
+    this.socketService.connect();
   }
 
   ngOnInit(): void {
