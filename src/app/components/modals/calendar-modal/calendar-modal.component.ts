@@ -123,7 +123,7 @@ export class CalendarModalComponent implements OnInit {
       end: [endTime.getFullYear(), endTime.getMonth() + 1, endTime.getDate(), endTime.getHours(), endTime.getMinutes()],
       endInputType: 'local',
       title: this.step1.get('eventName')?.value,
-      description: `Visit this link to play ${this.step1.get('gameName')?.value}: ${'http://localhost:4300' || environment.playerClientUrl}/public/start?ref=calendar`,
+      description: `Visit this link to play ${this.step1.get('gameName')?.value}: ${environment.playerClientUrl}/public/start?ref=calendar`,
       status: 'CONFIRMED',
       alarms: [
           {
