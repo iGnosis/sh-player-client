@@ -83,7 +83,7 @@ export class AuthService {
     }
   }
 
-  private async createStripeCustomer() {
+  async createStripeCustomer() {
     try {
       const res = await this.graphqlService.gqlRequest(GqlConstants.CREATE_CUSTOMER);
       return res;
@@ -131,8 +131,6 @@ export class AuthService {
         id: user.id
       };
       const res = await this.graphqlService.gqlRequest(GqlConstants.SET_PATIENT_EMAIL, data);
-
-      await this.createStripeCustomer();
       return res;
     } catch(e) {
       return e;

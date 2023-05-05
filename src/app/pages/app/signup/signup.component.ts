@@ -143,6 +143,12 @@ export class SignupComponent implements OnInit {
   }
 
   async finishSignup() {
+    try {
+      await this.authService.createStripeCustomer();
+    } catch (err: any) {
+      this.error = err.message;
+      return;
+    }
     this.googleAnalyticsService.sendEvent('sign_up');
     const isCheckedInToday = await this.dailyCheckinService.isCheckedInToday();
     if (!isCheckedInToday) {
