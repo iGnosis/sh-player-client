@@ -44,8 +44,8 @@ export class PrivateComponent implements OnInit, OnDestroy {
         } else {
           this.showFeedbackButton = true;
         }
-        await this.fulfillPaymentDetailsRequirement();
-        await this.showPaymentModalHandler();
+        // await this.fulfillPaymentDetailsRequirement();
+        // await this.showPaymentModalHandler();
       }
     });
 

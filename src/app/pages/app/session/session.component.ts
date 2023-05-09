@@ -52,7 +52,7 @@ export class SessionComponent implements OnInit {
         this.router.navigate(['/app/add-payment-method']);
       },
     };
-    this.showPaymentModalHandler();
+    // this.showPaymentModalHandler();
   }
 
   async showPaymentModalHandler() {

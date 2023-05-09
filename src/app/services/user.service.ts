@@ -68,13 +68,16 @@ export class UserService {
     }
 
     const response = await this.gqlService.gqlRequest(GqlConstants.GET_PATIENT_DETAILS, { user: user.id });
-    let subscriptionResponse, statusResponse;
     try {
-      subscriptionResponse = await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
-      statusResponse = await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
+      await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_DETAILS);
+      await this.gqlService.gqlRequest(GqlConstants.GET_SUBSCRIPTION_STATUS);
     } catch (e: any) {
-      if (!e.message.includes("Cannot read properties of undefined (reading 'subscription')"))
+      if (!e.message.includes("Cannot read properties of undefined (reading 'subscription')")) {
         console.log(e);
+        return 'finish';
+      } else {
+        return 'payment';
+      }
     }
 
 
@@ -83,12 +86,6 @@ export class UserService {
         return 'profile';
       } else if (!response.patient_by_pk.email.value) {
         return 'email';
-      } else if (
-        !subscriptionResponse.getSubscriptionDetails ||
-        !subscriptionResponse.getSubscriptionDetails.subscription ||
-        !['active', 'trial_period'].includes(statusResponse.getSubscriptionStatus.data)
-      ) {
-        return 'payment';
       } else {
         return 'finish'; // skipping the onboarding
       }
