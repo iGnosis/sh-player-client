@@ -254,6 +254,16 @@ export class SmsOtpLoginComponent {
       phoneCountryCode: this.countryCode,
       phoneNumber: this.phoneNumber
     }, false);
+
+    if (
+      resp &&
+      resp.resendLoginOtp &&
+      resp.resendLoginOtp.data.message.includes('twilio mock:otp:')
+    ) {
+      const mockOtp = resp.resendLoginOtp.data.message.split(':')[2];
+      this.showInfo(`Twilio API keys not set. Meanwhile, use OTP ${mockOtp} to login.`)
+    }
+
     this.showResendOtpTimerText = true;
     this.resendOtpTimer = 60;
     const timerInt = setInterval(() => {
