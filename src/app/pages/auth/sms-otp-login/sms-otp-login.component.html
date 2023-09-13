@@ -59,6 +59,7 @@
         </h3>
       </div>
       <div class="col-sm-12">
+        <p *ngIf="formInfoMsg" class="bg-primary text-center text-white rounded-top">{{ formInfoMsg }}</p>
         <label for="otpCode" class="form-label">One Time Password</label>
         <input type="text" class="form-control" id="otpCode" placeholder="Enter OTP">
       </div>

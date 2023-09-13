@@ -26,6 +26,7 @@ export class SmsOtpLoginComponent {
   showResendOtpTimerText = false;
   resendOtpTimer = 59;
   formErrorMsg?: string;
+  formInfoMsg?: string;
 
   // required to figure out which OTP API to call.
   // The Resend OTP API is called if numbers haven't changed.
@@ -126,6 +127,10 @@ export class SmsOtpLoginComponent {
         if (resp.requestLoginOtp.data.isExistingUser) {
           this.isEmailRegistered = true;
         }
+        if (resp.requestLoginOtp.data.message.includes('twilio mock:otp:')) {
+          const mockOtp = resp.requestLoginOtp.data.message.split(':')[2];
+          this.showInfo(`Twilio API keys not set. Meanwhile, use OTP ${mockOtp} to login.`)
+        }
       }
 
       // increment step
@@ -202,7 +207,7 @@ export class SmsOtpLoginComponent {
         this.router.navigate(["app", "checkin"]);
         return;
       }
-      
+
       this.router.navigate(["app", "home"]);
     }
   }
@@ -218,6 +223,7 @@ export class SmsOtpLoginComponent {
     this.fullPhoneNumber = '';
     this.otpCode = '';
     this.formErrorMsg = '';
+    this.formInfoMsg = '';
     this.isEmailRegistered = false;
   }
 
@@ -225,6 +231,13 @@ export class SmsOtpLoginComponent {
     this.formErrorMsg = message;
     setTimeout(() => {
       this.formErrorMsg = '';
+    }, timeout);
+  }
+
+  showInfo(message: string, timeout: number = 15000) {
+    this.formInfoMsg = message;
+    setTimeout(() => {
+      this.formInfoMsg = '';
     }, timeout);
   }
 
