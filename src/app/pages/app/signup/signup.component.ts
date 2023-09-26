@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DailyCheckinService } from 'src/app/services/daily-checkin/daily-checkin.service';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics/google-analytics.service';
 import { UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'signup',
@@ -159,6 +160,10 @@ export class SignupComponent implements OnInit {
   }
 
   addPaymentMethod() {
-    this.router.navigate(['/app/add-payment-method', { signup: true }]);
+    if (environment.stripePublishableKey) {
+      this.router.navigate(['/app/add-payment-method', { signup: true }]);
+    } else {
+      this.router.navigate(['/app/home']);
+    }
   }
 }
