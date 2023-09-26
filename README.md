@@ -1,4 +1,4 @@
-# Sound Health - Player Client ![check-code-coverage](https://img.shields.io/badge/code--coverage-44.53%25-red)
+# Sound Health - Player Client ![check-code-coverage](https://img.shields.io/badge/code--coverage-44.66%25-red)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
 
