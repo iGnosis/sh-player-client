@@ -82,7 +82,7 @@ export class UserService {
 
 
     if (response && response.patient_by_pk) {
-      if (!response.patient_by_pk.firstName || !response.patient_by_pk.lastName) {
+      if (!response.patient_by_pk.firstName.value || !response.patient_by_pk.lastName.value) {
         return 'profile';
       } else if (!response.patient_by_pk.email.value) {
         return 'email';
