@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4300 --configuration local",
-    "start:local-pure": "ng serve --port 4300 --configuration local-pure",
+    "build:local-pure": "ng build --configuration local-pure",
     "build": "ng build",
     "build:prod": "npm run build -- --configuration production --aot",
     "watch": "ng build --watch --configuration development",
